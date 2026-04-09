@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 9 Industries — Adventure Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=DM+Sans:wght@300;400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            --bg:      #060605;
+            --surface: #111110;
+            --card:    #1C1B19;
+            --border:  #272523;
+            --orange:  #E06018;
+            --gold:    #C4933F;
+            --navy:    #0C1C4A;
+            --cobalt:  #1248A0;
+            --cream:   #F5F2EC;
+            --dust:    #8A7F72;
+            --fog:     #4A4540;
+            --green:   #3CB87A;
+        }
+
+        html, body {
+            background: var(--bg);
+            color: var(--cream);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        /* ── STRIPE ──────────────────────────────────────────── */
+        .stripe { width:100%; display:flex; height:6px; flex-shrink:0; }
+        .stripe.thin { height:4px; }
+        .s1{flex:1;background:var(--navy);}
+        .s2{flex:1;background:var(--cobalt);}
+        .s3{flex:1;background:var(--orange);}
+        .s4{flex:1;background:var(--cobalt);}
+        .s5{flex:1;background:var(--navy);}
+
+        /* ── NAV ─────────────────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 6px; left: 0; right: 0;
+            height: 60px;
+            background: rgba(6,6,5,0.0);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 72px;
+            z-index: 100;
+        }
+        .nav-logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: 0.08em;
+            color: var(--cream);
+            text-decoration: none;
+        }
+        .nav-logo .nine { color: var(--orange); }
+
+        .nav-right { display:flex; align-items:center; gap:28px; }
+
+        .nav-hq {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--cream);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-hq .live-dot {
+            width: 6px; height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .nav-cta {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            background: var(--orange);
+            color: var(--bg);
+            padding: 10px 22px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-cta:hover { background: #f06d22; }
+
+        /* ── HERO ────────────────────────────────────────────── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            overflow: hidden;
+            margin-top: 6px; /* stripe height */
+            /* Overlay baked into background — always renders */
+            background-color: #0a0f08; /* dark forest fallback */
+        }
+
+        /* Photo sits below everything via z-index */
+        .hero-photo {
+            position: fixed;
+            inset: 0;
+            width: 100vw; height: 100vh;
+            object-fit: cover;
+            object-position: center 40%;
+            z-index: 0;
+        }
+
+        /* Overlay div — z-index 1, always renders over photo */
+        .hero-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100vw; height: 100vh;
+            z-index: 1;
+            /* Left darkens more for text legibility, right lets photo breathe */
+            background:
+                linear-gradient(to right,  rgba(6,6,5,0.78) 0%,  rgba(6,6,5,0.32) 58%, rgba(6,6,5,0.52) 100%),
+                linear-gradient(to top,    rgba(6,6,5,1.00) 0%,  rgba(6,6,5,0.00) 42%),
+                linear-gradient(to bottom, rgba(6,6,5,0.60) 0%,  rgba(6,6,5,0.00) 20%);
+        }
+
+        /* Canvas for floating code — always on top of photo + overlay */
+        .hero-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw; height: 100vh;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* P·9·I corner badge */
+        .hero-badge {
+            position: absolute;
+            top: 84px; left: 72px;
+            z-index: 10;
+        }
+        .badge-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 10px;
+            letter-spacing: 0.44em;
+            color: var(--orange);
+            text-transform: uppercase;
+        }
+        .badge-stripe { display:flex; width:52px; height:4px; margin-top:9px; }
+
+        /* Main hero copy — bottom-left anchored */
+        .hero-content {
+            position: absolute;
+            bottom: 88px; left: 72px;
+            z-index: 10;
+            max-width: 640px;
+        }
+        .hero-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 18px;
+        }
+        .hero-headline {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 80px;
+            line-height: 0.96;
+            color: var(--cream);
+            letter-spacing: -0.025em;
+        }
+        .hero-accent { display:flex; width:120px; height:4px; margin: 22px 0 20px; }
+        .hero-sub {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 15px;
+            color: rgba(245,242,236,0.68);
+            max-width: 400px;
+            line-height: 1.72;
+            margin-bottom: 32px;
+        }
+        .hero-cta-btn {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            background: var(--orange);
+            color: var(--bg);
+            border: none;
+            padding: 16px 36px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .hero-cta-btn:hover { background: #f06d22; }
+
+        /* Right-side readouts */
+        .hero-readouts {
+            position: absolute;
+            right: 72px; bottom: 88px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 26px;
+            text-align: right;
+        }
+        .r-val {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 34px;
+            color: var(--cream);
+            line-height: 1;
+        }
+        .r-lbl {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 9px;
+            letter-spacing: 0.20em;
+            text-transform: uppercase;
+            color: var(--fog);
+            margin-top: 3px;
+        }
+
+        /* Bottom activity bar */
+        .hero-bar {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 46px;
+            z-index: 10;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 72px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+        .act-dots { display:flex; gap:20px; }
+        .act-dot-item { display:flex; align-items:center; gap:5px; }
+        .act-dot-item::before {
+            content:'';
+            display:inline-block;
+            width:4px; height:4px;
+            border:1px solid var(--border);
+            border-radius:50%;
+        }
+
+        /* ── PLATFORM STRIP ──────────────────────────────────── */
+        .platform-strip {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 3;
+        }
+        .ps-cell {
+            padding: 26px 36px;
+            border-right: 1px solid var(--border);
+        }
+        .ps-cell:last-child { border-right: none; }
+        .ps-status {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .ps-status.live { color: var(--green); }
+        .ps-status.live::before { content:'●'; font-size:9px; }
+        .ps-status.soon { color: var(--border); }
+        .ps-status.soon::before { content:'○'; font-size:9px; }
+        .ps-name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: 0.04em;
+            color: var(--cream);
+        }
+        .ps-cell.dim .ps-name { color: var(--fog); }
+        .ps-desc {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 12px;
+            color: var(--dust);
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+        .ps-cell.dim .ps-desc { color: var(--fog); }
+
+        /* ── SHARED SECTION STYLES ───────────────────────────── */
+        .section { padding: 100px 72px; background: var(--bg); position: relative; z-index: 3; }
+
+        .eyebrow {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 9px;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .eyebrow::before {
+            content:'';
+            display:block;
+            width:3px; height:14px;
+            background: var(--orange);
+            flex-shrink: 0;
+        }
+        .sec-h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 36px;
+            color: var(--cream);
+            line-height: 1.12;
+            letter-spacing: -0.01em;
+            margin-bottom: 14px;
+        }
+        .sec-p {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 15px;
+            color: var(--dust);
+            line-height: 1.75;
+            max-width: 520px;
+        }
+
+        /* ── PLATFORM CARDS ──────────────────────────────────── */
+        .prod-grid {
+            margin-top: 52px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+        }
+        .prod-card { background: var(--bg); padding: 48px; }
+        .prod-card.dim { background: var(--surface); }
+
+        .prod-status {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 14px;
+        }
+        .prod-status.live { color: var(--green); }
+        .prod-status.live::before { content:'●'; font-size:9px; }
+        .prod-status.soon { color: var(--border); }
+        .prod-status.soon::before { content:'○'; font-size:9px; }
+
+        .prod-name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 30px;
+            letter-spacing: 0.04em;
+            color: var(--cream);
+        }
+        .prod-card.dim .prod-name { color: var(--fog); }
+        .prod-tag {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            font-style: italic;
+            color: var(--dust);
+            margin-top: 5px;
+        }
+        .prod-card.dim .prod-tag { color: var(--fog); }
+        .prod-desc {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 13px;
+            color: var(--dust);
+            margin-top: 16px;
+            line-height: 1.65;
+        }
+        .prod-card.dim .prod-desc { color: var(--fog); }
+        .prod-cta {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-top: 26px;
+            display: inline-block;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .prod-card.dim .prod-cta { color: var(--border); cursor: default; }
+
+        /* ── PRICING SECTION ─────────────────────────────────── */
+        .pricing-section {
+            padding: 100px 72px;
+            background: transparent;
+            position: relative;
+            z-index: 3;
+        }
+        .pricing-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background:
+                linear-gradient(to bottom, rgba(6,6,5,0.60) 0%, rgba(6,6,5,0.0) 15%, rgba(6,6,5,0.0) 85%, rgba(6,6,5,0.60) 100%);
+        }
+        .pricing-section > * { position: relative; z-index: 1; }
+        .pricing-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        .pricing-left {
+            background: rgba(6,6,5,0.45);
+            padding: 56px 52px;
+            border-left: 4px solid var(--orange);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .pricing-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .pricing-dollar {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 96px;
+            line-height: 1;
+            color: var(--orange);
+            letter-spacing: -0.04em;
+        }
+        .pricing-denom {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--dust);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .pricing-lifetime {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-top: 14px;
+        }
+        .pricing-tagline {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: var(--dust);
+            margin-top: 8px;
+            line-height: 1.65;
+            max-width: 280px;
+        }
+        .pricing-cta {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            background: var(--orange);
+            color: var(--bg);
+            padding: 15px 28px;
+            border: none;
+            cursor: pointer;
+            margin-top: 32px;
+            width: fit-content;
+        }
+        .pricing-fine {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 11px;
+            color: var(--fog);
+            margin-top: 12px;
+        }
+
+        .pricing-right {
+            background: rgba(28,27,25,0.45);
+            padding: 56px 48px;
+            backdrop-filter: blur(8px);
+        }
+        .pricing-includes-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 9px;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--dust);
+            margin-bottom: 28px;
+        }
+        .pricing-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .pricing-feature:last-child { border-bottom: none; }
+        .feat-check {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--orange);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .feat-app {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 15px;
+            letter-spacing: 0.06em;
+            color: var(--cream);
+        }
+        .feat-tag {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 12px;
+            color: var(--dust);
+            margin-top: 2px;
+            line-height: 1.5;
+        }
+        .feat-badge {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 8px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .badge-live { background: rgba(60,184,122,0.12); color: var(--green); }
+        .badge-soon { background: rgba(39,37,35,0.8); color: var(--fog); }
+
+        /* ── INTEL SECTION ───────────────────────────────────── */
+        .intel-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .intel-list { border: 1px solid var(--border); }
+        .intel-row {
+            padding: 9px 14px;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 100px 150px 1fr;
+            gap: 12px;
+            align-items: baseline;
+        }
+        .intel-row:last-child { border-bottom: none; }
+        .intel-cat {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            color: var(--orange);
+            text-transform: uppercase;
+        }
+        .intel-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--cream);
+        }
+        .intel-desc {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 11px;
+            color: var(--dust);
+            line-height: 1.45;
+        }
+
+        /* ── STATEMENT + ROUTE SVG ───────────────────────────── */
+        .statement-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .statement-section {
+            padding: 120px 72px 100px;
+            background: var(--bg);
+            position: relative;
+            z-index: 3;
+        }
+        .statement-quote {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 400;
+            font-size: 30px;
+            color: var(--cream);
+            max-width: 660px;
+            line-height: 1.42;
+            letter-spacing: -0.01em;
+        }
+        .statement-body {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 15px;
+            color: var(--dust);
+            max-width: 480px;
+            margin-top: 20px;
+            line-height: 1.75;
+        }
+        .statement-cta {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-top: 36px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .statement-cta:hover { color: #f06d22; }
+
+        /* Route path SVG container */
+        .route-graphic {
+            margin-top: 0;
+            display: flex;
+            justify-content: flex-start;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .route-graphic.visible { opacity: 1; }
+        .route-svg { width: 100%; max-width: 680px; height: 160px; overflow: visible; }
+
+        /* Animated path draw */
+        @keyframes drawPath {
+            from { stroke-dashoffset: 900; }
+            to   { stroke-dashoffset: 0; }
+        }
+        @keyframes dotPulse {
+            0%,100% { r: 5; opacity: 1; }
+            50%      { r: 7; opacity: 0.7; }
+        }
+        .route-path {
+            stroke-dasharray: 900;
+            stroke-dashoffset: 900;
+        }
+        .route-path.animate {
+            animation: drawPath 3.2s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        .route-end-dot.animate {
+            animation: dotPulse 1.8s ease-in-out infinite;
+            animation-delay: 3s;
+        }
+
+        /* ── FOOTER ──────────────────────────────────────────── */
+        footer {
+            padding: 26px 72px;
+            border-top: 1px solid var(--surface);
+            background: var(--bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+        }
+        .foot-l { display:flex; align-items:center; gap:20px; }
+        .foot-logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--cream);
+        }
+        .foot-logo .nine { color: var(--orange); }
+        .foot-copy {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 11px;
+            color: var(--fog);
+        }
+        .foot-r {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 400;
+            font-size: 11px;
+            color: var(--border);
+        }
+
+        /* ── DRAFT BADGE ─────────────────────────────────────── */
+        .draft-badge {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            z-index: 200;
+            background: var(--orange);
+            color: var(--bg);
+            padding: 8px 12px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 9px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        /* ── SIGNUP/SIGNIN FULL-PAGE VIEW ──────────────────────── */
+        body.signup-active { overflow: hidden !important; }
+        .signup-view {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: #0a0f08;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .signup-view.active { display: flex; flex-direction: column; min-height: 100vh; }
+        .signup-glitch-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .signup-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+        .signup-bg img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center 40%;
+        }
+        .signup-bg-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom, rgba(6,6,5,0.70) 0%, rgba(6,6,5,0.50) 40%, rgba(6,6,5,0.70) 100%),
+                linear-gradient(to right, rgba(6,6,5,0.40) 0%, rgba(6,6,5,0.20) 50%, rgba(6,6,5,0.40) 100%);
+        }
+
+        .signup-briefing {
+            width: 100%;
+            padding: 120px 72px 60px;
+            position: relative;
+            z-index: 3;
+            text-align: center;
+        }
+        .signup-briefing-headline {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 52px;
+            color: var(--cream);
+            letter-spacing: -0.025em;
+            margin-bottom: 48px;
+        }
+        .signup-briefing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto 48px;
+        }
+        .signup-brief-card {
+            background: rgba(6,6,5,1);
+            border: 1px solid var(--border);
+            border-top: 3px solid var(--orange);
+            padding: 32px 28px;
+            text-align: left;
+        }
+        .signup-brief-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 12px;
+        }
+        .signup-brief-text {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            color: rgba(245,242,236,0.78);
+            line-height: 1.65;
+        }
+        .signup-copy-line {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 16px;
+            color: rgba(245,242,236,0.60);
+            letter-spacing: 0.02em;
+        }
+        .signup-form-section {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 28px 80px;
+            position: relative;
+            z-index: 3;
+        }
+        .signup-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--dust);
+            margin-bottom: 8px;
+            display: block;
+        }
+        .signup-field {
+            width: 100%;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 14px;
+            background: rgba(6,6,5,1);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--orange);
+            padding: 14px 16px;
+            color: var(--cream);
+            outline: none;
+            margin-bottom: 18px;
+            transition: border-color 0.2s;
+        }
+        .signup-field:focus { border-color: rgba(255,255,255,0.18); border-left-color: var(--orange); }
+        .signup-field::placeholder { color: rgba(245,242,236,0.25); }
+        .signup-submit {
+            width: 100%;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            background: var(--orange);
+            color: var(--bg);
+            border: none;
+            padding: 16px;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background 0.2s;
+        }
+        .signup-submit:hover { background: #f06d22; }
+        .signup-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .signup-divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            gap: 14px;
+        }
+        .signup-divider::before, .signup-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .signup-divider span {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 11px;
+            color: var(--fog);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .signup-google {
+            width: 100%;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: transparent;
+            color: var(--cream);
+            border: 1px solid var(--border);
+            padding: 14px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .signup-google:hover { border-color: var(--dust); background: rgba(255,255,255,0.03); }
+        .signup-toggle {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 13px;
+            color: var(--dust);
+            margin-top: 24px;
+            text-align: center;
+        }
+        .signup-toggle a {
+            color: var(--orange);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .signup-toggle a:hover { text-decoration: underline; }
+        .signup-error {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            color: #e85040;
+            margin-top: 10px;
+            min-height: 18px;
+        }
+        .signup-success {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            color: var(--green);
+            margin-top: 14px;
+            line-height: 1.5;
+        }
+        .signup-back {
+            position: fixed;
+            top: 24px;
+            left: 28px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--dust);
+            text-decoration: none;
+            z-index: 510;
+        }
+        .signup-back:hover { color: var(--cream); }
+        .signup-stripe-top {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            display: flex; height: 4px;
+            z-index: 520;
+        }
+        .signup-stripe-top > div { flex: 1; }
+        /* ══════════════════════════════════════════════════════
+           MOBILE RESPONSIVE — ADDITIVE ONLY
+           No desktop rules modified. Two breakpoints:
+           768px (tablet / large phone), 480px (small phone)
+           ══════════════════════════════════════════════════════ */
+
+        @media (max-width: 768px) {
+
+            /* ── GLOBAL ─────────────────────────────────────── */
+            html, body {
+                overflow-x: hidden;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* ── NAV ────────────────────────────────────────── */
+            nav {
+                padding: 0 20px;
+                height: 52px;
+            }
+            .nav-logo { font-size: 18px; }
+            .nav-right { gap: 14px; }
+            .nav-hq { font-size: 11px; letter-spacing: 0.12em; }
+            .nav-cta { font-size: 10px; padding: 8px 14px; letter-spacing: 0.10em; }
+
+            /* ── HERO ───────────────────────────────────────── */
+            .hero { height: 100svh; }
+
+            .hero-photo {
+                width: 100%; height: 100%;
+                position: absolute;
+            }
+            .hero-overlay {
+                width: 100%; height: 100%;
+                position: absolute;
+                background:
+                    linear-gradient(to bottom, rgba(6,6,5,0.75) 0%, rgba(6,6,5,0.30) 35%, rgba(6,6,5,0.85) 100%);
+            }
+            .hero-canvas {
+                width: 100%; height: 100%;
+                position: absolute;
+            }
+
+            .hero-content {
+                position: absolute;
+                bottom: 110px;
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+            .hero-eyebrow { font-size: 9px; letter-spacing: 0.20em; margin-bottom: 12px; }
+            .hero-headline { font-size: 42px; line-height: 0.98; }
+            .hero-accent { width: 80px; margin: 16px 0 14px; }
+            .hero-sub { font-size: 14px; max-width: none; margin-bottom: 24px; line-height: 1.6; }
+            .hero-cta-btn { font-size: 12px; padding: 14px 28px; }
+
+            /* Readouts — move below hero content on mobile */
+            .hero-readouts {
+                position: absolute;
+                right: auto;
+                left: 20px;
+                bottom: auto;
+                top: 90px;
+                flex-direction: row;
+                gap: 24px;
+                text-align: left;
+            }
+            .r-val { font-size: 22px; }
+            .r-lbl { font-size: 8px; letter-spacing: 0.16em; }
+
+            /* Bottom bar */
+            .hero-bar {
+                padding: 0 20px;
+                height: 40px;
+                font-size: 7px;
+            }
+            .act-dots { gap: 10px; }
+            .act-dot-item { font-size: 7px; }
+
+            /* ── PLATFORM STRIP ─────────────────────────────── */
+            .platform-strip {
+                grid-template-columns: 1fr;
+            }
+            .ps-cell {
+                padding: 20px 24px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .ps-cell:last-child { border-bottom: none; }
+
+            /* ── SECTIONS (shared) ──────────────────────────── */
+            .section { padding: 64px 20px; }
+
+            .sec-h2 { font-size: 28px; }
+            .sec-p { font-size: 14px; max-width: none; }
+
+            /* ── PRODUCT GRID ───────────────────────────────── */
+            .prod-grid {
+                grid-template-columns: 1fr;
+                margin-top: 36px;
+            }
+            .prod-card { padding: 32px 24px; }
+            .prod-name { font-size: 24px; }
+            .prod-desc { font-size: 13px; }
+
+            /* ── PRICING ────────────────────────────────────── */
+            .pricing-section { padding: 64px 20px; }
+            .pricing-inner {
+                grid-template-columns: 1fr;
+                max-width: none;
+            }
+            .pricing-left {
+                padding: 40px 24px;
+                border-left-width: 3px;
+            }
+            .pricing-dollar { font-size: 64px; }
+            .pricing-denom { font-size: 16px; }
+            .pricing-tagline { max-width: none; font-size: 13px; }
+            .pricing-cta { width: 100%; text-align: center; font-size: 12px; padding: 14px 24px; }
+            .pricing-right { padding: 36px 24px; }
+            .pricing-includes-label { margin-bottom: 20px; }
+
+            /* ── INTEL SECTION ──────────────────────────────── */
+            .intel-layout {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+            .intel-row {
+                grid-template-columns: 1fr;
+                gap: 4px;
+                padding: 14px 16px;
+            }
+            .intel-cat { margin-bottom: 2px; }
+            .intel-title { font-size: 14px; }
+            .intel-desc { font-size: 12px; }
+
+            /* ── STATEMENT + ROUTE ──────────────────────────── */
+            .statement-section { padding: 64px 20px; }
+            .statement-layout {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+            .route-graphic { order: 2; }
+            .route-svg { max-width: 100%; height: auto; }
+            .statement-quote { font-size: 22px; }
+            .statement-body { font-size: 14px; max-width: none; }
+
+            /* ── FOOTER ─────────────────────────────────────── */
+            footer { padding: 20px; flex-direction: column; gap: 10px; align-items: flex-start; }
+            .foot-r { font-size: 10px; }
+
+            /* ── SIGNUP VIEW ────────────────────────────────── */
+            .signup-briefing { padding: 80px 20px 40px; }
+            .signup-briefing-headline { font-size: 30px; margin-bottom: 32px; }
+            .signup-briefing-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+            .signup-brief-card { padding: 24px 20px; }
+            .signup-form-section { padding: 0 20px 60px; }
+            .signup-field { font-size: 16px; } /* prevent iOS zoom */
+            .signup-back { top: 16px; left: 16px; font-size: 10px; }
+        }
+
+        /* ── SMALL PHONE (≤480px) ──────────────────────────── */
+        @media (max-width: 480px) {
+
+            nav { padding: 0 16px; }
+            .nav-cta { padding: 7px 12px; font-size: 9px; }
+
+            .hero-content { bottom: 100px; left: 16px; right: 16px; }
+            .hero-headline { font-size: 34px; }
+            .hero-sub { font-size: 13px; }
+            .hero-cta-btn { font-size: 11px; padding: 13px 24px; width: 100%; text-align: center; }
+
+            .hero-readouts {
+                left: 16px;
+                top: 78px;
+                gap: 18px;
+            }
+            .r-val { font-size: 18px; }
+
+            .hero-bar { padding: 0 16px; }
+            /* Hide the middle activity dots on tiny screens */
+            .act-dots { display: none; }
+
+            .section { padding: 52px 16px; }
+            .sec-h2 { font-size: 24px; }
+
+            .ps-cell { padding: 16px 20px; }
+
+            .prod-card { padding: 24px 20px; }
+
+            .pricing-section { padding: 52px 16px; }
+            .pricing-left { padding: 32px 20px; }
+            .pricing-right { padding: 28px 20px; }
+            .pricing-dollar { font-size: 52px; }
+
+            .intel-row { padding: 12px 14px; }
+
+            .statement-section { padding: 52px 16px; }
+            .statement-quote { font-size: 20px; }
+
+            footer { padding: 16px; }
+
+            .signup-briefing { padding: 70px 16px 32px; }
+            .signup-briefing-headline { font-size: 26px; }
+            .signup-brief-card { padding: 20px 16px; }
+            .signup-form-section { padding: 0 16px 48px; }
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- FIXED TOP STRIPE -->
+<div class="stripe" style="position:fixed;top:0;left:0;right:0;z-index:200;">
+    <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
+</div>
+
+<!-- NAV — transparent over hero -->
+<nav>
+    <a href="/" class="nav-logo">PROJ<span class="nine">9</span></a>
+    <div class="nav-right">
+        <!-- HQ link replaces SIGN IN -->
+        <a href="https://hq.project9ind.com" class="nav-hq">
+            <span class="live-dot"></span>HQ
+        </a>
+        <a href="?view=signup" class="nav-cta">Get Access →</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+    <!-- Single definitive racing photo: set via JS with fallback chain -->
+    <img id="heroPhoto" class="hero-photo" alt="" style="display:none;">
+
+    <!-- Overlay: always renders regardless of photo load state -->
+    <div class="hero-overlay"></div>
+
+    <!-- Floating code metadata canvas -->
+    <canvas id="codeCanvas" class="hero-canvas"></canvas>
+
+    <!-- P9I badge removed per review -->
+
+    <!-- Hero copy -->
+    <div class="hero-content">
+        <div class="hero-eyebrow">Adventure Intelligence Platform</div>
+        <h1 class="hero-headline">Reshaping<br>adventure<br>intelligence.</h1>
+        <div class="hero-accent">
+            <div class="s1" style="flex:1;"></div>
+            <div class="s2" style="flex:1;"></div>
+            <div class="s3" style="flex:1;"></div>
+            <div class="s4" style="flex:1;"></div>
+            <div class="s5" style="flex:1;"></div>
+        </div>
+        <p class="hero-sub">The platform redefining how we adventure, race, and explore. Real-time intelligence from government and publicly available sources — in under 30 seconds.</p>
+        <!-- Hero form removed per review — CTA buttons handle signup -->
+        <a href="?view=signup" class="hero-cta-btn" style="text-decoration:none;display:inline-block;">Get Started →</a>
+    </div>
+
+    <!-- Right-side readouts -->
+    <div class="hero-readouts">
+        <div>
+            <div class="r-val">∞</div>
+            <div class="r-lbl">Adventures Covered</div>
+        </div>
+        <div>
+            <div class="r-val">&lt;30s</div>
+            <div class="r-lbl">Brief Generation</div>
+        </div>
+        <div>
+            <div class="r-val">$1</div>
+            <div class="r-lbl">Founding Pro / Mo</div>
+        </div>
+    </div>
+
+    <!-- Bottom activity bar -->
+    <div class="hero-bar">
+        <span>Scroll to explore ↓</span>
+        <div class="act-dots">
+            <div class="act-dot-item">OFF-ROAD RACING</div>
+            <div class="act-dot-item">ALPINE</div>
+            <div class="act-dot-item">BACKCOUNTRY</div>
+            <div class="act-dot-item">CANYON</div>
+            <div class="act-dot-item">TRAIL</div>
+        </div>
+        <span>HQ · EYES · COMMS</span>
+    </div>
+</section>
+
+<!-- PLATFORM STRIP -->
+<div class="platform-strip">
+    <div class="ps-cell">
+        <div class="ps-status live">Live Now</div>
+        <div class="ps-name">HQ</div>
+        <div class="ps-desc">Expedition intelligence brief — anywhere you're headed.</div>
+    </div>
+    <div class="ps-cell dim">
+        <div class="ps-status soon">Coming Soon</div>
+        <div class="ps-name">EYES</div>
+        <div class="ps-desc">Live data intelligence for fast-paced environments.</div>
+    </div>
+    <div class="ps-cell dim">
+        <div class="ps-status soon">Coming Soon</div>
+        <div class="ps-name">COMMS</div>
+        <div class="ps-desc">Crucial integrated live data where it matters most.</div>
+    </div>
+</div>
+
+<!-- PLATFORM SECTION -->
+<div class="section">
+    <div style="max-width:800px;">
+        <div class="eyebrow">The P9I Platform</div>
+        <h2 class="sec-h2">One intelligence engine.<br>Every adventure.</h2>
+        <p class="sec-p">Project 9 Industries is building the intelligence layer for adventure. HQ is the first platform — delivering expedition-grade briefs for every terrain. More is coming.</p>
+    </div>
+
+    <div class="prod-grid">
+        <div class="prod-card">
+            <div class="prod-status live">Live Now</div>
+            <div class="prod-name">HQ</div>
+            <div class="prod-tag">Adventure Intelligence</div>
+            <p class="prod-desc">Real-time expedition brief covering conditions, hazards, access, permits, and emergency contacts. Government and publicly available sources. Under 30 seconds.</p>
+            <a href="https://hq.project9ind.com" class="prod-cta" style="text-decoration:none;">Open HQ →</a>
+        </div>
+        <div class="prod-card dim">
+            <div class="prod-status soon">Coming Soon</div>
+            <div class="prod-name">EYES</div>
+            <div class="prod-tag">Racing Intelligence</div>
+            <p class="prod-desc">Live data built for fast-paced, high-stakes environments. Real-time conditions, hazard alerts, and course intelligence for off-road racing and rally events.</p>
+            <a href="https://hq.project9ind.com" class="prod-cta" style="text-decoration:none;cursor:default;opacity:0.5;">Notify Me →</a>
+        </div>
+        <div class="prod-card dim">
+            <div class="prod-status soon">Coming Soon</div>
+            <div class="prod-name">COMMS</div>
+            <div class="prod-tag">Field Communications</div>
+            <p class="prod-desc">Crucial integrated live data where it matters most. Anyone can have a race team now — satellite-capable coordination, emergency broadcast, and team intelligence.</p>
+            <a href="https://hq.project9ind.com" class="prod-cta" style="text-decoration:none;cursor:default;opacity:0.5;">Notify Me →</a>
+        </div>
+    </div>
+</div>
+
+<!-- STRIPE DIVIDER -->
+<div class="stripe thin">
+    <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
+</div>
+
+<!-- PLANS & PRICING -->
+<div class="pricing-section">
+    <div style="max-width:800px;margin-bottom:48px;">
+        <div class="eyebrow">Founding Member Offer</div>
+        <h2 class="sec-h2">The future of adventure<br>intelligence — for $1/mo.</h2>
+        <p class="sec-p">The first 100 members get access to every P9I application — current and future — at one founding price, locked in for life. HQ is just the beginning.</p>
+    </div>
+
+    <div class="pricing-inner">
+        <div class="pricing-left">
+            <div class="eyebrow" style="margin-bottom:8px;">First 100 Members Only</div>
+            <div class="pricing-price-row">
+                <div class="pricing-dollar">$1</div>
+                <div class="pricing-denom">/ month</div>
+            </div>
+            <div class="pricing-lifetime">For Life · Locked In Forever</div>
+            <p class="pricing-tagline">One price. Every app we ship. Every feature we build. Join now and tap into the future with us.</p>
+            <a href="?view=signup" class="pricing-cta" style="text-decoration:none;display:inline-block;">Become a Founding Member →</a>
+            <div class="pricing-fine">First 100 founding spots · Cancel anytime · No hidden fees</div>
+        </div>
+
+        <div class="pricing-right">
+            <div class="pricing-includes-label">What's included — now and forever</div>
+
+            <div class="pricing-feature">
+                <div class="feat-check">✓</div>
+                <div>
+                    <div class="feat-app">HQ <span class="feat-badge badge-live">Live</span></div>
+                    <div class="feat-tag">Full expedition intelligence brief for any destination. Unlimited briefs per month.</div>
+                </div>
+            </div>
+            <div class="pricing-feature">
+                <div class="feat-check">✓</div>
+                <div>
+                    <div class="feat-app">EYES <span class="feat-badge badge-soon">Soon</span></div>
+                    <div class="feat-tag">Racing intelligence platform — live data for off-road and rally environments.</div>
+                </div>
+            </div>
+            <div class="pricing-feature">
+                <div class="feat-check">✓</div>
+                <div>
+                    <div class="feat-app">COMMS <span class="feat-badge badge-soon">Soon</span></div>
+                    <div class="feat-tag">Field communications and team coordination for remote expeditions.</div>
+                </div>
+            </div>
+            <div class="pricing-feature">
+                <div class="feat-check">✓</div>
+                <div>
+                    <div class="feat-app">All Future P9I Applications</div>
+                    <div class="feat-tag">Every platform we build, every tool we ship — included at your founding price, forever.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- STRIPE DIVIDER -->
+<div class="stripe thin">
+    <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
+</div>
+
+<!-- INTELLIGENCE SECTION -->
+<div class="section">
+    <div class="intel-layout">
+        <div>
+            <div class="eyebrow">Intelligence Pipeline</div>
+            <h2 class="sec-h2">Government sources.<br>Verified data. Every brief.</h2>
+            <p class="sec-p">HQ pulls live, real-time intelligence from government databases and publicly available sources — not cached, not estimated. Every brief is fresh.</p>
+        </div>
+        <div class="intel-list">
+        <div class="intel-row">
+            <div class="intel-cat">Parks &amp; Lands</div>
+            <div class="intel-title">Access &amp; Conditions</div>
+            <div class="intel-desc">Real-time closures, trail status, and operating hours sourced from official federal land management agencies.</div>
+        </div>
+        <div class="intel-row">
+            <div class="intel-cat">Atmosphere</div>
+            <div class="intel-title">Weather &amp; Air</div>
+            <div class="intel-desc">Live conditions, severe weather alerts, air quality index, UV, and precipitation from government meteorological services.</div>
+        </div>
+        <div class="intel-row">
+            <div class="intel-cat">Waterways</div>
+            <div class="intel-title">Rivers &amp; Stream Levels</div>
+            <div class="intel-desc">Live hydrological data including flood stage and flow rates from national water monitoring networks.</div>
+        </div>
+        <div class="intel-row">
+            <div class="intel-cat">Fire Intel</div>
+            <div class="intel-title">Active Incidents</div>
+            <div class="intel-desc">Real-time fire perimeter and containment data from national wildfire coordination and air quality monitoring.</div>
+        </div>
+        <div class="intel-row">
+            <div class="intel-cat">Recreation</div>
+            <div class="intel-title">Permits &amp; Sites</div>
+            <div class="intel-desc">Official reservation status, permit requirements, and access fees sourced from federal recreation databases.</div>
+        </div>
+        <div class="intel-row">
+            <div class="intel-cat">Terrain</div>
+            <div class="intel-title">Location &amp; Elevation</div>
+            <div class="intel-desc">Coordinate resolution, geocoding, and terrain context from open geographic data sources worldwide.</div>
+        </div>
+        <div class="intel-row">
+            <div class="intel-cat">Roads</div>
+            <div class="intel-title">Status &amp; Closures</div>
+            <div class="intel-desc">Real-time road closures, detours, seasonal restrictions, and weather-related impacts from state and federal DOT sources.</div>
+        </div>
+        <div class="intel-row">
+            <div class="intel-cat">AI Engine</div>
+            <div class="intel-title">Zero-Hallucination</div>
+            <div class="intel-desc">AI synthesis of verified live data only — no fabricated answers, no guesses. Every data point sourced and cited.</div>
+        </div>
+        <div class="intel-row">
+            <div class="intel-cat">Vehicle</div>
+            <div class="intel-title">Capability Awareness</div>
+            <div class="intel-desc">Understands your vehicle's clearance, range, 4WD capability, passenger capacity, and terrain limits to tailor every brief.</div>
+        </div>
+        <div class="intel-row">
+            <div class="intel-cat">Savings</div>
+            <div class="intel-title">Costs &amp; Coupons</div>
+            <div class="intel-desc">Built-in cost savings strategies, fee waivers, pass discounts, and coupon sourcing for parks, camping, and recreation.</div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- STATEMENT + ROUTE GRAPHIC -->
+<div class="statement-section">
+    <div class="statement-layout">
+        <!-- Route path graphic: minimal GPS path animation -->
+        <div class="route-graphic" id="routeGraphic">
+        <svg class="route-svg" viewBox="0 0 680 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Subtle topographic contour rings — barely visible, textural -->
+            <ellipse cx="340" cy="80" rx="320" ry="70" stroke="#1A1917" stroke-width="1"/>
+            <ellipse cx="340" cy="80" rx="255" ry="54" stroke="#1A1917" stroke-width="0.8"/>
+            <ellipse cx="340" cy="80" rx="188" ry="38" stroke="#1A1917" stroke-width="0.6"/>
+            <ellipse cx="340" cy="80" rx="122" ry="24" stroke="#1A1917" stroke-width="0.5"/>
+            <ellipse cx="340" cy="80" rx="60"  ry="12" stroke="#1A1917" stroke-width="0.4"/>
+
+            <!-- Origin point A -->
+            <circle cx="52" cy="80" r="5" fill="var(--orange)" opacity="0.9"/>
+            <circle cx="52" cy="80" r="11" fill="none" stroke="var(--orange)" stroke-width="1" opacity="0.3"/>
+            <text x="52" y="67" text-anchor="middle" fill="#E06018" font-family="Barlow Condensed, sans-serif" font-size="9" font-weight="700" letter-spacing="0.1em">ORIGIN</text>
+
+            <!-- The animated route path — organic, winding, like a real trail/race course -->
+            <path class="route-path" id="routePath"
+                d="M 52 80
+                   C 90 80, 110 52, 148 60
+                   C 180 66, 195 100, 230 95
+                   C 262 90, 278 55, 318 58
+                   C 354 61, 365 105, 400 98
+                   C 432 92, 448 64, 480 68
+                   C 510 72, 520 95, 548 88
+                   C 568 84, 600 78, 628 80"
+                stroke="#E06018"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-dasharray="14 6"
+                opacity="0.85"
+            />
+
+            <!-- Moving vehicle dot — appears after path draws -->
+            <circle cx="628" cy="80" r="5" fill="var(--orange)" id="destDot" class="route-end-dot" opacity="0"/>
+
+            <!-- Destination point B -->
+            <circle cx="628" cy="80" r="5" fill="var(--orange)" id="destCircle" opacity="0"/>
+            <circle cx="628" cy="80" r="11" fill="none" stroke="var(--orange)" stroke-width="1" opacity="0" id="destRing"/>
+            <text x="628" y="67" text-anchor="middle" fill="#E06018" font-family="Barlow Condensed, sans-serif" font-size="9" font-weight="700" letter-spacing="0.1em" id="destLabel" opacity="0">DESTINATION</text>
+
+            <!-- Distance/stat readout at bottom -->
+            <text x="340" y="148" text-anchor="middle" fill="#272523" font-family="Barlow Condensed, sans-serif" font-size="9" font-weight="700" letter-spacing="0.22em">ROUTE INTELLIGENCE · GENERATED IN &lt;30 SECONDS</text>
+        </svg>
+    </div>
+        <div>
+            <p class="statement-quote">"The future of adventure and off-road intelligence — reshaping the way we explore, race, and push beyond what's known."</p>
+            <p class="statement-body">Project 9 Industries carries the DNA of off-road racing heritage. Every tool we build serves the mission: give every adventurer — racer, hiker, overlander, vacationer — the intelligence edge.</p>
+            <a class="statement-cta" href="?view=signup">Explore HQ — Free Brief →</a>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="foot-l">
+        <div class="foot-logo">PROJ<span class="nine">9</span></div>
+        <div class="foot-copy">© 2026 Project 9 Industries</div>
+    </div>
+    <div class="foot-r">project9industries.com</div>
+</footer>
+
+<!-- BOTTOM STRIPE -->
+<div class="stripe">
+    <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
+</div>
+
+<!-- ─── SIGNUP/SIGNIN FULL-PAGE VIEW ─────────────────────────────── -->
+<div class="signup-view" id="signupView">
+    <!-- Own forest background + glitch canvas -->
+    <div class="signup-bg">
+        <img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1920&q=90" alt="">
+        <div class="signup-bg-overlay"></div>
+    </div>
+    <canvas id="signupCanvas" class="signup-glitch-canvas"></canvas>
+    <div class="signup-stripe-top">
+        <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
+    </div>
+    <a href="/" class="signup-back" id="signupBack">← Back to Project 9</a>
+
+    <!-- Briefing header — wide, short, over the forest -->
+    <div class="signup-briefing">
+        <div class="signup-briefing-headline">Consider this your briefing.</div>
+        <div class="signup-briefing-grid">
+            <div class="signup-brief-card">
+                <div class="signup-brief-label">The Platform</div>
+                <div class="signup-brief-text">Project 9 Industries is building the adventure intelligence stack. HQ is live. More applications are inbound. Your access covers all of them.</div>
+            </div>
+            <div class="signup-brief-card">
+                <div class="signup-brief-label">The Intel</div>
+                <div class="signup-brief-text">HQ pulls real-time data from government and public sources — weather, fire, trails, permits, water levels, terrain — full expedition brief in under 30 seconds. Unlimited.</div>
+            </div>
+            <div class="signup-brief-card">
+                <div class="signup-brief-label">The Price</div>
+                <div class="signup-brief-text">$1/mo. Forever. Locked in as a founding member. Full access to every app we ship — no price increases, no tiers, no catch.</div>
+            </div>
+        </div>
+        <div class="signup-copy-line">Do you copy?</div>
+    </div>
+
+    <!-- Auth forms below -->
+    <div class="signup-form-section">
+        <!-- SIGN UP form (default) -->
+        <div id="signupForm">
+            <label class="signup-label">Email</label>
+            <input type="email" class="signup-field" id="signupEmail" placeholder="you@adventure.com" autocomplete="email">
+            <label class="signup-label">Password</label>
+            <input type="password" class="signup-field" id="signupPassword" placeholder="Min 6 characters" autocomplete="new-password">
+            <button class="signup-submit" id="signupBtn">Create Account →</button>
+            <div class="signup-divider"><span>or</span></div>
+            <button class="signup-google" id="googleSignupBtn">Continue with Google</button>
+            <div class="signup-error" id="signupError"></div>
+            <div class="signup-success" id="signupSuccess" style="display:none;"></div>
+            <div class="signup-toggle">Already have an account? <a id="showSignin">Sign in</a></div>
+        </div>
+
+        <!-- SIGN IN form -->
+        <div id="signinForm" style="display:none;">
+            <label class="signup-label">Email</label>
+            <input type="email" class="signup-field" id="signinEmail" placeholder="you@adventure.com" autocomplete="email">
+            <label class="signup-label">Password</label>
+            <input type="password" class="signup-field" id="signinPassword" placeholder="Your password" autocomplete="current-password">
+            <button class="signup-submit" id="signinBtn">Sign In →</button>
+            <div class="signup-divider"><span>or</span></div>
+            <button class="signup-google" id="googleSigninBtn">Continue with Google</button>
+            <div class="signup-error" id="signinError"></div>
+            <div class="signup-toggle">Don't have an account? <a id="showSignup">Create one</a></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// ─── HERO PHOTO — Wilderness terrain photography ─────────────────────
+// Curated adventure/terrain images. First to load wins. CSS bg fallback.
+const heroPhotos = [
+    'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1920&q=90',
+    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=90',
+    'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1920&q=90',
+    'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1920&q=90',
+    'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=90',
+];
+
+(function loadHeroPhoto(index) {
+    if (index >= heroPhotos.length) return;
+    const img = new Image();
+    img.onload = () => {
+        const el = document.getElementById('heroPhoto');
+        el.src = heroPhotos[index];
+        el.style.display = 'block';
+    };
+    img.onerror = () => loadHeroPhoto(index + 1);
+    img.src = heroPhotos[index];
+})(0);
+
+// ─── ADVENTURE INTELLIGENCE CANVAS — multi-layer terrain data viz ────
+const canvas = document.getElementById('codeCanvas');
+const ctx    = canvas.getContext('2d');
+const ORG = '#E06018';
+const COB = '#1248A0';
+
+function resizeCanvas() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Layer 1: Topographic contour lines
+class ContourLine {
+    constructor() {
+        this.points = [];
+        this.baseY = Math.random() * canvas.height;
+        this.speed = 0.0003 + Math.random() * 0.0005;
+        this.amp = 15 + Math.random() * 40;
+        this.freq = 0.002 + Math.random() * 0.004;
+        this.phase = Math.random() * Math.PI * 2;
+        this.opacity = 0.04 + Math.random() * 0.08;
+        this.color = Math.random() > 0.6 ? ORG : COB;
+    }
+    draw(t) {
+        ctx.save();
+        ctx.globalAlpha = this.opacity * (0.6 + 0.4 * Math.sin(t * this.speed + this.phase));
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        for (let x = 0; x < canvas.width; x += 3) {
+            const y = this.baseY +
+                Math.sin(x * this.freq + t * 0.0006 + this.phase) * this.amp +
+                Math.sin(x * this.freq * 2.3 + t * 0.0003) * this.amp * 0.4;
+            x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.restore();
+    }
+}
+
+// Layer 2: Code fragment glitch blocks
+const CODE_FRAGS = [
+    'lat: 37.8651°N', 'lon: -119.5383°W', 'alt: 8,839ft',
+    'bearing: 247°', 'grade: 14%', 'trail: class_4',
+    'fetch(terrain_data)', 'status: ACTIVE', 'intel.scan()',
+    'AQI: 42 GOOD', 'FIRE: NONE', 'ROAD: OPEN',
+    'pipeline.resolve()', 'grid_ref: 11S_ME_84_73',
+    'signal: 2/5', '4WD_REQUIRED', 'clearance: HIGH',
+    'NPS.alerts()', 'USGS.gauge()', 'wx.forecast()',
+    'permit: REQUIRED', 'camping: FIRST_COME',
+    'elev_gain: +2,340ft', 'water: SEASONAL',
+    'src: NIFC', 'src: OWM', 'src: RIDB',
+    'NOAA.radar()', 'BLM.access()', 'USFS.closure()',
+    'vis: 12mi CLEAR', 'wind: 8mph WSW', 'temp: 52°F',
+    'sat_pass: 14:22 UTC', 'comms: CH16 ACTIVE',
+    'soil: DRY/PACKED', 'hazard: ROCKFALL_LOW',
+    'fuel: 82mi RANGE', 'waypoint: ALPHA_7',
+    'terrain: TECHNICAL', 'recovery: STANDBY',
+    'GOES-18.thermal()', 'Landsat.scan()',
+    'creek_xing: PASSABLE', 'snow_line: 7,200ft',
+    'sunset: 19:47 LOCAL', 'moon: 68% WAXING',
+];
+
+class CodeGlitch {
+    constructor() { this.reset(); }
+    reset() {
+        this.text = CODE_FRAGS[Math.floor(Math.random() * CODE_FRAGS.length)];
+        this.x = Math.random() * canvas.width * 0.85;
+        this.y = 80 + Math.random() * (canvas.height - 160);
+        this.life = 0;
+        this.maxLife = 180 + Math.random() * 400;
+        this.delay = Math.random() * 350;
+        this.glitchProb = 0.06 + Math.random() * 0.06;
+        this.size = 10 + Math.floor(Math.random() * 4);
+        this.isOrange = Math.random() > 0.4;
+    }
+    update() { this.life++; }
+    draw() {
+        if (this.life < this.delay) return;
+        const age = this.life - this.delay;
+        if (age > this.maxLife) { this.reset(); return; }
+
+        const fadeIn = Math.min(age / 20, 1);
+        const fadeOut = age > this.maxLife - 30 ? (this.maxLife - age) / 30 : 1;
+        let alpha = fadeIn * fadeOut * (this.isOrange ? 0.82 : 0.58);
+
+        ctx.save();
+
+        // Random glitch displacement
+        let dx = 0, dy = 0;
+        const glitching = Math.random() < this.glitchProb;
+        if (glitching) {
+            dx = (Math.random() - 0.5) * 8;
+            dy = (Math.random() - 0.5) * 3;
+            // Glitch bar
+            ctx.globalAlpha = alpha * 0.35;
+            ctx.fillStyle = this.isOrange ? ORG : COB;
+            const barW = this.text.length * this.size * 0.58 + 16;
+            ctx.fillRect(this.x + dx - 4, this.y + dy - this.size + 2, barW, this.size + 4);
+        }
+
+        ctx.globalAlpha = alpha;
+        ctx.font = `${this.size}px 'Courier New', monospace`;
+        ctx.fillStyle = this.isOrange ? ORG : '#7BA4D4';
+        ctx.fillText(this.text, this.x + dx, this.y + dy);
+
+        ctx.restore();
+    }
+}
+
+// Layer 3: Horizontal scan line
+let scanY = -100;
+const SCAN_SPEED = 0.35;
+const SCAN_INTERVAL = 900; // frames between scans
+let scanTimer = 0;
+let scanActive = false;
+
+function drawScanLine() {
+    scanTimer++;
+    if (!scanActive && scanTimer > SCAN_INTERVAL) {
+        scanActive = true;
+        scanY = -20;
+        scanTimer = 0;
+    }
+    if (!scanActive) return;
+
+    scanY += SCAN_SPEED;
+    if (scanY > canvas.height + 40) { scanActive = false; return; }
+
+    ctx.save();
+    // Main scan line
+    ctx.globalAlpha = 0.12;
+    ctx.strokeStyle = ORG;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, scanY);
+    ctx.lineTo(canvas.width, scanY);
+    ctx.stroke();
+
+    // Scan glow
+    const grad = ctx.createLinearGradient(0, scanY - 40, 0, scanY + 2);
+    grad.addColorStop(0, 'rgba(224, 96, 24, 0)');
+    grad.addColorStop(1, 'rgba(224, 96, 24, 0.06)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, scanY - 40, canvas.width, 42);
+
+    ctx.restore();
+}
+
+// Layer 4: Grid coordinate markers
+class GridMarker {
+    constructor() {
+        this.x = 100 + Math.random() * (canvas.width - 200);
+        this.y = 100 + Math.random() * (canvas.height - 200);
+        this.phase = Math.random() * Math.PI * 2;
+        this.speed = 0.001 + Math.random() * 0.002;
+    }
+    draw(t) {
+        const alpha = 0.06 + 0.04 * Math.sin(t * this.speed + this.phase);
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = COB;
+        ctx.lineWidth = 0.5;
+        // Crosshair
+        ctx.beginPath();
+        ctx.moveTo(this.x - 8, this.y);
+        ctx.lineTo(this.x + 8, this.y);
+        ctx.moveTo(this.x, this.y - 8);
+        ctx.lineTo(this.x, this.y + 8);
+        ctx.stroke();
+        // Circle
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+    }
+}
+
+// Initialize all layers
+const contours = Array.from({ length: 18 }, () => new ContourLine());
+const glitches = Array.from({ length: 26 }, () => new CodeGlitch());
+const markers  = Array.from({ length: 8 }, () => new GridMarker());
+
+canvas.style.opacity = '1';
+
+let t = 0;
+(function loop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    t++;
+    // Draw layers back-to-front
+    contours.forEach(c => c.draw(t));
+    markers.forEach(m => m.draw(t));
+    drawScanLine();
+    glitches.forEach(g => { g.update(); g.draw(); });
+    requestAnimationFrame(loop);
+})();
+
+// ─── ROUTE PATH ANIMATION (Intersection Observer) ───────────────────
+// Triggers the SVG path draw when the graphic scrolls into view
+const routeGraphic = document.getElementById('routeGraphic');
+const routePath    = document.getElementById('routePath');
+const destCircle   = document.getElementById('destCircle');
+const destRing     = document.getElementById('destRing');
+const destLabel    = document.getElementById('destLabel');
+const destDot      = document.getElementById('destDot');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Fade in the container
+            routeGraphic.classList.add('visible');
+            // Trigger path draw animation
+            setTimeout(() => {
+                routePath.classList.add('animate');
+            }, 200);
+            // Reveal destination elements after path draws
+            setTimeout(() => {
+                [destCircle, destRing, destLabel, destDot].forEach(el => {
+                    el.style.transition = 'opacity 0.6s ease';
+                    el.style.opacity    = el === destRing ? '0.3' : '1';
+                });
+                destDot.classList.add('animate');
+            }, 3600);
+            observer.disconnect();
+        }
+    });
+}, { threshold: 0.3 });
+
+observer.observe(routeGraphic);
+</script>
+
+<!-- ─── SIGNUP CANVAS GLITCH ──────────────────────────────────────── -->
+<script>
+(function() {
+  const sc = document.getElementById('signupCanvas');
+  if (!sc) return;
+  const sctx = sc.getContext('2d');
+  const ORG = '#E06018', COB = '#1248A0';
+  const FRAGS = [
+    'lat: 37.8651°N','lon: -119.5383°W','alt: 8,839ft','bearing: 247°',
+    'fetch(terrain_data)','status: ACTIVE','intel.scan()','AQI: 42 GOOD',
+    'FIRE: NONE','ROAD: OPEN','pipeline.resolve()','signal: 2/5',
+    '4WD_REQUIRED','NPS.alerts()','USGS.gauge()','wx.forecast()',
+    'permit: REQUIRED','src: NIFC','NOAA.radar()','vis: 12mi CLEAR',
+    'wind: 8mph WSW','temp: 52°F','terrain: TECHNICAL','fuel: 82mi RANGE',
+    'creek_xing: PASSABLE','sunset: 19:47 LOCAL','recovery: STANDBY',
+  ];
+  function resizeSC() { sc.width = window.innerWidth; sc.height = window.innerHeight; }
+  resizeSC(); window.addEventListener('resize', resizeSC);
+
+  class SG {
+    constructor() { this.reset(); }
+    reset() {
+      this.text = FRAGS[Math.floor(Math.random() * FRAGS.length)];
+      this.x = Math.random() * sc.width * 0.9;
+      this.y = 60 + Math.random() * (sc.height - 120);
+      this.life = 0; this.maxLife = 180 + Math.random() * 400;
+      this.delay = Math.random() * 350;
+      this.glitchProb = 0.06 + Math.random() * 0.06;
+      this.size = 10 + Math.floor(Math.random() * 4);
+      this.isOrange = Math.random() > 0.4;
+    }
+    update() { this.life++; }
+    draw() {
+      if (this.life < this.delay) return;
+      const age = this.life - this.delay;
+      if (age > this.maxLife) { this.reset(); return; }
+      const fadeIn = Math.min(age / 20, 1);
+      const fadeOut = age > this.maxLife - 30 ? (this.maxLife - age) / 30 : 1;
+      let alpha = fadeIn * fadeOut * (this.isOrange ? 0.75 : 0.50);
+      sctx.save();
+      if (Math.random() < this.glitchProb) {
+        const dx = (Math.random() - 0.5) * 8, dy = (Math.random() - 0.5) * 3;
+        sctx.globalAlpha = alpha * 0.3;
+        sctx.fillStyle = this.isOrange ? ORG : COB;
+        sctx.fillRect(this.x + dx - 4, this.y + dy - this.size + 2, this.text.length * this.size * 0.58 + 16, this.size + 4);
+        sctx.globalAlpha = alpha;
+        sctx.font = this.size + "px 'Courier New', monospace";
+        sctx.fillStyle = this.isOrange ? ORG : '#7BA4D4';
+        sctx.fillText(this.text, this.x + dx, this.y + dy);
+      } else {
+        sctx.globalAlpha = alpha;
+        sctx.font = this.size + "px 'Courier New', monospace";
+        sctx.fillStyle = this.isOrange ? ORG : '#7BA4D4';
+        sctx.fillText(this.text, this.x, this.y);
+      }
+      sctx.restore();
+    }
+  }
+  const sGlitches = Array.from({ length: 20 }, () => new SG());
+  (function sLoop() {
+    sctx.clearRect(0, 0, sc.width, sc.height);
+    sGlitches.forEach(g => { g.update(); g.draw(); });
+    requestAnimationFrame(sLoop);
+  })();
+})();
+</script>
+
+<!-- ─── AUTH + SIGNUP VIEW ENGINE ─────────────────────────────────── -->
+<script>
+(function() {
+  const SUPABASE_URL = 'https://volrckfyznnhamdunact.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8';
+
+  let sb;
+  try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); }
+  catch(e) { console.warn('Supabase SDK not loaded'); return; }
+
+  const signupView   = document.getElementById('signupView');
+  const signupForm   = document.getElementById('signupForm');
+  const signinForm   = document.getElementById('signinForm');
+
+  // ── View routing ──
+  function checkRoute() {
+    const params = new URLSearchParams(window.location.search);
+    const view   = params.get('view');
+    if (view === 'signup' || view === 'signin') {
+      signupView.classList.add('active');
+      document.body.classList.add('signup-active');
+      if (view === 'signin') {
+        signupForm.style.display = 'none';
+        signinForm.style.display = 'block';
+      } else {
+        signupForm.style.display = 'block';
+        signinForm.style.display = 'none';
+      }
+    } else {
+      signupView.classList.remove('active');
+      document.body.classList.remove('signup-active');
+    }
+  }
+  checkRoute();
+  window.addEventListener('popstate', checkRoute);
+
+  // Back button
+  document.getElementById('signupBack').addEventListener('click', function(e) {
+    e.preventDefault();
+    history.pushState(null, '', '/');
+    signupView.classList.remove('active');
+    document.body.classList.remove('signup-active');
+  });
+
+  // Toggle between sign-up and sign-in
+  document.getElementById('showSignin').addEventListener('click', function() {
+    history.replaceState(null, '', '?view=signin');
+    signupForm.style.display = 'none';
+    signinForm.style.display = 'block';
+  });
+  document.getElementById('showSignup').addEventListener('click', function() {
+    history.replaceState(null, '', '?view=signup');
+    signupForm.style.display = 'block';
+    signinForm.style.display = 'none';
+  });
+
+  // ── Sign Up with email ──
+  document.getElementById('signupBtn').addEventListener('click', async function() {
+    const btn   = this;
+    const email = document.getElementById('signupEmail').value.trim();
+    const pass  = document.getElementById('signupPassword').value;
+    const errEl = document.getElementById('signupError');
+    const okEl  = document.getElementById('signupSuccess');
+    errEl.textContent = '';
+    okEl.style.display = 'none';
+
+    if (!email) { errEl.textContent = 'Email is required.'; return; }
+    if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Creating…';
+
+    const { data, error } = await sb.auth.signUp({
+      email: email,
+      password: pass,
+      options: { emailRedirectTo: 'https://hq.project9ind.com' }
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'Create Account →';
+
+    if (error) {
+      errEl.textContent = error.message;
+    } else if (data.user && !data.session) {
+      // Email confirmation required
+      okEl.textContent = 'Check your email to confirm your account, then head to HQ to start your first brief.';
+      okEl.style.display = 'block';
+    } else if (data.session) {
+      // Auto-confirmed — redirect to HQ
+      window.location.href = 'https://hq.project9ind.com';
+    }
+  });
+
+  // ── Sign In with email ──
+  document.getElementById('signinBtn').addEventListener('click', async function() {
+    const btn   = this;
+    const email = document.getElementById('signinEmail').value.trim();
+    const pass  = document.getElementById('signinPassword').value;
+    const errEl = document.getElementById('signinError');
+    errEl.textContent = '';
+
+    if (!email || !pass) { errEl.textContent = 'Email and password are required.'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+
+    const { data, error } = await sb.auth.signInWithPassword({
+      email: email,
+      password: pass,
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'Sign In →';
+
+    if (error) {
+      errEl.textContent = error.message;
+    } else {
+      // Success — redirect to HQ
+      window.location.href = 'https://hq.project9ind.com';
+    }
+  });
+
+  // ── Google OAuth ──
+  async function googleAuth() {
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: 'https://hq.project9ind.com' }
+    });
+    if (error) {
+      document.getElementById('signupError').textContent = error.message;
+      document.getElementById('signinError').textContent = error.message;
+    }
+  }
+  document.getElementById('googleSignupBtn').addEventListener('click', googleAuth);
+  document.getElementById('googleSigninBtn').addEventListener('click', googleAuth);
+
+  // ── Enter key support ──
+  document.getElementById('signupPassword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('signupBtn').click();
+  });
+  document.getElementById('signinPassword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('signinBtn').click();
+  });
+
+  // ── Intercept internal ?view=signup links ──
+  document.addEventListener('click', function(e) {
+    const a = e.target.closest('a');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (href === '?view=signup' || href === '?view=signin') {
+      e.preventDefault();
+      history.pushState(null, '', href);
+      checkRoute();
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
