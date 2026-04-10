@@ -956,15 +956,111 @@
         .acct-forgot-link:hover { color: var(--orange); }
 
         /* ── Responsive ──────────────────────────────────────────── */
+
+        /* Tablet */
+        @media (max-width: 900px) {
+            nav { padding: 0 32px; }
+            .hero-badge { left: 32px; }
+            .hero-content { left: 32px; max-width: 480px; }
+            .hero-readouts { right: 32px; }
+            .hero-bar { padding: 0 32px; }
+            .section { padding: 72px 32px; }
+            .pricing-section { padding: 72px 32px; }
+            .statement-section { padding: 80px 32px 72px; }
+            footer { padding: 26px 32px; }
+            .prod-grid { grid-template-columns: 1fr; }
+            .prod-card { padding: 36px; }
+            .pricing-inner { grid-template-columns: 1fr; }
+            .pricing-left { padding: 40px 32px; }
+            .pricing-right { padding: 40px 32px; }
+            .intel-row { flex-direction: column; gap: 6px; }
+            .intel-cat { width: auto; }
+            .intel-title { width: auto; }
+        }
+
+        /* Mobile */
         @media (max-width: 640px) {
+            /* Account modal */
             .acct-container { padding: 70px 16px 40px; }
             .acct-card { padding: 20px; }
             .acct-logo { font-size: 24px; }
             .acct-row { font-size: 12px; }
             .acct-back { font-size: 11px; left: 16px; top: 16px; }
-            .nav-right { gap: 12px; }
+
+            /* Nav */
+            nav { padding: 0 20px; height: 52px; }
+            .nav-logo { font-size: 18px; }
+            .nav-right { gap: 10px; }
             .nav-cta { padding: 8px 14px; font-size: 10px; }
             .nav-auth-btn { padding: 6px 10px; font-size: 9px; }
+            .nav-hq { font-size: 11px; }
+
+            /* Hero */
+            .hero { height: 100svh; }
+            .hero-badge { left: 20px; top: 72px; }
+            .hero-content { left: 20px; right: 20px; bottom: 72px; max-width: none; }
+            .hero-headline { font-size: 42px; line-height: 1.02; }
+            .hero-sub { font-size: 14px; max-width: none; }
+            .hero-cta-btn { padding: 14px 28px; font-size: 12px; width: 100%; text-align: center; }
+
+            /* Hero readouts — stack below hero text on mobile */
+            .hero-readouts {
+                position: absolute;
+                right: auto; left: 20px; bottom: auto; top: auto;
+                flex-direction: row;
+                gap: 20px;
+                text-align: left;
+                display: none; /* hide on mobile to avoid overlap */
+            }
+
+            /* Hero bottom bar */
+            .hero-bar { padding: 0 20px; height: 40px; font-size: 7px; }
+            .act-dots { gap: 10px; }
+
+            /* Hero canvas code overlays — reduce opacity on mobile */
+            .hero-canvas { opacity: 0.3; }
+
+            /* Platform strip */
+            .platform-strip { grid-template-columns: 1fr; }
+            .ps-cell { padding: 20px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+            .ps-cell:last-child { border-bottom: none; }
+
+            /* Sections */
+            .section { padding: 56px 20px; }
+            .sec-h2 { font-size: 28px; }
+            .sec-p { font-size: 14px; }
+
+            /* Product cards */
+            .prod-grid { grid-template-columns: 1fr; }
+            .prod-card { padding: 32px 24px; }
+            .prod-name { font-size: 24px; }
+
+            /* Pricing */
+            .pricing-section { padding: 56px 20px; }
+            .pricing-inner { grid-template-columns: 1fr; max-width: none; }
+            .pricing-left { padding: 36px 24px; }
+            .pricing-right { padding: 36px 24px; }
+            .pricing-dollar { font-size: 64px; }
+
+            /* Intel rows */
+            .intel-row { flex-direction: column; gap: 4px; }
+            .intel-cat { width: auto; }
+            .intel-title { width: auto; }
+
+            /* Statement */
+            .statement-section { padding: 60px 20px 56px; }
+            .statement-quote { font-size: 22px; }
+            .statement-body { font-size: 14px; }
+            .route-svg { height: 100px; }
+
+            /* Footer */
+            footer { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
+            .foot-l { flex-direction: column; gap: 8px; }
+
+            /* Signup view */
+            .signup-inner { padding: 32px 20px; }
+            .signup-heading { font-size: 26px; }
+            .signup-back { left: 20px; top: 16px; }
         }
 
         .signup-divider {
