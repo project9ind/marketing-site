@@ -98,10 +98,32 @@
         }
         .nav-cta:hover { background: #f06d22; }
 
+        .nav-auth-btn {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(245,242,236,0.6);
+            border: 1px solid rgba(245,242,236,0.18);
+            padding: 8px 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: border-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+        .nav-auth-btn:hover { border-color: var(--orange); color: var(--orange); }
+        .nav-auth-btn.signed-in { border-color: var(--green); color: var(--green); }
+        .nav-auth-inner { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+        .nav-auth-name { color: #F5F2EC; font-size: 10px; font-weight: 700; line-height: 1; }
+        .nav-auth-plan { color: var(--orange); font-size: 9px; letter-spacing: 0.18em; line-height: 1; }
+
         /* ── HERO ────────────────────────────────────────────── */
         .hero {
             position: relative;
-            z-index: 1;
             height: 100vh;
             overflow: hidden;
             margin-top: 6px; /* stripe height */
@@ -111,9 +133,9 @@
 
         /* Photo sits below everything via z-index */
         .hero-photo {
-            position: fixed;
+            position: absolute;
             inset: 0;
-            width: 100vw; height: 100vh;
+            width: 100%; height: 100%;
             object-fit: cover;
             object-position: center 40%;
             z-index: 0;
@@ -121,9 +143,8 @@
 
         /* Overlay div — z-index 1, always renders over photo */
         .hero-overlay {
-            position: fixed;
+            position: absolute;
             inset: 0;
-            width: 100vw; height: 100vh;
             z-index: 1;
             /* Left darkens more for text legibility, right lets photo breathe */
             background:
@@ -134,9 +155,8 @@
 
         /* Canvas for floating code — always on top of photo + overlay */
         .hero-canvas {
-            position: fixed;
+            position: absolute;
             inset: 0;
-            width: 100vw; height: 100vh;
             z-index: 2;
             pointer-events: none;
         }
@@ -268,8 +288,6 @@
             grid-template-columns: 1fr 1fr 1fr;
             background: var(--surface);
             border-top: 1px solid var(--border);
-            position: relative;
-            z-index: 3;
         }
         .ps-cell {
             padding: 26px 36px;
@@ -310,7 +328,7 @@
         .ps-cell.dim .ps-desc { color: var(--fog); }
 
         /* ── SHARED SECTION STYLES ───────────────────────────── */
-        .section { padding: 100px 72px; background: var(--bg); position: relative; z-index: 3; }
+        .section { padding: 100px 72px; background: var(--bg); }
 
         .eyebrow {
             font-family: 'Barlow Condensed', sans-serif;
@@ -420,32 +438,21 @@
         /* ── PRICING SECTION ─────────────────────────────────── */
         .pricing-section {
             padding: 100px 72px;
-            background: transparent;
-            position: relative;
-            z-index: 3;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
-        .pricing-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            background:
-                linear-gradient(to bottom, rgba(6,6,5,0.60) 0%, rgba(6,6,5,0.0) 15%, rgba(6,6,5,0.0) 85%, rgba(6,6,5,0.60) 100%);
-        }
-        .pricing-section > * { position: relative; z-index: 1; }
         .pricing-inner {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1px;
             background: var(--border);
             max-width: 960px;
-            margin: 0 auto;
         }
         .pricing-left {
-            background: rgba(6,6,5,0.45);
+            background: var(--bg);
             padding: 56px 52px;
             border-left: 4px solid var(--orange);
-            backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -513,9 +520,8 @@
         }
 
         .pricing-right {
-            background: rgba(28,27,25,0.45);
+            background: var(--card);
             padding: 56px 48px;
-            backdrop-filter: blur(8px);
         }
         .pricing-includes-label {
             font-family: 'Barlow Condensed', sans-serif;
@@ -571,60 +577,46 @@
         .badge-soon { background: rgba(39,37,35,0.8); color: var(--fog); }
 
         /* ── INTEL SECTION ───────────────────────────────────── */
-        .intel-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: start;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .intel-list { border: 1px solid var(--border); }
+        .intel-list { margin-top: 48px; border-top: 1px solid var(--surface); }
         .intel-row {
-            padding: 9px 14px;
-            border-bottom: 1px solid var(--border);
-            display: grid;
-            grid-template-columns: 100px 150px 1fr;
-            gap: 12px;
+            display: flex;
             align-items: baseline;
+            gap: 28px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--surface);
         }
-        .intel-row:last-child { border-bottom: none; }
         .intel-cat {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 800;
-            font-size: 9px;
+            font-size: 10px;
             letter-spacing: 0.18em;
             color: var(--orange);
+            width: 130px;
+            flex-shrink: 0;
             text-transform: uppercase;
         }
         .intel-title {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--cream);
+            width: 210px;
+            flex-shrink: 0;
         }
         .intel-desc {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
-            font-size: 11px;
+            font-size: 13px;
             color: var(--dust);
-            line-height: 1.45;
+            flex: 1;
+            line-height: 1.6;
         }
 
         /* ── STATEMENT + ROUTE SVG ───────────────────────────── */
-        .statement-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
         .statement-section {
             padding: 120px 72px 100px;
             background: var(--bg);
-            position: relative;
-            z-index: 3;
+            border-top: 1px solid var(--surface);
         }
         .statement-quote {
             font-family: 'Space Grotesk', sans-serif;
@@ -659,7 +651,7 @@
 
         /* Route path SVG container */
         .route-graphic {
-            margin-top: 0;
+            margin-top: 72px;
             display: flex;
             justify-content: flex-start;
             opacity: 0;
@@ -697,8 +689,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            z-index: 3;
         }
         .foot-l { display:flex; align-items:center; gap:20px; }
         .foot-logo {
@@ -737,100 +727,53 @@
         }
 
         /* ── SIGNUP/SIGNIN FULL-PAGE VIEW ──────────────────────── */
-        body.signup-active { overflow: hidden !important; }
         .signup-view {
             display: none;
             position: fixed;
             inset: 0;
             z-index: 500;
-            background: #0a0f08;
+            background: var(--bg);
             overflow-y: auto;
-            overflow-x: hidden;
         }
-        .signup-view.active { display: flex; flex-direction: column; min-height: 100vh; }
-        .signup-glitch-canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 2;
-            pointer-events: none;
-        }
-        .signup-bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-        }
-        .signup-bg img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            object-position: center 40%;
-        }
-        .signup-bg-overlay {
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(to bottom, rgba(6,6,5,0.70) 0%, rgba(6,6,5,0.50) 40%, rgba(6,6,5,0.70) 100%),
-                linear-gradient(to right, rgba(6,6,5,0.40) 0%, rgba(6,6,5,0.20) 50%, rgba(6,6,5,0.40) 100%);
-        }
+        .signup-view.active { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
 
-        .signup-briefing {
+        .signup-inner {
             width: 100%;
-            padding: 120px 72px 60px;
-            position: relative;
-            z-index: 3;
-            text-align: center;
+            max-width: 420px;
+            padding: 40px 28px;
         }
-        .signup-briefing-headline {
+        .signup-logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: 0.08em;
+            color: var(--cream);
+            text-decoration: none;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .signup-logo .nine { color: var(--orange); }
+        .signup-tagline {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 13px;
+            color: var(--dust);
+            margin-bottom: 40px;
+        }
+        .signup-heading {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 52px;
+            font-size: 32px;
             color: var(--cream);
-            letter-spacing: -0.025em;
-            margin-bottom: 48px;
+            margin-bottom: 8px;
         }
-        .signup-briefing-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 24px;
-            max-width: 1000px;
-            margin: 0 auto 48px;
-        }
-        .signup-brief-card {
-            background: rgba(6,6,5,1);
-            border: 1px solid var(--border);
-            border-top: 3px solid var(--orange);
-            padding: 32px 28px;
-            text-align: left;
-        }
-        .signup-brief-label {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 700;
-            font-size: 10px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--orange);
-            margin-bottom: 12px;
-        }
-        .signup-brief-text {
+        .signup-subhead {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
             font-size: 14px;
-            color: rgba(245,242,236,0.78);
-            line-height: 1.65;
-        }
-        .signup-copy-line {
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 300;
-            font-size: 16px;
-            color: rgba(245,242,236,0.60);
-            letter-spacing: 0.02em;
-        }
-        .signup-form-section {
-            width: 100%;
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 0 28px 80px;
-            position: relative;
-            z-index: 3;
+            color: var(--dust);
+            margin-bottom: 32px;
+            line-height: 1.5;
         }
         .signup-label {
             font-family: 'Barlow Condensed', sans-serif;
@@ -847,7 +790,7 @@
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
             font-size: 14px;
-            background: rgba(6,6,5,1);
+            background: var(--surface);
             border: 1px solid var(--border);
             border-left: 3px solid var(--orange);
             padding: 14px 16px;
@@ -875,6 +818,155 @@
         }
         .signup-submit:hover { background: #f06d22; }
         .signup-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ── ACCOUNT VIEW ──────────────────────────────────────────── */
+        .account-view {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg);
+            overflow-y: auto;
+        }
+        .account-view.active { display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+
+        .acct-stripe-top { display:flex; width:100%; height:6px; flex-shrink:0; position:fixed; top:0; z-index:10; }
+        .acct-back {
+            position:fixed; top:20px; left:28px; z-index:10;
+            font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px;
+            text-transform:uppercase; letter-spacing:0.1em; color:var(--dust);
+            text-decoration:none; transition: color 0.2s;
+        }
+        .acct-back:hover { color: var(--cream); }
+
+        .acct-container {
+            width: 100%;
+            max-width: 560px;
+            padding: 80px 24px 60px;
+            margin: 0 auto;
+        }
+
+        .acct-logo {
+            font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:28px;
+            color:var(--cream); text-decoration:none; letter-spacing:0.08em;
+            text-transform:uppercase; display:block; text-align:center; margin-bottom:8px;
+        }
+        .acct-logo .nine { color: var(--orange); }
+
+        .acct-tagline {
+            font-family:'Barlow Condensed',sans-serif; font-weight:400; font-size:11px;
+            letter-spacing:0.18em; text-transform:uppercase; color:var(--dust);
+            text-align:center; margin-bottom:40px;
+        }
+
+        .acct-card {
+            background: #14120F;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 32px;
+            margin-bottom: 20px;
+        }
+
+        .acct-section-label {
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:10px;
+            letter-spacing:0.18em; text-transform:uppercase; color:var(--orange);
+            margin-bottom:16px; padding-left:14px; position:relative;
+        }
+        .acct-section-label::before {
+            content:''; position:absolute; left:0; top:0; width:3px; height:100%;
+            background:var(--orange); border-radius:1px;
+        }
+
+        .acct-row {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:12px 0; border-bottom:1px solid rgba(39,37,35,0.6);
+        }
+        .acct-row:last-child { border-bottom:none; }
+        .acct-row-label {
+            font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px;
+            text-transform:uppercase; letter-spacing:0.06em; color:var(--dust);
+        }
+        .acct-row-value {
+            font-family:'DM Sans',sans-serif; font-weight:400; font-size:14px;
+            color:var(--cream);
+        }
+
+        .acct-plan-badge {
+            display:inline-block; padding:4px 12px; border-radius:3px;
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px;
+            text-transform:uppercase; letter-spacing:0.1em;
+        }
+        .acct-plan-badge.free { background:rgba(138,127,114,0.15); color:var(--dust); }
+        .acct-plan-badge.pro { background:rgba(224,96,24,0.15); color:var(--orange); }
+
+        .acct-founding-note {
+            font-family:'DM Sans',sans-serif; font-size:13px; color:var(--orange);
+            margin-top:8px; font-style:italic;
+        }
+
+        .acct-usage-bar-track {
+            width:100%; height:6px; background:var(--border); border-radius:3px; margin-top:8px;
+        }
+        .acct-usage-bar-fill {
+            height:100%; background:var(--orange); border-radius:3px; transition: width 0.4s ease;
+        }
+
+        .acct-upgrade-btn {
+            display:block; width:100%; padding:16px;
+            background:var(--orange); color:#fff; border:none; border-radius:4px;
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px;
+            text-transform:uppercase; letter-spacing:0.1em; cursor:pointer;
+            transition: background 0.2s; text-align:center; margin-top:8px;
+        }
+        .acct-upgrade-btn:hover { background:#f06d22; }
+        .acct-upgrade-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .acct-manage-btn {
+            display:block; width:100%; padding:14px;
+            background:transparent; color:var(--cream); border:1px solid var(--border);
+            border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-weight:600;
+            font-size:13px; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer;
+            transition: border-color 0.2s; text-align:center; margin-top:8px;
+        }
+        .acct-manage-btn:hover { border-color: var(--dust); }
+        .acct-manage-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .acct-signout-btn {
+            display:block; width:100%; padding:12px;
+            background:transparent; color:var(--dust); border:1px solid rgba(39,37,35,0.4);
+            border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-weight:600;
+            font-size:12px; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer;
+            transition: color 0.2s, border-color 0.2s; text-align:center;
+        }
+        .acct-signout-btn:hover { color:var(--cream); border-color:var(--dust); }
+
+        .acct-hq-link {
+            display:block; text-align:center; margin-top:24px;
+            font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px;
+            text-transform:uppercase; letter-spacing:0.1em; color:var(--orange);
+            text-decoration:none; transition: color 0.2s;
+        }
+        .acct-hq-link:hover { color:#f06d22; }
+
+        .acct-forgot-link {
+            display:block; text-align:right; margin-top:-8px; margin-bottom:12px;
+            font-family:'DM Sans',sans-serif; font-size:12px; color:var(--dust);
+            text-decoration:none; cursor:pointer; transition: color 0.2s;
+        }
+        .acct-forgot-link:hover { color: var(--orange); }
+
+        /* ── Responsive ──────────────────────────────────────────── */
+        @media (max-width: 640px) {
+            .acct-container { padding: 70px 16px 40px; }
+            .acct-card { padding: 20px; }
+            .acct-logo { font-size: 24px; }
+            .acct-row { font-size: 12px; }
+            .acct-back { font-size: 11px; left: 16px; top: 16px; }
+            .nav-right { gap: 12px; }
+            .nav-cta { padding: 8px 14px; font-size: 10px; }
+            .nav-auth-btn { padding: 6px 10px; font-size: 9px; }
+        }
+
         .signup-divider {
             display: flex;
             align-items: center;
@@ -939,7 +1031,7 @@
             line-height: 1.5;
         }
         .signup-back {
-            position: fixed;
+            position: absolute;
             top: 24px;
             left: 28px;
             font-family: 'Barlow Condensed', sans-serif;
@@ -953,223 +1045,11 @@
         }
         .signup-back:hover { color: var(--cream); }
         .signup-stripe-top {
-            position: fixed;
+            position: absolute;
             top: 0; left: 0; right: 0;
             display: flex; height: 4px;
-            z-index: 520;
         }
         .signup-stripe-top > div { flex: 1; }
-        /* ══════════════════════════════════════════════════════
-           MOBILE RESPONSIVE — ADDITIVE ONLY
-           No desktop rules modified. Two breakpoints:
-           768px (tablet / large phone), 480px (small phone)
-           ══════════════════════════════════════════════════════ */
-
-        @media (max-width: 768px) {
-
-            /* ── GLOBAL ─────────────────────────────────────── */
-            html, body {
-                overflow-x: hidden;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            /* ── NAV ────────────────────────────────────────── */
-            nav {
-                padding: 0 20px;
-                height: 52px;
-            }
-            .nav-logo { font-size: 18px; }
-            .nav-right { gap: 14px; }
-            .nav-hq { font-size: 11px; letter-spacing: 0.12em; }
-            .nav-cta { font-size: 10px; padding: 8px 14px; letter-spacing: 0.10em; }
-
-            /* ── HERO ───────────────────────────────────────── */
-            .hero { height: 100svh; }
-
-            .hero-photo {
-                width: 100%; height: 100%;
-                position: absolute;
-            }
-            .hero-overlay {
-                width: 100%; height: 100%;
-                position: absolute;
-                background:
-                    linear-gradient(to bottom, rgba(6,6,5,0.75) 0%, rgba(6,6,5,0.30) 35%, rgba(6,6,5,0.85) 100%);
-            }
-            .hero-canvas {
-                width: 100%; height: 100%;
-                position: absolute;
-            }
-
-            .hero-content {
-                position: absolute;
-                bottom: 110px;
-                left: 20px;
-                right: 20px;
-                max-width: none;
-            }
-            .hero-eyebrow { font-size: 9px; letter-spacing: 0.20em; margin-bottom: 12px; }
-            .hero-headline { font-size: 42px; line-height: 0.98; }
-            .hero-accent { width: 80px; margin: 16px 0 14px; }
-            .hero-sub { font-size: 14px; max-width: none; margin-bottom: 24px; line-height: 1.6; }
-            .hero-cta-btn { font-size: 12px; padding: 14px 28px; }
-
-            /* Readouts — move below hero content on mobile */
-            .hero-readouts {
-                position: absolute;
-                right: auto;
-                left: 20px;
-                bottom: auto;
-                top: 90px;
-                flex-direction: row;
-                gap: 24px;
-                text-align: left;
-            }
-            .r-val { font-size: 22px; }
-            .r-lbl { font-size: 8px; letter-spacing: 0.16em; }
-
-            /* Bottom bar */
-            .hero-bar {
-                padding: 0 20px;
-                height: 40px;
-                font-size: 7px;
-            }
-            .act-dots { gap: 10px; }
-            .act-dot-item { font-size: 7px; }
-
-            /* ── PLATFORM STRIP ─────────────────────────────── */
-            .platform-strip {
-                grid-template-columns: 1fr;
-            }
-            .ps-cell {
-                padding: 20px 24px;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-            }
-            .ps-cell:last-child { border-bottom: none; }
-
-            /* ── SECTIONS (shared) ──────────────────────────── */
-            .section { padding: 64px 20px; }
-
-            .sec-h2 { font-size: 28px; }
-            .sec-p { font-size: 14px; max-width: none; }
-
-            /* ── PRODUCT GRID ───────────────────────────────── */
-            .prod-grid {
-                grid-template-columns: 1fr;
-                margin-top: 36px;
-            }
-            .prod-card { padding: 32px 24px; }
-            .prod-name { font-size: 24px; }
-            .prod-desc { font-size: 13px; }
-
-            /* ── PRICING ────────────────────────────────────── */
-            .pricing-section { padding: 64px 20px; }
-            .pricing-inner {
-                grid-template-columns: 1fr;
-                max-width: none;
-            }
-            .pricing-left {
-                padding: 40px 24px;
-                border-left-width: 3px;
-            }
-            .pricing-dollar { font-size: 64px; }
-            .pricing-denom { font-size: 16px; }
-            .pricing-tagline { max-width: none; font-size: 13px; }
-            .pricing-cta { width: 100%; text-align: center; font-size: 12px; padding: 14px 24px; }
-            .pricing-right { padding: 36px 24px; }
-            .pricing-includes-label { margin-bottom: 20px; }
-
-            /* ── INTEL SECTION ──────────────────────────────── */
-            .intel-layout {
-                grid-template-columns: 1fr;
-                gap: 36px;
-            }
-            .intel-row {
-                grid-template-columns: 1fr;
-                gap: 4px;
-                padding: 14px 16px;
-            }
-            .intel-cat { margin-bottom: 2px; }
-            .intel-title { font-size: 14px; }
-            .intel-desc { font-size: 12px; }
-
-            /* ── STATEMENT + ROUTE ──────────────────────────── */
-            .statement-section { padding: 64px 20px; }
-            .statement-layout {
-                grid-template-columns: 1fr;
-                gap: 36px;
-            }
-            .route-graphic { order: 2; }
-            .route-svg { max-width: 100%; height: auto; }
-            .statement-quote { font-size: 22px; }
-            .statement-body { font-size: 14px; max-width: none; }
-
-            /* ── FOOTER ─────────────────────────────────────── */
-            footer { padding: 20px; flex-direction: column; gap: 10px; align-items: flex-start; }
-            .foot-r { font-size: 10px; }
-
-            /* ── SIGNUP VIEW ────────────────────────────────── */
-            .signup-briefing { padding: 80px 20px 40px; }
-            .signup-briefing-headline { font-size: 30px; margin-bottom: 32px; }
-            .signup-briefing-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-                margin-bottom: 32px;
-            }
-            .signup-brief-card { padding: 24px 20px; }
-            .signup-form-section { padding: 0 20px 60px; }
-            .signup-field { font-size: 16px; } /* prevent iOS zoom */
-            .signup-back { top: 16px; left: 16px; font-size: 10px; }
-        }
-
-        /* ── SMALL PHONE (≤480px) ──────────────────────────── */
-        @media (max-width: 480px) {
-
-            nav { padding: 0 16px; }
-            .nav-cta { padding: 7px 12px; font-size: 9px; }
-
-            .hero-content { bottom: 100px; left: 16px; right: 16px; }
-            .hero-headline { font-size: 34px; }
-            .hero-sub { font-size: 13px; }
-            .hero-cta-btn { font-size: 11px; padding: 13px 24px; width: 100%; text-align: center; }
-
-            .hero-readouts {
-                left: 16px;
-                top: 78px;
-                gap: 18px;
-            }
-            .r-val { font-size: 18px; }
-
-            .hero-bar { padding: 0 16px; }
-            /* Hide the middle activity dots on tiny screens */
-            .act-dots { display: none; }
-
-            .section { padding: 52px 16px; }
-            .sec-h2 { font-size: 24px; }
-
-            .ps-cell { padding: 16px 20px; }
-
-            .prod-card { padding: 24px 20px; }
-
-            .pricing-section { padding: 52px 16px; }
-            .pricing-left { padding: 32px 20px; }
-            .pricing-right { padding: 28px 20px; }
-            .pricing-dollar { font-size: 52px; }
-
-            .intel-row { padding: 12px 14px; }
-
-            .statement-section { padding: 52px 16px; }
-            .statement-quote { font-size: 20px; }
-
-            footer { padding: 16px; }
-
-            .signup-briefing { padding: 70px 16px 32px; }
-            .signup-briefing-headline { font-size: 26px; }
-            .signup-brief-card { padding: 20px 16px; }
-            .signup-form-section { padding: 0 16px 48px; }
-        }
-
     </style>
 </head>
 <body>
@@ -1187,7 +1067,11 @@
         <a href="https://hq.project9ind.com" class="nav-hq">
             <span class="live-dot"></span>HQ
         </a>
-        <a href="?view=signup" class="nav-cta">Get Access →</a>
+        <a href="?view=signup" class="nav-cta" id="navCta">Get Access →</a>
+        <a href="?view=signin" class="nav-auth-btn" id="navAuthBtn" title="Sign In">
+            <span id="navAuthIcon">◎</span>
+            <span id="navAuthLabel">Sign In</span>
+        </a>
     </div>
 </nav>
 
@@ -1371,13 +1255,11 @@
 
 <!-- INTELLIGENCE SECTION -->
 <div class="section">
-    <div class="intel-layout">
-        <div>
-            <div class="eyebrow">Intelligence Pipeline</div>
-            <h2 class="sec-h2">Government sources.<br>Verified data. Every brief.</h2>
-            <p class="sec-p">HQ pulls live, real-time intelligence from government databases and publicly available sources — not cached, not estimated. Every brief is fresh.</p>
-        </div>
-        <div class="intel-list">
+    <div class="eyebrow">Intelligence Pipeline</div>
+    <h2 class="sec-h2">Government sources.<br>Verified data. Every brief.</h2>
+    <p class="sec-p">HQ pulls live, real-time intelligence from government databases and publicly available sources — not cached, not estimated. Every brief is fresh.</p>
+
+    <div class="intel-list">
         <div class="intel-row">
             <div class="intel-cat">Parks &amp; Lands</div>
             <div class="intel-title">Access &amp; Conditions</div>
@@ -1408,35 +1290,17 @@
             <div class="intel-title">Location &amp; Elevation</div>
             <div class="intel-desc">Coordinate resolution, geocoding, and terrain context from open geographic data sources worldwide.</div>
         </div>
-        <div class="intel-row">
-            <div class="intel-cat">Roads</div>
-            <div class="intel-title">Status &amp; Closures</div>
-            <div class="intel-desc">Real-time road closures, detours, seasonal restrictions, and weather-related impacts from state and federal DOT sources.</div>
-        </div>
-        <div class="intel-row">
-            <div class="intel-cat">AI Engine</div>
-            <div class="intel-title">Zero-Hallucination</div>
-            <div class="intel-desc">AI synthesis of verified live data only — no fabricated answers, no guesses. Every data point sourced and cited.</div>
-        </div>
-        <div class="intel-row">
-            <div class="intel-cat">Vehicle</div>
-            <div class="intel-title">Capability Awareness</div>
-            <div class="intel-desc">Understands your vehicle's clearance, range, 4WD capability, passenger capacity, and terrain limits to tailor every brief.</div>
-        </div>
-        <div class="intel-row">
-            <div class="intel-cat">Savings</div>
-            <div class="intel-title">Costs &amp; Coupons</div>
-            <div class="intel-desc">Built-in cost savings strategies, fee waivers, pass discounts, and coupon sourcing for parks, camping, and recreation.</div>
-        </div>
-    </div>
     </div>
 </div>
 
 <!-- STATEMENT + ROUTE GRAPHIC -->
 <div class="statement-section">
-    <div class="statement-layout">
-        <!-- Route path graphic: minimal GPS path animation -->
-        <div class="route-graphic" id="routeGraphic">
+    <p class="statement-quote">"The future of adventure and off-road intelligence — reshaping the way we explore, race, and push beyond what's known."</p>
+    <p class="statement-body">Project 9 Industries carries the DNA of off-road racing heritage. Every tool we build serves the mission: give every adventurer — racer, hiker, overlander, vacationer — the intelligence edge.</p>
+    <a class="statement-cta" href="?view=signup">Explore HQ — Free Brief →</a>
+
+    <!-- Route path graphic: minimal GPS path animation -->
+    <div class="route-graphic" id="routeGraphic">
         <svg class="route-svg" viewBox="0 0 680 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <!-- Subtle topographic contour rings — barely visible, textural -->
             <ellipse cx="340" cy="80" rx="320" ry="70" stroke="#1A1917" stroke-width="1"/>
@@ -1480,12 +1344,6 @@
             <text x="340" y="148" text-anchor="middle" fill="#272523" font-family="Barlow Condensed, sans-serif" font-size="9" font-weight="700" letter-spacing="0.22em">ROUTE INTELLIGENCE · GENERATED IN &lt;30 SECONDS</text>
         </svg>
     </div>
-        <div>
-            <p class="statement-quote">"The future of adventure and off-road intelligence — reshaping the way we explore, race, and push beyond what's known."</p>
-            <p class="statement-body">Project 9 Industries carries the DNA of off-road racing heritage. Every tool we build serves the mission: give every adventurer — racer, hiker, overlander, vacationer — the intelligence edge.</p>
-            <a class="statement-cta" href="?view=signup">Explore HQ — Free Brief →</a>
-        </div>
-    </div>
 </div>
 
 <!-- FOOTER -->
@@ -1504,41 +1362,18 @@
 
 <!-- ─── SIGNUP/SIGNIN FULL-PAGE VIEW ─────────────────────────────── -->
 <div class="signup-view" id="signupView">
-    <!-- Own forest background + glitch canvas -->
-    <div class="signup-bg">
-        <img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1920&q=90" alt="">
-        <div class="signup-bg-overlay"></div>
-    </div>
-    <canvas id="signupCanvas" class="signup-glitch-canvas"></canvas>
     <div class="signup-stripe-top">
         <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
     </div>
     <a href="/" class="signup-back" id="signupBack">← Back to Project 9</a>
+    <div class="signup-inner">
+        <a href="/" class="signup-logo">PROJ<span class="nine">9</span></a>
+        <div class="signup-tagline">Adventure Intelligence Platform</div>
 
-    <!-- Briefing header — wide, short, over the forest -->
-    <div class="signup-briefing">
-        <div class="signup-briefing-headline">Consider this your briefing.</div>
-        <div class="signup-briefing-grid">
-            <div class="signup-brief-card">
-                <div class="signup-brief-label">The Platform</div>
-                <div class="signup-brief-text">Project 9 Industries is building the adventure intelligence stack. HQ is live. More applications are inbound. Your access covers all of them.</div>
-            </div>
-            <div class="signup-brief-card">
-                <div class="signup-brief-label">The Intel</div>
-                <div class="signup-brief-text">HQ pulls real-time data from government and public sources — weather, fire, trails, permits, water levels, terrain — full expedition brief in under 30 seconds. Unlimited.</div>
-            </div>
-            <div class="signup-brief-card">
-                <div class="signup-brief-label">The Price</div>
-                <div class="signup-brief-text">$1/mo. Forever. Locked in as a founding member. Full access to every app we ship — no price increases, no tiers, no catch.</div>
-            </div>
-        </div>
-        <div class="signup-copy-line">Do you copy?</div>
-    </div>
-
-    <!-- Auth forms below -->
-    <div class="signup-form-section">
         <!-- SIGN UP form (default) -->
         <div id="signupForm">
+            <div class="signup-heading">Join the mission.</div>
+            <div class="signup-subhead">Create your P9I account — founding members get every app we build, forever, for $1/mo.</div>
             <label class="signup-label">Email</label>
             <input type="email" class="signup-field" id="signupEmail" placeholder="you@adventure.com" autocomplete="email">
             <label class="signup-label">Password</label>
@@ -1553,16 +1388,93 @@
 
         <!-- SIGN IN form -->
         <div id="signinForm" style="display:none;">
+            <div class="signup-heading">Welcome back.</div>
+            <div class="signup-subhead">Sign in to your P9I account to access your intelligence briefings.</div>
             <label class="signup-label">Email</label>
             <input type="email" class="signup-field" id="signinEmail" placeholder="you@adventure.com" autocomplete="email">
             <label class="signup-label">Password</label>
             <input type="password" class="signup-field" id="signinPassword" placeholder="Your password" autocomplete="current-password">
+            <a class="acct-forgot-link" id="forgotPasswordLink">Forgot password?</a>
             <button class="signup-submit" id="signinBtn">Sign In →</button>
             <div class="signup-divider"><span>or</span></div>
             <button class="signup-google" id="googleSigninBtn">Continue with Google</button>
             <div class="signup-error" id="signinError"></div>
             <div class="signup-toggle">Don't have an account? <a id="showSignup">Create one</a></div>
         </div>
+    </div>
+</div>
+
+<!-- ─── ACCOUNT FULL-PAGE VIEW ──────────────────────────────────── -->
+<div class="account-view" id="accountView">
+    <div class="acct-stripe-top">
+        <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
+    </div>
+    <a href="/" class="acct-back" id="accountBack">← Back to Project 9</a>
+    <div class="acct-container">
+        <a href="/" class="acct-logo">PROJ<span class="nine">9</span></a>
+        <div class="acct-tagline">Your Account</div>
+
+        <!-- Profile Card -->
+        <div class="acct-card">
+            <div class="acct-section-label">Profile</div>
+            <div class="acct-row">
+                <span class="acct-row-label">Email</span>
+                <span class="acct-row-value" id="acctEmail">—</span>
+            </div>
+            <div class="acct-row">
+                <span class="acct-row-label">Member Since</span>
+                <span class="acct-row-value" id="acctMemberSince">—</span>
+            </div>
+            <div class="acct-row">
+                <span class="acct-row-label">Auth Method</span>
+                <span class="acct-row-value" id="acctAuthMethod">—</span>
+            </div>
+        </div>
+
+        <!-- Plan Card -->
+        <div class="acct-card">
+            <div class="acct-section-label">Plan</div>
+            <div class="acct-row">
+                <span class="acct-row-label">Current Plan</span>
+                <span class="acct-plan-badge free" id="acctPlanBadge">FREE</span>
+            </div>
+            <div class="acct-founding-note" id="acctFoundingNote" style="display:none;">
+                ⚡ Founding Member — $1/mo for life, every app, every feature
+            </div>
+        </div>
+
+        <!-- Usage Card -->
+        <div class="acct-card">
+            <div class="acct-section-label">Usage</div>
+            <div class="acct-row">
+                <span class="acct-row-label">Briefs This Month</span>
+                <span class="acct-row-value" id="acctUsageCount">0 / 1</span>
+            </div>
+            <div class="acct-usage-bar-track">
+                <div class="acct-usage-bar-fill" id="acctUsageFill" style="width:0%"></div>
+            </div>
+        </div>
+
+        <!-- Actions Card -->
+        <div class="acct-card" id="acctActionsCard">
+            <div class="acct-section-label">Actions</div>
+            <!-- Free user: upgrade CTA -->
+            <button class="acct-upgrade-btn" id="acctUpgradeBtn" onclick="acctDoUpgrade()">
+                Join P9I Pro — $1/mo →
+            </button>
+            <!-- Pro user: manage billing -->
+            <button class="acct-manage-btn" id="acctManageBtn" style="display:none;" onclick="acctDoManageBilling()">
+                Manage Subscription →
+            </button>
+            <a class="acct-forgot-link" id="acctResetPassword" style="display:block;text-align:center;margin-top:16px;cursor:pointer;">Reset Password</a>
+            <button class="acct-signout-btn" id="acctSignoutBtn" onclick="acctDoSignOut()" style="margin-top:16px;">
+                Sign Out
+            </button>
+        </div>
+
+        <a href="https://hq.project9ind.com" class="acct-hq-link" id="acctHqLink">
+            Go to HQ — Run a Brief →
+        </a>
     </div>
 </div>
 
@@ -1823,76 +1735,9 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(routeGraphic);
 </script>
 
-<!-- ─── SIGNUP CANVAS GLITCH ──────────────────────────────────────── -->
-<script>
-(function() {
-  const sc = document.getElementById('signupCanvas');
-  if (!sc) return;
-  const sctx = sc.getContext('2d');
-  const ORG = '#E06018', COB = '#1248A0';
-  const FRAGS = [
-    'lat: 37.8651°N','lon: -119.5383°W','alt: 8,839ft','bearing: 247°',
-    'fetch(terrain_data)','status: ACTIVE','intel.scan()','AQI: 42 GOOD',
-    'FIRE: NONE','ROAD: OPEN','pipeline.resolve()','signal: 2/5',
-    '4WD_REQUIRED','NPS.alerts()','USGS.gauge()','wx.forecast()',
-    'permit: REQUIRED','src: NIFC','NOAA.radar()','vis: 12mi CLEAR',
-    'wind: 8mph WSW','temp: 52°F','terrain: TECHNICAL','fuel: 82mi RANGE',
-    'creek_xing: PASSABLE','sunset: 19:47 LOCAL','recovery: STANDBY',
-  ];
-  function resizeSC() { sc.width = window.innerWidth; sc.height = window.innerHeight; }
-  resizeSC(); window.addEventListener('resize', resizeSC);
-
-  class SG {
-    constructor() { this.reset(); }
-    reset() {
-      this.text = FRAGS[Math.floor(Math.random() * FRAGS.length)];
-      this.x = Math.random() * sc.width * 0.9;
-      this.y = 60 + Math.random() * (sc.height - 120);
-      this.life = 0; this.maxLife = 180 + Math.random() * 400;
-      this.delay = Math.random() * 350;
-      this.glitchProb = 0.06 + Math.random() * 0.06;
-      this.size = 10 + Math.floor(Math.random() * 4);
-      this.isOrange = Math.random() > 0.4;
-    }
-    update() { this.life++; }
-    draw() {
-      if (this.life < this.delay) return;
-      const age = this.life - this.delay;
-      if (age > this.maxLife) { this.reset(); return; }
-      const fadeIn = Math.min(age / 20, 1);
-      const fadeOut = age > this.maxLife - 30 ? (this.maxLife - age) / 30 : 1;
-      let alpha = fadeIn * fadeOut * (this.isOrange ? 0.75 : 0.50);
-      sctx.save();
-      if (Math.random() < this.glitchProb) {
-        const dx = (Math.random() - 0.5) * 8, dy = (Math.random() - 0.5) * 3;
-        sctx.globalAlpha = alpha * 0.3;
-        sctx.fillStyle = this.isOrange ? ORG : COB;
-        sctx.fillRect(this.x + dx - 4, this.y + dy - this.size + 2, this.text.length * this.size * 0.58 + 16, this.size + 4);
-        sctx.globalAlpha = alpha;
-        sctx.font = this.size + "px 'Courier New', monospace";
-        sctx.fillStyle = this.isOrange ? ORG : '#7BA4D4';
-        sctx.fillText(this.text, this.x + dx, this.y + dy);
-      } else {
-        sctx.globalAlpha = alpha;
-        sctx.font = this.size + "px 'Courier New', monospace";
-        sctx.fillStyle = this.isOrange ? ORG : '#7BA4D4';
-        sctx.fillText(this.text, this.x, this.y);
-      }
-      sctx.restore();
-    }
-  }
-  const sGlitches = Array.from({ length: 20 }, () => new SG());
-  (function sLoop() {
-    sctx.clearRect(0, 0, sc.width, sc.height);
-    sGlitches.forEach(g => { g.update(); g.draw(); });
-    requestAnimationFrame(sLoop);
-  })();
-})();
-</script>
-
 <!-- ─── AUTH + SIGNUP VIEW ENGINE ─────────────────────────────────── -->
 <script>
-(function() {
+(async function() {
   const SUPABASE_URL = 'https://volrckfyznnhamdunact.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8';
 
@@ -1900,17 +1745,50 @@ observer.observe(routeGraphic);
   try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); }
   catch(e) { console.warn('Supabase SDK not loaded'); return; }
 
+  // ── Handle OAuth / email-confirmation redirect (access_token in hash) ──
+  const hash = window.location.hash;
+  if (hash && hash.includes('access_token=')) {
+    const hashParams = new URLSearchParams(hash.substring(1));
+    const accessToken = hashParams.get('access_token');
+    const refreshToken = hashParams.get('refresh_token');
+    if (accessToken && refreshToken) {
+      await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+      // Clean hash and land on account page
+      history.replaceState(null, '', '?view=account');
+    }
+  }
+
   const signupView   = document.getElementById('signupView');
   const signupForm   = document.getElementById('signupForm');
   const signinForm   = document.getElementById('signinForm');
+  const accountView  = document.getElementById('accountView');
 
   // ── View routing ──
-  function checkRoute() {
+  async function checkRoute() {
     const params = new URLSearchParams(window.location.search);
     const view   = params.get('view');
+
+    // If signed-in user hits signup/signin, bounce to account
     if (view === 'signup' || view === 'signin') {
+      try {
+        const { data } = await sb.auth.getSession();
+        if (data?.session) {
+          history.replaceState(null, '', '?view=account');
+          signupView.classList.remove('active');
+          accountView.classList.add('active');
+          populateAccount(data.session);
+          return;
+        }
+      } catch(e) {}
+    }
+
+    if (view === 'account') {
+      signupView.classList.remove('active');
+      accountView.classList.add('active');
+      populateAccount();
+    } else if (view === 'signup' || view === 'signin') {
+      accountView.classList.remove('active');
       signupView.classList.add('active');
-      document.body.classList.add('signup-active');
       if (view === 'signin') {
         signupForm.style.display = 'none';
         signinForm.style.display = 'block';
@@ -1920,7 +1798,7 @@ observer.observe(routeGraphic);
       }
     } else {
       signupView.classList.remove('active');
-      document.body.classList.remove('signup-active');
+      accountView.classList.remove('active');
     }
   }
   checkRoute();
@@ -1931,7 +1809,13 @@ observer.observe(routeGraphic);
     e.preventDefault();
     history.pushState(null, '', '/');
     signupView.classList.remove('active');
-    document.body.classList.remove('signup-active');
+  });
+
+  // Account back button
+  document.getElementById('accountBack').addEventListener('click', function(e) {
+    e.preventDefault();
+    history.pushState(null, '', '/');
+    accountView.classList.remove('active');
   });
 
   // Toggle between sign-up and sign-in
@@ -1965,7 +1849,7 @@ observer.observe(routeGraphic);
     const { data, error } = await sb.auth.signUp({
       email: email,
       password: pass,
-      options: { emailRedirectTo: 'https://hq.project9ind.com' }
+      options: { emailRedirectTo: 'https://project9ind.com/?view=account' }
     });
 
     btn.disabled = false;
@@ -1975,11 +1859,12 @@ observer.observe(routeGraphic);
       errEl.textContent = error.message;
     } else if (data.user && !data.session) {
       // Email confirmation required
-      okEl.textContent = 'Check your email to confirm your account, then head to HQ to start your first brief.';
+      okEl.textContent = 'Check your email to confirm your account — once confirmed, sign in to access your P9I dashboard and start your first brief.';
       okEl.style.display = 'block';
     } else if (data.session) {
-      // Auto-confirmed — redirect to HQ
-      window.location.href = 'https://hq.project9ind.com';
+      // Auto-confirmed — redirect to account page
+      history.replaceState(null, '', '?view=account');
+      checkRoute();
     }
   });
 
@@ -2007,8 +1892,11 @@ observer.observe(routeGraphic);
     if (error) {
       errEl.textContent = error.message;
     } else {
-      // Success — redirect to HQ
-      window.location.href = 'https://hq.project9ind.com';
+      // Success — show account page directly (pass session to avoid race condition)
+      history.replaceState(null, '', '?view=account');
+      signupView.classList.remove('active');
+      accountView.classList.add('active');
+      populateAccount(data.session);
     }
   });
 
@@ -2016,7 +1904,7 @@ observer.observe(routeGraphic);
   async function googleAuth() {
     const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: 'https://hq.project9ind.com' }
+      options: { redirectTo: 'https://project9ind.com/?view=account' }
     });
     if (error) {
       document.getElementById('signupError').textContent = error.message;
@@ -2025,6 +1913,179 @@ observer.observe(routeGraphic);
   }
   document.getElementById('googleSignupBtn').addEventListener('click', googleAuth);
   document.getElementById('googleSigninBtn').addEventListener('click', googleAuth);
+
+  // ── Account View Logic ──
+  async function populateAccount(passedSession) {
+    let session = passedSession;
+    if (!session) {
+      const { data } = await sb.auth.getSession();
+      session = data?.session;
+    }
+    if (!session) {
+      history.replaceState(null, '', '?view=signin');
+      checkRoute();
+      return;
+    }
+    const user = session.user;
+
+    // Profile
+    document.getElementById('acctEmail').textContent = user.email || '—';
+    const created = new Date(user.created_at);
+    document.getElementById('acctMemberSince').textContent = created.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const provider = user.app_metadata?.provider || 'email';
+    document.getElementById('acctAuthMethod').textContent = provider === 'google' ? 'Google' : 'Email';
+
+    // Hide reset password for Google OAuth users (no password to reset)
+    const resetLink = document.getElementById('acctResetPassword');
+    if (resetLink) resetLink.style.display = provider === 'google' ? 'none' : 'block';
+
+    // Plan
+    const { data: userData } = await sb.from('users').select('plan, is_founding_member').eq('id', user.id).single();
+    const plan = userData?.plan || 'free';
+    const isFounding = userData?.is_founding_member || false;
+
+    const badge = document.getElementById('acctPlanBadge');
+    badge.textContent = plan === 'pro' ? '⚡ P9I PRO' : 'FREE';
+    badge.className = 'acct-plan-badge ' + plan;
+
+    const foundingNote = document.getElementById('acctFoundingNote');
+    if (isFounding && plan === 'pro') foundingNote.style.display = 'block';
+    else foundingNote.style.display = 'none';
+
+    // Usage
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+    const { data: usageLogs } = await sb.from('usage_logs').select('id').eq('user_id', user.id).eq('action', 'brief').gte('created_at', monthStart);
+    const count = usageLogs ? usageLogs.length : 0;
+    const limit = plan === 'pro' ? '∞' : '1';
+    document.getElementById('acctUsageCount').textContent = count + ' / ' + limit;
+    const pct = plan === 'pro' ? 0 : Math.min(100, (count / 1) * 100);
+    document.getElementById('acctUsageFill').style.width = pct + '%';
+
+    // Actions — show/hide based on plan
+    document.getElementById('acctUpgradeBtn').style.display = plan === 'pro' ? 'none' : 'block';
+    document.getElementById('acctManageBtn').style.display = plan === 'pro' ? 'block' : 'none';
+
+    // Hide usage bar for pro
+    if (plan === 'pro') {
+      document.getElementById('acctUsageFill').parentElement.style.display = 'none';
+    }
+
+    // Set "Go to HQ" link with auth token for cross-site handoff
+    const hqLink = document.getElementById('acctHqLink');
+    if (hqLink && session.access_token) {
+      hqLink.href = 'https://hq.project9ind.com#access_token=' + session.access_token
+        + '&refresh_token=' + (session.refresh_token || '')
+        + '&expires_in=' + (session.expires_in || 3600)
+        + '&token_type=bearer';
+    }
+  }
+
+  // ── Account Actions (window-global) ──
+  window.acctDoUpgrade = async function() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    const btn = document.getElementById('acctUpgradeBtn');
+    btn.disabled = true;
+    btn.textContent = 'Opening checkout…';
+    try {
+      const res = await fetch('https://hq.project9ind.com/.netlify/functions/stripe-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: session.user.id,
+          email: session.user.email,
+          returnUrl: window.location.origin + '/?view=account'
+        })
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else { btn.textContent = 'Checkout unavailable — try again'; btn.disabled = false; }
+    } catch(e) { btn.textContent = 'Network error — try again'; btn.disabled = false; }
+  };
+
+  window.acctDoManageBilling = async function() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    const btn = document.getElementById('acctManageBtn');
+    btn.disabled = true;
+    btn.textContent = 'Opening portal…';
+    try {
+      const res = await fetch('https://hq.project9ind.com/.netlify/functions/stripe-portal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: session.user.id,
+          returnUrl: window.location.origin + '/?view=account'
+        })
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else { btn.textContent = 'Portal unavailable'; btn.disabled = false; }
+    } catch(e) { btn.textContent = 'Network error'; btn.disabled = false; }
+  };
+
+  window.acctDoSignOut = async function() {
+    await sb.auth.signOut();
+    // Reset nav auth button to signed-out state
+    const authBtn = document.getElementById('navAuthBtn');
+    if (authBtn) {
+      authBtn.href = '?view=signin';
+      authBtn.title = 'Sign In';
+      authBtn.classList.remove('signed-in');
+      const icon = document.getElementById('navAuthIcon');
+      if (icon) icon.textContent = '◎';
+      const label = document.getElementById('navAuthLabel');
+      if (label) label.textContent = 'Sign In';
+    }
+    const navCta = document.getElementById('navCta');
+    if (navCta) { navCta.href = '?view=signup'; navCta.textContent = 'Get Access →'; }
+    history.replaceState(null, '', '/');
+    accountView.classList.remove('active');
+  };
+
+  // ── Forgot Password (sign-in form) ──
+  document.getElementById('forgotPasswordLink').addEventListener('click', async function() {
+    const email = document.getElementById('signinEmail').value.trim();
+    const errEl = document.getElementById('signinError');
+    if (!email) { errEl.textContent = 'Enter your email above, then click forgot password.'; return; }
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://project9ind.com/?view=account'
+    });
+    if (error) { errEl.textContent = error.message; }
+    else {
+      errEl.textContent = '';
+      const okEl = document.createElement('div');
+      okEl.style.cssText = 'color:#3CB87A;font-size:13px;margin-top:8px;';
+      okEl.textContent = 'Password reset email sent! Check your inbox.';
+      this.parentElement.insertBefore(okEl, this.nextSibling);
+    }
+  });
+
+  // ── Reset Password (account page) ──
+  document.getElementById('acctResetPassword').addEventListener('click', async function() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    const email = session.user.email;
+    this.textContent = 'Sending…';
+    this.style.pointerEvents = 'none';
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://project9ind.com/?view=account'
+    });
+    if (error) {
+      this.textContent = error.message;
+      this.style.color = '#e04040';
+      this.style.pointerEvents = 'auto';
+    } else {
+      this.textContent = 'Reset email sent — check your inbox';
+      this.style.color = '#3CB87A';
+      setTimeout(() => {
+        this.textContent = 'Reset Password';
+        this.style.color = '';
+        this.style.pointerEvents = 'auto';
+      }, 4000);
+    }
+  });
 
   // ── Enter key support ──
   document.getElementById('signupPassword').addEventListener('keydown', function(e) {
@@ -2039,13 +2100,56 @@ observer.observe(routeGraphic);
     const a = e.target.closest('a');
     if (!a) return;
     const href = a.getAttribute('href');
-    if (href === '?view=signup' || href === '?view=signin') {
+    if (href === '?view=signup' || href === '?view=signin' || href === '?view=account') {
       e.preventDefault();
       history.pushState(null, '', href);
       checkRoute();
     }
   });
 
+})();
+
+// Update nav based on auth state
+(async function() {
+    try {
+        const sb2 = window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co', 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8');
+        const { data: { session } } = await sb2.auth.getSession();
+        if (session) {
+            const user = session.user;
+            // Update CTA
+            const navCta = document.getElementById('navCta');
+            if (navCta) {
+                navCta.href = '?view=account';
+                navCta.textContent = 'Account →';
+            }
+            // Update auth button — green border + name + plan badge (like HQ)
+            const authBtn = document.getElementById('navAuthBtn');
+            if (authBtn) {
+                authBtn.href = '?view=account';
+                authBtn.title = 'Your Account';
+                authBtn.classList.add('signed-in');
+                const icon = document.getElementById('navAuthIcon');
+                if (icon) icon.textContent = '●';
+                // Get user name and plan
+                const name = user.user_metadata?.full_name
+                    ? user.user_metadata.full_name.split(' ')[0]
+                    : (user.email ? user.email.split('@')[0] : 'You');
+                // Fetch plan from DB
+                let plan = 'free';
+                try {
+                    const { data: userData } = await sb2.from('users').select('plan').eq('id', user.id).single();
+                    if (userData?.plan) plan = userData.plan;
+                } catch(e) {}
+                const label = document.getElementById('navAuthLabel');
+                if (label) {
+                    label.innerHTML = '<span class="nav-auth-inner">'
+                        + '<span class="nav-auth-name">' + name + '</span>'
+                        + '<span class="nav-auth-plan">' + (plan === 'pro' ? '⚡ PRO' : 'FREE') + '</span>'
+                        + '</span>';
+                }
+            }
+        }
+    } catch(e) {}
 })();
 </script>
 </body>
