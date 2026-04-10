@@ -98,6 +98,17 @@
         }
         .nav-cta:hover { background: #f06d22; }
 
+        .nav-profile {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px;
+            border: 1.5px solid rgba(245,242,236,0.25);
+            border-radius: 50%;
+            transition: border-color 0.2s;
+            margin-left: 6px;
+        }
+        .nav-profile:hover { border-color: var(--orange); }
+        .nav-profile svg { display: block; }
+
         /* ── HERO ────────────────────────────────────────────── */
         .hero {
             position: relative;
@@ -1042,6 +1053,12 @@
             <span class="live-dot"></span>HQ
         </a>
         <a href="?view=signup" class="nav-cta">Get Access →</a>
+        <a href="?view=account" class="nav-profile" id="navProfile" style="display:none;" title="Your Account">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F5F2EC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
+        </a>
     </div>
 </nav>
 
@@ -1441,7 +1458,7 @@
             </button>
         </div>
 
-        <a href="https://hq.project9ind.com" class="acct-hq-link">
+        <a href="https://hq.project9ind.com" class="acct-hq-link" id="acctHqLink">
             Go to HQ — Run a Brief →
         </a>
     </div>
@@ -1706,13 +1723,26 @@ observer.observe(routeGraphic);
 
 <!-- ─── AUTH + SIGNUP VIEW ENGINE ─────────────────────────────────── -->
 <script>
-(function() {
+(async function() {
   const SUPABASE_URL = 'https://volrckfyznnhamdunact.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8';
 
   let sb;
   try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); }
   catch(e) { console.warn('Supabase SDK not loaded'); return; }
+
+  // ── Handle OAuth / email-confirmation redirect (access_token in hash) ──
+  const hash = window.location.hash;
+  if (hash && hash.includes('access_token=')) {
+    const hashParams = new URLSearchParams(hash.substring(1));
+    const accessToken = hashParams.get('access_token');
+    const refreshToken = hashParams.get('refresh_token');
+    if (accessToken && refreshToken) {
+      await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+      // Clean hash and land on account page
+      history.replaceState(null, '', '?view=account');
+    }
+  }
 
   const signupView   = document.getElementById('signupView');
   const signupForm   = document.getElementById('signupForm');
@@ -1790,7 +1820,7 @@ observer.observe(routeGraphic);
     const { data, error } = await sb.auth.signUp({
       email: email,
       password: pass,
-      options: { emailRedirectTo: 'https://hq.project9ind.com' }
+      options: { emailRedirectTo: 'https://project9ind.com/?view=account' }
     });
 
     btn.disabled = false;
@@ -1833,9 +1863,11 @@ observer.observe(routeGraphic);
     if (error) {
       errEl.textContent = error.message;
     } else {
-      // Success — redirect to account page
+      // Success — show account page directly (pass session to avoid race condition)
       history.replaceState(null, '', '?view=account');
-      checkRoute();
+      signupView.classList.remove('active');
+      accountView.classList.add('active');
+      populateAccount(data.session);
     }
   });
 
@@ -1843,7 +1875,7 @@ observer.observe(routeGraphic);
   async function googleAuth() {
     const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: 'https://hq.project9ind.com' }
+      options: { redirectTo: 'https://project9ind.com/?view=account' }
     });
     if (error) {
       document.getElementById('signupError').textContent = error.message;
@@ -1854,8 +1886,12 @@ observer.observe(routeGraphic);
   document.getElementById('googleSigninBtn').addEventListener('click', googleAuth);
 
   // ── Account View Logic ──
-  async function populateAccount() {
-    const { data: { session } } = await sb.auth.getSession();
+  async function populateAccount(passedSession) {
+    let session = passedSession;
+    if (!session) {
+      const { data } = await sb.auth.getSession();
+      session = data?.session;
+    }
     if (!session) {
       history.replaceState(null, '', '?view=signin');
       checkRoute();
@@ -1900,6 +1936,15 @@ observer.observe(routeGraphic);
     // Hide usage bar for pro
     if (plan === 'pro') {
       document.getElementById('acctUsageFill').parentElement.style.display = 'none';
+    }
+
+    // Set "Go to HQ" link with auth token for cross-site handoff
+    const hqLink = document.getElementById('acctHqLink');
+    if (hqLink && session.access_token) {
+      hqLink.href = 'https://hq.project9ind.com#access_token=' + session.access_token
+        + '&refresh_token=' + (session.refresh_token || '')
+        + '&expires_in=' + (session.expires_in || 3600)
+        + '&token_type=bearer';
     }
   }
 
@@ -1959,7 +2004,7 @@ observer.observe(routeGraphic);
     const errEl = document.getElementById('signinError');
     if (!email) { errEl.textContent = 'Enter your email above, then click forgot password.'; return; }
     const { error } = await sb.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://hq.project9ind.com'
+      redirectTo: 'https://project9ind.com/?view=account'
     });
     if (error) { errEl.textContent = error.message; }
     else {
@@ -1984,7 +2029,7 @@ observer.observe(routeGraphic);
     const a = e.target.closest('a');
     if (!a) return;
     const href = a.getAttribute('href');
-    if (href === '?view=signup' || href === '?view=signin') {
+    if (href === '?view=signup' || href === '?view=signin' || href === '?view=account') {
       e.preventDefault();
       history.pushState(null, '', href);
       checkRoute();
@@ -2004,6 +2049,9 @@ observer.observe(routeGraphic);
                 navCta.href = '?view=account';
                 navCta.textContent = 'Account →';
             }
+            // Show profile icon
+            const navProfile = document.getElementById('navProfile');
+            if (navProfile) navProfile.style.display = 'flex';
         }
     } catch(e) {}
 })();
