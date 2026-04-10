@@ -98,16 +98,28 @@
         }
         .nav-cta:hover { background: #f06d22; }
 
-        .nav-profile {
-            display: flex; align-items: center; justify-content: center;
-            width: 36px; height: 36px;
-            border: 1.5px solid rgba(245,242,236,0.25);
-            border-radius: 50%;
-            transition: border-color 0.2s;
-            margin-left: 6px;
+        .nav-auth-btn {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(245,242,236,0.6);
+            border: 1px solid rgba(245,242,236,0.18);
+            padding: 8px 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: border-color 0.2s, color 0.2s;
+            white-space: nowrap;
         }
-        .nav-profile:hover { border-color: var(--orange); }
-        .nav-profile svg { display: block; }
+        .nav-auth-btn:hover { border-color: var(--orange); color: var(--orange); }
+        .nav-auth-btn.signed-in { border-color: var(--green); color: var(--green); }
+        .nav-auth-inner { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+        .nav-auth-name { color: #F5F2EC; font-size: 10px; font-weight: 700; line-height: 1; }
+        .nav-auth-plan { color: var(--orange); font-size: 9px; letter-spacing: 0.18em; line-height: 1; }
 
         /* ── HERO ────────────────────────────────────────────── */
         .hero {
@@ -950,6 +962,9 @@
             .acct-logo { font-size: 24px; }
             .acct-row { font-size: 12px; }
             .acct-back { font-size: 11px; left: 16px; top: 16px; }
+            .nav-right { gap: 12px; }
+            .nav-cta { padding: 8px 14px; font-size: 10px; }
+            .nav-auth-btn { padding: 6px 10px; font-size: 9px; }
         }
 
         .signup-divider {
@@ -1052,12 +1067,10 @@
         <a href="https://hq.project9ind.com" class="nav-hq">
             <span class="live-dot"></span>HQ
         </a>
-        <a href="?view=signup" class="nav-cta">Get Access →</a>
-        <a href="?view=account" class="nav-profile" id="navProfile" style="display:none;" title="Your Account">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F5F2EC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="4"/>
-                <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
-            </svg>
+        <a href="?view=signup" class="nav-cta" id="navCta">Get Access →</a>
+        <a href="?view=signin" class="nav-auth-btn" id="navAuthBtn" title="Sign In">
+            <span id="navAuthIcon">◎</span>
+            <span id="navAuthLabel">Sign In</span>
         </a>
     </div>
 </nav>
@@ -1453,6 +1466,7 @@
             <button class="acct-manage-btn" id="acctManageBtn" style="display:none;" onclick="acctDoManageBilling()">
                 Manage Subscription →
             </button>
+            <a class="acct-forgot-link" id="acctResetPassword" style="display:block;text-align:center;margin-top:16px;cursor:pointer;">Reset Password</a>
             <button class="acct-signout-btn" id="acctSignoutBtn" onclick="acctDoSignOut()" style="margin-top:16px;">
                 Sign Out
             </button>
@@ -1750,9 +1764,24 @@ observer.observe(routeGraphic);
   const accountView  = document.getElementById('accountView');
 
   // ── View routing ──
-  function checkRoute() {
+  async function checkRoute() {
     const params = new URLSearchParams(window.location.search);
     const view   = params.get('view');
+
+    // If signed-in user hits signup/signin, bounce to account
+    if (view === 'signup' || view === 'signin') {
+      try {
+        const { data } = await sb.auth.getSession();
+        if (data?.session) {
+          history.replaceState(null, '', '?view=account');
+          signupView.classList.remove('active');
+          accountView.classList.add('active');
+          populateAccount(data.session);
+          return;
+        }
+      } catch(e) {}
+    }
+
     if (view === 'account') {
       signupView.classList.remove('active');
       accountView.classList.add('active');
@@ -1830,7 +1859,7 @@ observer.observe(routeGraphic);
       errEl.textContent = error.message;
     } else if (data.user && !data.session) {
       // Email confirmation required
-      okEl.textContent = 'Check your email to confirm your account, then head to HQ to start your first brief.';
+      okEl.textContent = 'Check your email to confirm your account — once confirmed, sign in to access your P9I dashboard and start your first brief.';
       okEl.style.display = 'block';
     } else if (data.session) {
       // Auto-confirmed — redirect to account page
@@ -1905,6 +1934,10 @@ observer.observe(routeGraphic);
     document.getElementById('acctMemberSince').textContent = created.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     const provider = user.app_metadata?.provider || 'email';
     document.getElementById('acctAuthMethod').textContent = provider === 'google' ? 'Google' : 'Email';
+
+    // Hide reset password for Google OAuth users (no password to reset)
+    const resetLink = document.getElementById('acctResetPassword');
+    if (resetLink) resetLink.style.display = provider === 'google' ? 'none' : 'block';
 
     // Plan
     const { data: userData } = await sb.from('users').select('plan, is_founding_member').eq('id', user.id).single();
@@ -1994,11 +2027,24 @@ observer.observe(routeGraphic);
 
   window.acctDoSignOut = async function() {
     await sb.auth.signOut();
+    // Reset nav auth button to signed-out state
+    const authBtn = document.getElementById('navAuthBtn');
+    if (authBtn) {
+      authBtn.href = '?view=signin';
+      authBtn.title = 'Sign In';
+      authBtn.classList.remove('signed-in');
+      const icon = document.getElementById('navAuthIcon');
+      if (icon) icon.textContent = '◎';
+      const label = document.getElementById('navAuthLabel');
+      if (label) label.textContent = 'Sign In';
+    }
+    const navCta = document.getElementById('navCta');
+    if (navCta) { navCta.href = '?view=signup'; navCta.textContent = 'Get Access →'; }
     history.replaceState(null, '', '/');
     accountView.classList.remove('active');
   };
 
-  // ── Forgot Password ──
+  // ── Forgot Password (sign-in form) ──
   document.getElementById('forgotPasswordLink').addEventListener('click', async function() {
     const email = document.getElementById('signinEmail').value.trim();
     const errEl = document.getElementById('signinError');
@@ -2013,6 +2059,31 @@ observer.observe(routeGraphic);
       okEl.style.cssText = 'color:#3CB87A;font-size:13px;margin-top:8px;';
       okEl.textContent = 'Password reset email sent! Check your inbox.';
       this.parentElement.insertBefore(okEl, this.nextSibling);
+    }
+  });
+
+  // ── Reset Password (account page) ──
+  document.getElementById('acctResetPassword').addEventListener('click', async function() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    const email = session.user.email;
+    this.textContent = 'Sending…';
+    this.style.pointerEvents = 'none';
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://project9ind.com/?view=account'
+    });
+    if (error) {
+      this.textContent = error.message;
+      this.style.color = '#e04040';
+      this.style.pointerEvents = 'auto';
+    } else {
+      this.textContent = 'Reset email sent — check your inbox';
+      this.style.color = '#3CB87A';
+      setTimeout(() => {
+        this.textContent = 'Reset Password';
+        this.style.color = '';
+        this.style.pointerEvents = 'auto';
+      }, 4000);
     }
   });
 
@@ -2044,14 +2115,39 @@ observer.observe(routeGraphic);
         const sb2 = window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co', 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8');
         const { data: { session } } = await sb2.auth.getSession();
         if (session) {
-            const navCta = document.querySelector('.nav-cta');
+            const user = session.user;
+            // Update CTA
+            const navCta = document.getElementById('navCta');
             if (navCta) {
                 navCta.href = '?view=account';
                 navCta.textContent = 'Account →';
             }
-            // Show profile icon
-            const navProfile = document.getElementById('navProfile');
-            if (navProfile) navProfile.style.display = 'flex';
+            // Update auth button — green border + name + plan badge (like HQ)
+            const authBtn = document.getElementById('navAuthBtn');
+            if (authBtn) {
+                authBtn.href = '?view=account';
+                authBtn.title = 'Your Account';
+                authBtn.classList.add('signed-in');
+                const icon = document.getElementById('navAuthIcon');
+                if (icon) icon.textContent = '●';
+                // Get user name and plan
+                const name = user.user_metadata?.full_name
+                    ? user.user_metadata.full_name.split(' ')[0]
+                    : (user.email ? user.email.split('@')[0] : 'You');
+                // Fetch plan from DB
+                let plan = 'free';
+                try {
+                    const { data: userData } = await sb2.from('users').select('plan').eq('id', user.id).single();
+                    if (userData?.plan) plan = userData.plan;
+                } catch(e) {}
+                const label = document.getElementById('navAuthLabel');
+                if (label) {
+                    label.innerHTML = '<span class="nav-auth-inner">'
+                        + '<span class="nav-auth-name">' + name + '</span>'
+                        + '<span class="nav-auth-plan">' + (plan === 'pro' ? '⚡ PRO' : 'FREE') + '</span>'
+                        + '</span>';
+                }
+            }
         }
     } catch(e) {}
 })();
