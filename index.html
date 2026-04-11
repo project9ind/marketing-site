@@ -18,8 +18,8 @@
             --navy:    #0C1C4A;
             --cobalt:  #1248A0;
             --cream:   #F5F2EC;
-            --dust:    #8A7F72;
-            --fog:     #4A4540;
+            --dust:    #9B9288;
+            --fog:     #6B6660;
             --green:   #3CB87A;
         }
 
@@ -66,8 +66,8 @@
         .nav-hq {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 13px;
-            letter-spacing: 0.16em;
+            font-size: 14px;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             color: var(--cream);
             text-decoration: none;
@@ -85,7 +85,7 @@
         .nav-cta {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 11px;
+            font-size: 12px;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             background: var(--orange);
@@ -101,7 +101,7 @@
         .nav-auth-btn {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 10px;
+            font-size: 11px;
             letter-spacing: 0.16em;
             text-transform: uppercase;
             color: rgba(245,242,236,0.6);
@@ -118,8 +118,8 @@
         .nav-auth-btn:hover { border-color: var(--orange); color: var(--orange); }
         .nav-auth-btn.signed-in { border-color: var(--green); color: var(--green); }
         .nav-auth-inner { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-        .nav-auth-name { color: #F5F2EC; font-size: 10px; font-weight: 700; line-height: 1; }
-        .nav-auth-plan { color: var(--orange); font-size: 9px; letter-spacing: 0.18em; line-height: 1; }
+        .nav-auth-name { color: #F5F2EC; font-size: 11px; font-weight: 700; line-height: 1; }
+        .nav-auth-plan { color: var(--orange); font-size: 10px; letter-spacing: 0.18em; line-height: 1; }
 
         /* ── HERO ────────────────────────────────────────────── */
         .hero {
@@ -187,8 +187,8 @@
         .hero-eyebrow {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 10px;
-            letter-spacing: 0.26em;
+            font-size: 12px;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
             color: var(--orange);
             margin-bottom: 18px;
@@ -197,7 +197,7 @@
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
             font-size: 80px;
-            line-height: 0.96;
+            line-height: 1.05;
             color: var(--cream);
             letter-spacing: -0.025em;
         }
@@ -205,7 +205,7 @@
         .hero-sub {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 17px;
             color: rgba(245,242,236,0.68);
             max-width: 400px;
             line-height: 1.72;
@@ -320,10 +320,10 @@
         .ps-desc {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
-            font-size: 12px;
+            font-size: 14px;
             color: var(--dust);
             margin-top: 4px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         .ps-cell.dim .ps-desc { color: var(--fog); }
 
@@ -414,16 +414,16 @@
         .prod-desc {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
-            font-size: 13px;
+            font-size: 15px;
             color: var(--dust);
             margin-top: 16px;
-            line-height: 1.65;
+            line-height: 1.7;
         }
         .prod-card.dim .prod-desc { color: var(--fog); }
         .prod-cta {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 11px;
+            font-size: 12px;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             color: var(--orange);
@@ -510,6 +510,10 @@
             cursor: pointer;
             margin-top: 32px;
             width: fit-content;
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .pricing-fine {
             font-family: 'DM Sans', sans-serif;
@@ -558,15 +562,15 @@
         .feat-tag {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
-            font-size: 12px;
+            font-size: 13px;
             color: var(--dust);
             margin-top: 2px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         .feat-badge {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 8px;
+            font-size: 10px;
             letter-spacing: 0.16em;
             text-transform: uppercase;
             padding: 3px 8px;
@@ -588,8 +592,8 @@
         .intel-cat {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 800;
-            font-size: 10px;
-            letter-spacing: 0.18em;
+            font-size: 11px;
+            letter-spacing: 0.14em;
             color: var(--orange);
             width: 130px;
             flex-shrink: 0;
@@ -598,7 +602,7 @@
         .intel-title {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--cream);
             width: 210px;
             flex-shrink: 0;
@@ -606,7 +610,7 @@
         .intel-desc {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--dust);
             flex: 1;
             line-height: 1.6;
@@ -624,13 +628,13 @@
             font-size: 30px;
             color: var(--cream);
             max-width: 660px;
-            line-height: 1.42;
+            line-height: 1.5;
             letter-spacing: -0.01em;
         }
         .statement-body {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
-            font-size: 15px;
+            font-size: 16px;
             color: var(--dust);
             max-width: 480px;
             margin-top: 20px;
@@ -639,13 +643,14 @@
         .statement-cta {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 11px;
+            font-size: 13px;
             letter-spacing: 0.16em;
             text-transform: uppercase;
             color: var(--orange);
             margin-top: 36px;
             display: inline-block;
             text-decoration: none;
+            padding: 10px 16px;
         }
         .statement-cta:hover { color: #f06d22; }
 
@@ -701,8 +706,9 @@
         .foot-copy {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
-            font-size: 11px;
+            font-size: 12px;
             color: var(--fog);
+            line-height: 1.5;
         }
         .foot-r {
             font-family: 'Barlow Condensed', sans-serif;
@@ -770,7 +776,7 @@
         .signup-subhead {
             font-family: 'DM Sans', sans-serif;
             font-weight: 300;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--dust);
             margin-bottom: 32px;
             line-height: 1.5;
@@ -778,8 +784,8 @@
         .signup-label {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
-            font-size: 10px;
-            letter-spacing: 0.18em;
+            font-size: 11px;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
             color: var(--dust);
             margin-bottom: 8px;
@@ -868,8 +874,8 @@
         }
 
         .acct-section-label {
-            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:10px;
-            letter-spacing:0.18em; text-transform:uppercase; color:var(--orange);
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px;
+            letter-spacing:0.14em; text-transform:uppercase; color:var(--orange);
             margin-bottom:16px; padding-left:14px; position:relative;
         }
         .acct-section-label::before {
@@ -883,7 +889,7 @@
         }
         .acct-row:last-child { border-bottom:none; }
         .acct-row-label {
-            font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px;
+            font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:14px;
             text-transform:uppercase; letter-spacing:0.06em; color:var(--dust);
         }
         .acct-row-value {
@@ -950,7 +956,7 @@
 
         .acct-forgot-link {
             display:block; text-align:right; margin-top:-8px; margin-bottom:12px;
-            font-family:'DM Sans',sans-serif; font-size:12px; color:var(--dust);
+            font-family:'DM Sans',sans-serif; font-size:11px; color:var(--dust);
             text-decoration:none; cursor:pointer; transition: color 0.2s;
         }
         .acct-forgot-link:hover { color: var(--orange); }
@@ -1052,6 +1058,9 @@
             .intel-row { flex-direction: column; gap: 6px; }
             .intel-cat { width: auto; }
             .intel-title { width: auto; }
+            .sec-p { font-size: 15px; }
+            .prod-desc { font-size: 15px; }
+            .statement-body { font-size: 15px; }
         }
 
         /* Mobile */
@@ -1067,17 +1076,18 @@
             nav { padding: 0 20px; height: 52px; }
             .nav-logo { font-size: 18px; }
             .nav-right { gap: 10px; }
-            .nav-cta { padding: 8px 14px; font-size: 10px; }
-            .nav-auth-btn { padding: 6px 10px; font-size: 9px; }
+            .nav-cta { padding: 10px 18px; font-size: 12px; }
+            .nav-auth-btn { padding: 8px 14px; font-size: 11px; }
             .nav-hq { font-size: 11px; }
 
             /* Hero */
             .hero { height: 100svh; }
             .hero-badge { left: 20px; top: 72px; }
             .hero-content { left: 20px; right: 20px; bottom: 72px; max-width: none; }
-            .hero-headline { font-size: 42px; line-height: 1.02; }
-            .hero-sub { font-size: 14px; max-width: none; }
-            .hero-cta-btn { padding: 14px 28px; font-size: 12px; width: 100%; text-align: center; }
+            .hero-headline { font-size: 44px; line-height: 1.05; }
+            .hero-eyebrow { font-size: 11px; letter-spacing: 0.14em; }
+            .hero-sub { font-size: 16px; max-width: none; }
+            .hero-cta-btn { padding: 16px 28px; font-size: 12px; width: 100%; text-align: center; }
 
             /* Hero readouts — stack below hero text on mobile */
             .hero-readouts {
@@ -1102,31 +1112,35 @@
             .ps-cell:last-child { border-bottom: none; }
 
             /* Sections */
-            .section { padding: 56px 20px; }
-            .sec-h2 { font-size: 28px; }
-            .sec-p { font-size: 14px; }
+            .section { padding: 64px 20px; }
+            .sec-h2 { font-size: 30px; }
+            .sec-p { font-size: 16px; }
 
             /* Product cards */
             .prod-grid { grid-template-columns: 1fr; }
             .prod-card { padding: 32px 24px; }
-            .prod-name { font-size: 24px; }
+            .prod-name { font-size: 26px; }
+            .prod-desc { font-size: 15px; }
+            .prod-cta { font-size: 13px; padding: 10px 16px; display: inline-block; }
 
             /* Pricing */
-            .pricing-section { padding: 56px 20px; }
+            .pricing-section { padding: 64px 20px; }
             .pricing-inner { grid-template-columns: 1fr; max-width: none; }
             .pricing-left { padding: 36px 24px; }
             .pricing-right { padding: 36px 24px; }
             .pricing-dollar { font-size: 64px; }
+            .pricing-cta { width: 100%; text-align: center; padding: 16px 28px; }
 
             /* Intel rows */
             .intel-row { flex-direction: column; gap: 4px; }
             .intel-cat { width: auto; }
             .intel-title { width: auto; }
+            .intel-desc { font-size: 14px; line-height: 1.7; }
 
             /* Statement */
-            .statement-section { padding: 60px 20px 56px; }
-            .statement-quote { font-size: 22px; }
-            .statement-body { font-size: 14px; }
+            .statement-section { padding: 72px 20px 56px; }
+            .statement-quote { font-size: 24px; }
+            .statement-body { font-size: 16px; }
             .route-svg { height: 100px; }
 
             /* Footer */
@@ -1135,7 +1149,9 @@
 
             /* Signup view */
             .signup-inner { padding: 32px 20px; }
-            .signup-heading { font-size: 26px; }
+            .signup-heading { font-size: 26px; line-height: 1.2; }
+            .signup-label { font-size: 12px; letter-spacing: 0.12em; }
+            .signup-subhead { font-size: 15px; }
             .signup-back { left: 20px; top: 16px; }
         }
 
