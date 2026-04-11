@@ -955,6 +955,82 @@
         }
         .acct-forgot-link:hover { color: var(--orange); }
 
+        /* ── Recovery Password Modal ──────────────────────────── */
+        .recovery-overlay {
+            position:fixed; inset:0;
+            background:rgba(0,0,0,0.65);
+            z-index:1001;
+            transition: opacity 0.25s;
+        }
+        .recovery-modal {
+            position:fixed; top:50%; left:50%;
+            transform:translate(-50%,-50%);
+            z-index:1002;
+            width:380px; max-width:90vw;
+            background:#1A1917;
+            border-radius:12px;
+            overflow:hidden;
+            font-family:'DM Sans',sans-serif;
+        }
+        .recovery-panel-stripe {
+            height:4px;
+            background:linear-gradient(90deg, #1A2B5E, #1E5FA8, #D4621A, #1E5FA8, #1A2B5E);
+        }
+        .recovery-panel-head {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:20px 24px 0;
+        }
+        .recovery-panel-title {
+            font-family:'Barlow Condensed',sans-serif;
+            font-weight:700; font-size:18px;
+            text-transform:uppercase; letter-spacing:0.08em;
+            color:#F7F6F3;
+        }
+        .recovery-panel-close {
+            background:none; border:none; color:#6B6966;
+            font-size:22px; cursor:pointer; padding:0; line-height:1;
+        }
+        .recovery-panel-close:hover { color:#F7F6F3; }
+        .recovery-panel-body { padding:20px 24px 28px; }
+        .recovery-field { margin-bottom:16px; }
+        .recovery-field label {
+            display:block; margin-bottom:6px;
+            font-family:'Barlow Condensed',sans-serif;
+            font-weight:600; font-size:11px;
+            text-transform:uppercase; letter-spacing:0.1em;
+            color:#9B9890;
+        }
+        .recovery-field input {
+            width:100%; padding:10px 14px;
+            background:#0E0D0C; border:1px solid #2A2926;
+            border-radius:6px; color:#F7F6F3;
+            font-family:'DM Sans',sans-serif; font-size:14px;
+            outline:none; transition: border-color 0.2s;
+        }
+        .recovery-field input:focus { border-color:#D4621A; }
+        .recovery-msg {
+            font-size:12px; min-height:18px; margin-bottom:12px;
+            color:#e04040;
+        }
+        .recovery-submit {
+            width:100%; padding:12px;
+            background:#D4621A; border:none; border-radius:6px;
+            font-family:'Barlow Condensed',sans-serif;
+            font-weight:700; font-size:14px;
+            text-transform:uppercase; letter-spacing:0.08em;
+            color:#fff; cursor:pointer;
+            transition: background 0.2s;
+        }
+        .recovery-submit:hover { background:#e0732a; }
+        .recovery-submit:disabled { opacity:0.6; cursor:not-allowed; }
+        .recovery-success-message {
+            text-align:center; font-size:18px; color:#3CB87A;
+            margin-bottom:8px; font-weight:600;
+        }
+        .recovery-success-note {
+            text-align:center; font-size:13px; color:#9B9890;
+        }
+
         /* ── Responsive ──────────────────────────────────────────── */
 
         /* Tablet */
@@ -1574,6 +1650,34 @@
     </div>
 </div>
 
+<!-- ── Recovery Password Modal ──────────────────────────────────────── -->
+<div id="recovery-overlay" class="recovery-overlay" style="display:none;" onclick="closeRecoveryModal()"></div>
+<div id="recovery-modal" class="recovery-modal" style="display:none;">
+    <div class="recovery-panel-stripe"></div>
+    <div class="recovery-panel-head">
+        <span class="recovery-panel-title">Set New Password</span>
+        <button class="recovery-panel-close" onclick="closeRecoveryModal()">&times;</button>
+    </div>
+    <div class="recovery-panel-body">
+        <div id="recovery-form">
+            <div class="recovery-field">
+                <label>New Password</label>
+                <input type="password" id="recovery-password" placeholder="8+ characters" autocomplete="new-password" />
+            </div>
+            <div class="recovery-field">
+                <label>Confirm Password</label>
+                <input type="password" id="recovery-confirm" placeholder="Confirm your password" autocomplete="new-password" />
+            </div>
+            <div id="recovery-msg" class="recovery-msg"></div>
+            <button class="recovery-submit" id="recovery-btn" onclick="submitRecoveryPassword()">Save Password</button>
+        </div>
+        <div id="recovery-success" style="display:none;">
+            <div class="recovery-success-message">&#10003; Password updated successfully!</div>
+            <div class="recovery-success-note">You can now sign in with your new password.</div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 // ─── HERO PHOTO — Wilderness terrain photography ─────────────────────
@@ -1841,16 +1945,26 @@ observer.observe(routeGraphic);
   try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); }
   catch(e) { console.warn('Supabase SDK not loaded'); return; }
 
-  // ── Handle OAuth / email-confirmation redirect (access_token in hash) ──
+  // ── Handle OAuth / email-confirmation / recovery redirect (access_token in hash) ──
   const hash = window.location.hash;
   if (hash && hash.includes('access_token=')) {
     const hashParams = new URLSearchParams(hash.substring(1));
     const accessToken = hashParams.get('access_token');
     const refreshToken = hashParams.get('refresh_token');
+    const tokenType = hashParams.get('type');
     if (accessToken && refreshToken) {
-      await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
-      // Clean hash and land on account page
-      history.replaceState(null, '', '?view=account');
+      // Check if this is a password recovery flow
+      if (tokenType === 'recovery') {
+        await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        window._p9iRecoverySb = sb;
+        history.replaceState(null, '', window.location.pathname);
+        showRecoveryModal();
+        // Don't proceed with normal login routing
+      } else {
+        await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        // Clean hash and land on account page
+        history.replaceState(null, '', '?view=account');
+      }
     }
   }
 
@@ -2204,6 +2318,81 @@ observer.observe(routeGraphic);
   });
 
 })();
+
+// ── Recovery Password Modal Functions ──────────────────────────────
+function showRecoveryModal() {
+  document.getElementById('recovery-overlay').style.display = 'block';
+  document.getElementById('recovery-modal').style.display = 'block';
+  document.getElementById('recovery-form').style.display = 'block';
+  document.getElementById('recovery-success').style.display = 'none';
+  document.getElementById('recovery-password').value = '';
+  document.getElementById('recovery-confirm').value = '';
+  document.getElementById('recovery-msg').textContent = '';
+  document.getElementById('recovery-password').focus();
+}
+
+function closeRecoveryModal() {
+  document.getElementById('recovery-overlay').style.display = 'none';
+  document.getElementById('recovery-modal').style.display = 'none';
+  window._p9iRecoverySb = null;
+}
+
+async function submitRecoveryPassword() {
+  const pw = document.getElementById('recovery-password').value;
+  const confirm = document.getElementById('recovery-confirm').value;
+  const msg = document.getElementById('recovery-msg');
+  const btn = document.getElementById('recovery-btn');
+
+  msg.textContent = '';
+
+  if (!pw || pw.length < 8) {
+    msg.textContent = 'Password must be at least 8 characters.';
+    return;
+  }
+  if (pw !== confirm) {
+    msg.textContent = 'Passwords do not match.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  try {
+    const sb = window._p9iRecoverySb;
+    if (!sb) {
+      msg.textContent = 'Session expired — please request a new reset link.';
+      btn.disabled = false;
+      btn.textContent = 'Save Password';
+      return;
+    }
+
+    const { error } = await sb.auth.updateUser({ password: pw });
+    if (error) {
+      msg.textContent = error.message || 'Could not update password.';
+      btn.disabled = false;
+      btn.textContent = 'Save Password';
+    } else {
+      document.getElementById('recovery-form').style.display = 'none';
+      document.getElementById('recovery-success').style.display = 'block';
+      setTimeout(function() {
+        closeRecoveryModal();
+        window.location.href = '/?view=account';
+      }, 2500);
+    }
+  } catch(e) {
+    msg.textContent = 'Network error — please try again.';
+    btn.disabled = false;
+    btn.textContent = 'Save Password';
+  }
+}
+
+// Enter key support for recovery modal
+document.getElementById('recovery-confirm')?.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') submitRecoveryPassword();
+});
+document.getElementById('recovery-password')?.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('recovery-confirm').focus();
+});
 
 // Update nav based on auth state
 (async function() {
