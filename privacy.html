@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Project 9 Industries</title>
+<meta name="description" content="Privacy Policy for Project 9 Industries. How we collect, use, and protect your personal information.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://project9ind.com/privacy.html">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Barlow:wght@300;400;500&family=Libre+Baskerville:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0E0D0C;
+    color: #F7F6F3;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .racing-stripe { display: flex; width: 100%; }
+  .racing-stripe.thick div { height: 6px; }
+  .racing-stripe.thin div { height: 4px; }
+  .band-navy { background: #1A2B5E; flex: 1; }
+  .band-cobalt { background: #1E5FA8; flex: 1; }
+  .band-orange { background: #D4621A; flex: 1; }
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .wordmark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: 0.08em;
+    color: #F7F6F3;
+    text-decoration: none;
+  }
+  .wordmark span { color: #D4621A; }
+  .header-divider { width: 1px; height: 32px; background: #2A2926; }
+  .header-subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6B6966;
+    line-height: 1.5;
+  }
+  .header-nav { display: flex; gap: 24px; }
+  .header-nav a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9B9890;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .header-nav a:hover, .header-nav a.active { color: #D4621A; }
+
+  .page-hero {
+    padding: 48px 48px 32px;
+    max-width: 820px;
+  }
+  .page-hero .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #D4621A;
+    margin-bottom: 8px;
+  }
+  .page-hero h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+    font-size: 32px;
+    color: #F7F6F3;
+    margin-bottom: 8px;
+  }
+  .page-hero .effective-date {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #6B6966;
+  }
+
+  .legal-content {
+    max-width: 820px;
+    padding: 0 48px 80px;
+  }
+  .legal-content h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #F7F6F3;
+    margin: 48px 0 8px;
+    padding-top: 24px;
+    border-top: 1px solid #1A1917;
+  }
+  .legal-content h2::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    background: #D4621A;
+    margin-right: 10px;
+    vertical-align: middle;
+    border-radius: 1px;
+  }
+  .legal-content h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #9B9890;
+    margin: 24px 0 6px;
+  }
+  .legal-content p {
+    color: #9B9288;
+    margin-bottom: 12px;
+  }
+  .legal-content strong { color: #F7F6F3; font-weight: 500; }
+  .legal-content a { color: #1E5FA8; text-decoration: none; }
+  .legal-content a:hover { text-decoration: underline; }
+  .legal-content ul, .legal-content ol {
+    color: #9B9288;
+    margin: 8px 0 16px 24px;
+  }
+  .legal-content li { margin-bottom: 6px; }
+  .legal-content .highlight-box {
+    background: #1A1917;
+    border-left: 3px solid #D4621A;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 2px;
+  }
+  .legal-content .highlight-box p { color: #F7F6F3; margin-bottom: 0; }
+
+  /* Data table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 14px;
+  }
+  .data-table th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #D4621A;
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #2A2926;
+    background: #1A1917;
+  }
+  .data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #1A1917;
+    color: #9B9288;
+    vertical-align: top;
+  }
+  .data-table td strong { color: #F7F6F3; }
+
+  .toc {
+    background: #1A1917;
+    border: 1px solid #2A2926;
+    border-radius: 3px;
+    padding: 24px 28px;
+    margin: 24px 0 40px;
+  }
+  .toc-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #D4621A;
+    margin-bottom: 12px;
+  }
+  .toc ol { margin: 0; padding-left: 20px; }
+  .toc li { margin-bottom: 4px; }
+  .toc a {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #9B9890;
+    text-decoration: none;
+  }
+  .toc a:hover { color: #1E5FA8; }
+
+  .site-footer {
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6B6966;
+  }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6B6966;
+    text-decoration: none;
+  }
+  .footer-links a:hover { color: #D4621A; }
+
+  @media (max-width: 768px) {
+    .site-header, .page-hero, .legal-content, .site-footer { padding-left: 24px; padding-right: 24px; }
+    .page-hero h1 { font-size: 24px; }
+    .site-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .site-footer { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .data-table { font-size: 12px; }
+    .data-table th, .data-table td { padding: 8px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Racing Stripe -->
+<div class="racing-stripe thick">
+  <div class="band-navy"></div><div class="band-cobalt"></div><div class="band-orange"></div><div class="band-cobalt"></div><div class="band-navy"></div>
+</div>
+
+<!-- Header -->
+<div class="site-header">
+  <div class="header-left">
+    <a href="https://project9ind.com" class="wordmark">PROJ<span>9</span></a>
+    <div class="header-divider"></div>
+    <div class="header-subtitle">Project 9 Industries<br>Adventure Intelligence</div>
+  </div>
+  <div class="header-nav">
+    <a href="https://project9ind.com">Home</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html" class="active">Privacy</a>
+  </div>
+</div>
+
+<!-- Thin Racing Stripe -->
+<div class="racing-stripe thin">
+  <div class="band-navy"></div><div class="band-cobalt"></div><div class="band-orange"></div><div class="band-cobalt"></div><div class="band-navy"></div>
+</div>
+
+<!-- Hero -->
+<div class="page-hero">
+  <div class="eyebrow">Legal</div>
+  <h1>Privacy Policy</h1>
+  <div class="effective-date">Effective Date: April 12, 2026 &mdash; Last Updated: April 12, 2026</div>
+</div>
+
+<!-- Content -->
+<div class="legal-content">
+
+  <div class="toc">
+    <div class="toc-title">Table of Contents</div>
+    <ol>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#collect">Information We Collect</a></li>
+      <li><a href="#use">How We Use Your Information</a></li>
+      <li><a href="#share">How We Share Your Information</a></li>
+      <li><a href="#retention">Data Retention</a></li>
+      <li><a href="#ccpa">Your Privacy Rights (California / CCPA)</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#cookies">Cookies and Tracking</a></li>
+      <li><a href="#third-party">Third-Party Services</a></li>
+      <li><a href="#international">International Users</a></li>
+      <li><a href="#children">Children's Privacy</a></li>
+      <li><a href="#dnt">Do Not Track</a></li>
+      <li><a href="#changes">Changes to This Policy</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2 id="intro">1. Introduction</h2>
+  <p>Project 9 Industries ("we," "us," "our," or "Company") respects your privacy and is committed to transparency about how we collect, use, and protect your personal information. This Privacy Policy explains our data practices for the Project 9 Industries website (<a href="https://project9ind.com">project9ind.com</a>), the HQ Adventure Intelligence application (<a href="https://hq.project9ind.com">hq.project9ind.com</a>), and any related services or applications we operate (collectively, the "Services").</p>
+  <p>Project 9 Industries is a sole proprietorship based in California.</p>
+  <p>By using our Services, you consent to the data practices described in this Privacy Policy. If you do not agree with this policy, please do not use our Services.</p>
+
+  <div class="highlight-box">
+    <p><strong>The short version:</strong> We collect only what we need to provide your adventure intelligence Briefings and manage your account. We do not sell your data. We do not share it with advertisers. Your payment information is handled entirely by Stripe and never touches our servers.</p>
+  </div>
+
+  <!-- 2 -->
+  <h2 id="collect">2. Information We Collect</h2>
+
+  <h3>2.1 Information You Provide Directly</h3>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Category</th><th>Data Collected</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Account Registration</strong></td>
+        <td>Email address, name, password (encrypted)</td>
+        <td>Create and manage your account</td>
+      </tr>
+      <tr>
+        <td><strong>Subscription &amp; Billing</strong></td>
+        <td>Subscription plan, billing frequency, payment transaction history</td>
+        <td>Process payments and manage your subscription</td>
+      </tr>
+      <tr>
+        <td><strong>Payment Method</strong></td>
+        <td>Credit/debit card details (processed by Stripe; we never store full card numbers)</td>
+        <td>Charge your subscription</td>
+      </tr>
+      <tr>
+        <td><strong>Briefing Requests</strong></td>
+        <td>Trip destinations, dates, activity interests, vehicle type, group size, accessibility needs, and other preferences you enter</td>
+        <td>Generate personalized adventure intelligence Briefings</td>
+      </tr>
+      <tr>
+        <td><strong>Communications</strong></td>
+        <td>Emails and messages you send to us</td>
+        <td>Respond to inquiries and provide support</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>2.2 Information Collected Automatically</h3>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Category</th><th>Data Collected</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Log Data</strong></td>
+        <td>IP address, browser type, operating system, pages visited, referring URL, date/time of access</td>
+        <td>Security monitoring, service improvement</td>
+      </tr>
+      <tr>
+        <td><strong>Usage Analytics</strong></td>
+        <td>Features used, Briefings generated, device type, screen resolution</td>
+        <td>Understand usage patterns and improve the product</td>
+      </tr>
+      <tr>
+        <td><strong>Cookies</strong></td>
+        <td>Authentication tokens, session cookies, preference cookies</td>
+        <td>Keep you logged in and remember settings</td>
+      </tr>
+      <tr>
+        <td><strong>Approximate Location</strong></td>
+        <td>City/region level, derived from IP address</td>
+        <td>Analytics and content relevance</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>We do NOT collect GPS or precise device location</strong> unless you explicitly grant permission through your browser or device settings.</p>
+
+  <h3>2.3 Information from Third Parties</h3>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Source</th><th>Data Received</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Google OAuth</strong></td>
+        <td>Email, name, profile picture, Google user ID</td>
+        <td>Account creation and sign-in</td>
+      </tr>
+      <tr>
+        <td><strong>Stripe</strong></td>
+        <td>Transaction confirmation, subscription status</td>
+        <td>Payment processing</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 3 -->
+  <h2 id="use">3. How We Use Your Information</h2>
+  <p>We use the information we collect for the following purposes:</p>
+  <ul>
+    <li><strong>Providing Services:</strong> Creating your account, generating Briefings, processing payments, sending transactional emails (confirmations, billing, password resets), and responding to support inquiries</li>
+    <li><strong>Service Improvement:</strong> Analyzing usage patterns to improve Briefing quality, identifying bugs, optimizing performance, and understanding which features are most valuable</li>
+    <li><strong>Communication:</strong> Sending renewal reminders, billing notifications, security alerts, policy change notices, and service announcements</li>
+    <li><strong>Legal and Safety:</strong> Complying with legal obligations, protecting against fraud, enforcing our Terms of Service, and defending legal claims</li>
+  </ul>
+
+  <div class="highlight-box">
+    <p><strong>What we do NOT do:</strong> We do not send marketing emails without your consent. We do not sell your email or data to third parties. We do not share your browsing data with advertisers. We do not use your data for behavioral advertising or profiling for ad targeting.</p>
+  </div>
+
+  <!-- 4 -->
+  <h2 id="share">4. How We Share Your Information</h2>
+
+  <h3>4.1 We Do Not Sell Your Data</h3>
+  <p>We do <strong>not</strong> sell, rent, lease, or trade your personal information to third parties for monetary consideration or for marketing, advertising, or profiling purposes. This applies under the California Consumer Privacy Act (CCPA), the California Privacy Rights Act (CPRA), and all other applicable law.</p>
+
+  <h3>4.2 Service Providers</h3>
+  <p>We share information with the following third-party service providers who process data on our behalf to deliver the Services. Each operates under contractual obligations to handle your data securely and confidentially:</p>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Provider</th><th>Purpose</th><th>Data Shared</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Stripe</strong></td>
+        <td>Payment processing</td>
+        <td>Payment method, billing address, transaction amounts</td>
+      </tr>
+      <tr>
+        <td><strong>Supabase</strong></td>
+        <td>Authentication and database</td>
+        <td>Email, name, profile data, Briefing preferences, usage logs. Your data is stored on Supabase servers in the United States (us-west-1, North California).</td>
+      </tr>
+      <tr>
+        <td><strong>Anthropic (Claude API)</strong></td>
+        <td>Briefing generation</td>
+        <td>Trip preferences and queries (to generate Briefings). Anthropic may use prompts and outputs to improve its services, as described in <a href="https://www.anthropic.com/legal/privacy">Anthropic's Privacy Policy</a>.</td>
+      </tr>
+      <tr>
+        <td><strong>Resend</strong></td>
+        <td>Transactional email delivery</td>
+        <td>Email address (for sending account-related emails)</td>
+      </tr>
+      <tr>
+        <td><strong>Netlify</strong></td>
+        <td>Website hosting and analytics</td>
+        <td>IP address, page views, device type (analytics)</td>
+      </tr>
+      <tr>
+        <td><strong>OpenWeather</strong></td>
+        <td>Weather data for Briefings</td>
+        <td>Location queries (destination coordinates)</td>
+      </tr>
+      <tr>
+        <td><strong>National Park Service</strong></td>
+        <td>Park information for Briefings</td>
+        <td>Park interest queries</td>
+      </tr>
+      <tr>
+        <td><strong>Recreation.gov (RIDB)</strong></td>
+        <td>Campground data for Briefings</td>
+        <td>Recreation area queries</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>4.3 Legal Requirements</h3>
+  <p>We may disclose your information if required to do so by law, court order, or government request, or if we believe in good faith that disclosure is necessary to protect the rights, property, or safety of Project 9 Industries, our users, or the public. We will provide notice of legal requests where legally permitted.</p>
+
+  <h3>4.4 Business Transfers</h3>
+  <p>If Project 9 Industries is acquired, merges with another entity, or sells substantially all of its assets, your information may be transferred as part of that transaction. We will provide notice and obtain consent where required by law.</p>
+
+  <h3>4.5 Aggregate Data</h3>
+  <p>We may share aggregate or anonymized data that cannot reasonably be used to identify you, such as general usage statistics or trend analysis.</p>
+
+  <!-- 5 -->
+  <h2 id="retention">5. Data Retention</h2>
+
+  <h3>5.1 Active Accounts</h3>
+  <p>While your account is active, we retain your personal information, Briefing history, and usage data to provide and improve the Services.</p>
+
+  <h3>5.2 Account Deletion</h3>
+  <p>When you request account deletion:</p>
+  <ul>
+    <li>Personal information (email, name, password) is permanently deleted within <strong>30 days</strong></li>
+    <li>Generated Briefings are deleted upon request</li>
+    <li>Subscription and billing records are retained for <strong>7 years</strong> as required by tax and payment processing law</li>
+    <li>Usage logs are anonymized and may be retained for service improvement</li>
+  </ul>
+
+  <h3>5.3 Auto-Renewal Consent Records</h3>
+  <p>Per California law, we retain records of your consent to auto-renewal subscription terms for <strong>3 years</strong>, or 1 year after account termination, whichever is longer. These records include date, time, and IP address of consent.</p>
+
+  <h3>5.4 Backups</h3>
+  <p>Data may persist in backup systems for up to 90 days after deletion for disaster recovery purposes.</p>
+
+  <!-- 6 -->
+  <h2 id="ccpa">6. Your Privacy Rights (California / CCPA)</h2>
+  <p>If you are a California resident, you have the following rights under the California Consumer Privacy Act (CCPA) and the California Privacy Rights Act (CPRA):</p>
+
+  <h3>6.1 Right to Know</h3>
+  <p>You may request that we disclose the categories and specific pieces of personal information we have collected about you, the sources of that information, the purposes of collection, and the categories of third parties with whom we share it.</p>
+
+  <h3>6.2 Right to Delete</h3>
+  <p>You may request that we delete your personal information, subject to certain exceptions (e.g., data we must retain for tax, billing, or legal compliance). We will process deletion requests within <strong>45 days</strong> of verification.</p>
+
+  <h3>6.3 Right to Correct</h3>
+  <p>You may request correction of inaccurate personal information. We will process correction requests within <strong>45 days</strong> of verification.</p>
+
+  <h3>6.4 Right to Opt-Out of Sale or Sharing</h3>
+  <p>You have the right to opt out of the "sale" or "sharing" of your personal information. <strong>We do not sell or share your personal information for cross-context behavioral advertising.</strong> If our practices change, we will provide a "Do Not Sell or Share My Personal Information" link on our website.</p>
+
+  <h3>6.5 Right to Limit Use of Sensitive Information</h3>
+  <p>Project 9 Industries does not collect sensitive personal information as defined under the CPRA (Social Security numbers, financial account details, precise geolocation, health data, etc.).</p>
+
+  <h3>6.6 Right to Non-Discrimination</h3>
+  <p>We will not discriminate against you for exercising any of your privacy rights. We will not deny services, charge different prices, or provide lower quality service based on privacy requests.</p>
+
+  <h3>6.7 How to Submit a Request</h3>
+  <p>To exercise any of these rights, contact us:</p>
+  <ul>
+    <li><strong>Email:</strong> <a href="mailto:go@project9ind.com">go@project9ind.com</a> &mdash; include "Privacy Request" in the subject line along with your full name and the email associated with your account</li>
+    <li><strong>Account Settings:</strong> Log into your account to view and manage your data directly</li>
+  </ul>
+  <p>We will verify your identity by confirming your email and account access, and respond within <strong>45 days</strong>. If we need additional time, we will notify you by day 45 with an explanation.</p>
+
+  <h3>6.8 Right to Appeal</h3>
+  <p>If we deny your request, you may appeal by emailing <a href="mailto:go@project9ind.com">go@project9ind.com</a> with "Privacy Request Appeal" in the subject line. You may also file a complaint with the <a href="https://cppa.ca.gov">California Privacy Protection Agency</a> or the <a href="https://oag.ca.gov/privacy">California Attorney General</a>.</p>
+
+  <!-- 7 -->
+  <h2 id="security">7. Security</h2>
+
+  <h3>7.1 Measures We Take</h3>
+  <p>We implement industry-standard technical and organizational measures to protect your personal information, including:</p>
+  <ul>
+    <li>Encryption of all data in transit via SSL/TLS (HTTPS on all pages)</li>
+    <li>Secure password hashing using industry-standard algorithms (via Supabase Auth)</li>
+    <li>Row-level security (RLS) on all database tables, ensuring users can only access their own data</li>
+    <li>API keys and secrets stored in secure environment variables, never committed to source code</li>
+    <li>Regular credential rotation</li>
+  </ul>
+
+  <h3>7.2 Payment Security</h3>
+  <p>Payment information is processed exclusively by <strong>Stripe</strong>, which is PCI-DSS Level 1 certified &mdash; the highest level of payment security compliance. We do not store, process, or have access to full credit card numbers.</p>
+
+  <h3>7.3 Limitations</h3>
+  <p>No system is 100% secure. While we use reasonable measures to protect your data, we cannot guarantee absolute security. Internet transmission is inherently subject to risk.</p>
+
+  <h3>7.4 Your Responsibility</h3>
+  <p>You are responsible for keeping your password confidential, not sharing your login credentials, logging out on shared devices, and reporting unauthorized access to us immediately.</p>
+
+  <h3>7.5 Breach Notification</h3>
+  <p>In the event of a data breach affecting your personal information, we will notify you by email without unreasonable delay, describe the nature of the breach and information affected, and comply with California's breach notification requirements (California Civil Code &sect; 1798.82).</p>
+
+  <!-- 8 -->
+  <h2 id="cookies">8. Cookies and Tracking</h2>
+
+  <h3>8.1 Essential Cookies</h3>
+  <p>We use essential cookies that are required for the Services to function properly. These include authentication tokens (to keep you logged in) and security tokens (to prevent cross-site attacks). These cookies cannot be disabled without breaking core functionality.</p>
+
+  <h3>8.2 Analytics</h3>
+  <p>Netlify, our hosting provider, may collect basic analytics data including page views, device type, and approximate geographic location (city level). This data is used solely for service improvement and is not sold to or shared with advertisers.</p>
+
+  <h3>8.3 Third-Party Cookies</h3>
+  <p>Third-party services may set their own cookies during authentication (Google OAuth) and payment processing (Stripe). These are governed by their respective privacy policies.</p>
+
+  <h3>8.4 Managing Cookies</h3>
+  <p>You can manage or disable cookies through your browser settings. Note that disabling essential cookies may affect your ability to log in and use the Services.</p>
+
+  <!-- 9 -->
+  <h2 id="third-party">9. Third-Party Services</h2>
+  <p>Our Services may contain links to third-party websites, applications, or resources (weather services, park websites, booking platforms, etc.). This Privacy Policy does not apply to those third-party services. We encourage you to review their privacy policies before providing any personal information.</p>
+  <p>Links to third-party sites do not constitute endorsement or warranty. We are not responsible for the privacy practices or content of external sites.</p>
+
+  <h3>Privacy Policies of Key Service Providers</h3>
+  <ul>
+    <li><a href="https://stripe.com/privacy">Stripe Privacy Policy</a></li>
+    <li><a href="https://supabase.com/privacy">Supabase Privacy Policy</a></li>
+    <li><a href="https://www.anthropic.com/legal/privacy">Anthropic Privacy Policy</a></li>
+    <li><a href="https://resend.com/legal/privacy-policy">Resend Privacy Policy</a></li>
+    <li><a href="https://www.netlify.com/privacy/">Netlify Privacy Policy</a></li>
+    <li><a href="https://policies.google.com/privacy">Google Privacy Policy</a></li>
+    <li><a href="https://openweathermap.org/privacy-policy">OpenWeather Privacy Policy</a></li>
+  </ul>
+
+  <!-- 10 -->
+  <h2 id="international">10. International Users</h2>
+  <p>Project 9 Industries is based in the United States. If you access our Services from outside the U.S., your information will be transferred to and processed in the United States. By using the Services, you consent to this transfer.</p>
+  <p>If you are located in the European Union or European Economic Area, we process your data under the following legal bases: contractual necessity (to provide the subscription services you requested), your consent (via account registration), legitimate interests (service improvement, fraud prevention, security), and legal obligation (tax, payment compliance). You may exercise your rights under the General Data Protection Regulation (GDPR) by contacting us at <a href="mailto:go@project9ind.com">go@project9ind.com</a>.</p>
+
+  <!-- 11 -->
+  <h2 id="children">11. Children's Privacy</h2>
+  <p>Project 9 Industries is not intended for anyone under the age of 16. We do not knowingly collect personal information from individuals under 16. If we become aware that we have collected information from someone under 16, we will promptly delete that information and terminate the associated account.</p>
+  <p>If you are a parent or guardian and believe your child has created an account, please contact us immediately at <a href="mailto:go@project9ind.com">go@project9ind.com</a>.</p>
+
+  <!-- 12 -->
+  <h2 id="dnt">12. Do Not Track</h2>
+  <p>Some browsers include a "Do Not Track" (DNT) feature that sends signals to websites. Project 9 Industries does not currently respond to DNT signals, as there is no industry-standard protocol for DNT compliance. We treat all users the same regardless of DNT settings. If you prefer not to be tracked by analytics, you may use your browser's private browsing mode or disable cookies.</p>
+
+  <!-- 13 -->
+  <h2 id="changes">13. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy to reflect changes in our practices, Services, or applicable law. When we make material changes, we will notify registered users by email at least <strong>30 days</strong> before the changes take effect and update the "Last Updated" date at the top of this page.</p>
+  <p>Your continued use of the Services after the effective date of changes constitutes acceptance of the updated policy. We encourage you to review this page periodically.</p>
+
+  <!-- 14 -->
+  <h2 id="contact">14. Contact Us</h2>
+  <p>If you have questions, concerns, or requests regarding this Privacy Policy or your personal data, please contact us:</p>
+  <p>
+    <strong>Project 9 Industries</strong><br>
+    Project 9 Industries<br>
+    Email: <a href="mailto:go@project9ind.com">go@project9ind.com</a><br>
+    Website: <a href="https://project9ind.com">project9ind.com</a>
+  </p>
+  <p>For privacy rights requests, include "Privacy Request" in your email subject line. We will respond within 10 business days for general inquiries, and within 45 days for formal CCPA/CPRA requests.</p>
+  <p>You may also file complaints with the <a href="https://cppa.ca.gov">California Privacy Protection Agency (CPPA)</a> or the <a href="https://oag.ca.gov/privacy">California Attorney General's Office</a>.</p>
+
+</div>
+
+<!-- Racing Stripe -->
+<div class="racing-stripe thin">
+  <div class="band-navy"></div><div class="band-cobalt"></div><div class="band-orange"></div><div class="band-cobalt"></div><div class="band-navy"></div>
+</div>
+
+<!-- Footer -->
+<div class="site-footer">
+  <div class="footer-left">&copy; 2026 Project 9 Industries</div>
+  <div class="footer-links">
+    <a href="https://project9ind.com">Home</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</div>
+
+<!-- Bottom Racing Stripe -->
+<div class="racing-stripe thick">
+  <div class="band-navy"></div><div class="band-cobalt"></div><div class="band-orange"></div><div class="band-cobalt"></div><div class="band-navy"></div>
+</div>
+
+</body>
+</html>
