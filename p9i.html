@@ -98,28 +98,16 @@
         }
         .nav-cta:hover { background: #f06d22; }
 
-        .nav-auth-btn {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 700;
-            font-size: 10px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: rgba(245,242,236,0.6);
-            border: 1px solid rgba(245,242,236,0.18);
-            padding: 8px 16px;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: border-color 0.2s, color 0.2s;
-            white-space: nowrap;
+        .nav-profile {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px;
+            border: 1.5px solid rgba(245,242,236,0.25);
+            border-radius: 50%;
+            transition: border-color 0.2s;
+            margin-left: 6px;
         }
-        .nav-auth-btn:hover { border-color: var(--orange); color: var(--orange); }
-        .nav-auth-btn.signed-in { border-color: var(--green); color: var(--green); }
-        .nav-auth-inner { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-        .nav-auth-name { color: #F5F2EC; font-size: 10px; font-weight: 700; line-height: 1; }
-        .nav-auth-plan { color: var(--orange); font-size: 9px; letter-spacing: 0.18em; line-height: 1; }
+        .nav-profile:hover { border-color: var(--orange); }
+        .nav-profile svg { display: block; }
 
         /* ── HERO ────────────────────────────────────────────── */
         .hero {
@@ -956,15 +944,104 @@
         .acct-forgot-link:hover { color: var(--orange); }
 
         /* ── Responsive ──────────────────────────────────────────── */
+
+        /* Tablet */
+        @media (max-width: 900px) {
+            nav { padding: 0 32px; }
+            .hero-badge { left: 32px; }
+            .hero-content { left: 32px; max-width: 480px; }
+            .hero-readouts { right: 32px; }
+            .hero-bar { padding: 0 32px; }
+            .section { padding: 72px 32px; }
+            .pricing-section { padding: 72px 32px; }
+            .statement-section { padding: 80px 32px 72px; }
+            footer { padding: 26px 32px; }
+            .prod-grid { grid-template-columns: 1fr; }
+            .prod-card { padding: 36px; }
+            .pricing-inner { grid-template-columns: 1fr; }
+            .pricing-left { padding: 40px 32px; }
+            .pricing-right { padding: 40px 32px; }
+            .intel-row { flex-direction: column; gap: 6px; }
+            .intel-cat { width: auto; }
+            .intel-title { width: auto; }
+        }
+
+        /* Mobile */
         @media (max-width: 640px) {
+            /* Account modal */
             .acct-container { padding: 70px 16px 40px; }
             .acct-card { padding: 20px; }
             .acct-logo { font-size: 24px; }
             .acct-row { font-size: 12px; }
             .acct-back { font-size: 11px; left: 16px; top: 16px; }
-            .nav-right { gap: 12px; }
+
+            /* Nav */
+            nav { padding: 0 20px; height: 52px; }
+            .nav-logo { font-size: 18px; }
+            .nav-right { gap: 10px; }
             .nav-cta { padding: 8px 14px; font-size: 10px; }
             .nav-auth-btn { padding: 6px 10px; font-size: 9px; }
+            .nav-hq { font-size: 11px; }
+
+            /* Hero */
+            .hero { height: 100svh; }
+            .hero-badge { left: 20px; top: 72px; }
+            .hero-content { left: 20px; right: 20px; bottom: 72px; max-width: none; }
+            .hero-headline { font-size: 42px; line-height: 1.02; }
+            .hero-sub { font-size: 14px; max-width: none; }
+            .hero-cta-btn { padding: 14px 28px; font-size: 12px; width: 100%; text-align: center; }
+
+            /* Hero readouts — hide on mobile to prevent overlap */
+            .hero-readouts { display: none; }
+
+            /* Hero bottom bar */
+            .hero-bar { padding: 0 20px; height: 40px; font-size: 7px; }
+            .act-dots { gap: 10px; }
+
+            /* Hero canvas code overlays — reduce opacity on mobile */
+            .hero-canvas { opacity: 0.3; }
+
+            /* Platform strip */
+            .platform-strip { grid-template-columns: 1fr; }
+            .ps-cell { padding: 20px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+            .ps-cell:last-child { border-bottom: none; }
+
+            /* Sections */
+            .section { padding: 56px 20px; }
+            .sec-h2 { font-size: 28px; }
+            .sec-p { font-size: 14px; }
+
+            /* Product cards */
+            .prod-grid { grid-template-columns: 1fr; }
+            .prod-card { padding: 32px 24px; }
+            .prod-name { font-size: 24px; }
+
+            /* Pricing */
+            .pricing-section { padding: 56px 20px; }
+            .pricing-inner { grid-template-columns: 1fr; max-width: none; }
+            .pricing-left { padding: 36px 24px; }
+            .pricing-right { padding: 36px 24px; }
+            .pricing-dollar { font-size: 64px; }
+
+            /* Intel rows */
+            .intel-row { flex-direction: column; gap: 4px; }
+            .intel-cat { width: auto; }
+            .intel-title { width: auto; }
+
+            /* Statement */
+            .statement-section { padding: 60px 20px 56px; }
+            .statement-quote { font-size: 22px; }
+            .statement-body { font-size: 14px; }
+            .route-svg { height: 100px; }
+
+            /* Footer */
+            footer { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
+            .foot-l { flex-direction: column; gap: 8px; }
+
+            /* Signup view */
+            .signup-inner { padding: 32px 20px; }
+            .signup-heading { font-size: 26px; }
+            .signup-back { left: 20px; top: 16px; }
         }
 
         .signup-divider {
@@ -1067,10 +1144,12 @@
         <a href="https://hq.project9ind.com" class="nav-hq">
             <span class="live-dot"></span>HQ
         </a>
-        <a href="?view=signup" class="nav-cta" id="navCta">Get Access →</a>
-        <a href="?view=signin" class="nav-auth-btn" id="navAuthBtn" title="Sign In">
-            <span id="navAuthIcon">◎</span>
-            <span id="navAuthLabel">Sign In</span>
+        <a href="?view=signup" class="nav-cta">Get Access →</a>
+        <a href="?view=account" class="nav-profile" id="navProfile" style="display:none;" title="Your Account">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F5F2EC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+            </svg>
         </a>
     </div>
 </nav>
@@ -1466,7 +1545,6 @@
             <button class="acct-manage-btn" id="acctManageBtn" style="display:none;" onclick="acctDoManageBilling()">
                 Manage Subscription →
             </button>
-            <a class="acct-forgot-link" id="acctResetPassword" style="display:block;text-align:center;margin-top:16px;cursor:pointer;">Reset Password</a>
             <button class="acct-signout-btn" id="acctSignoutBtn" onclick="acctDoSignOut()" style="margin-top:16px;">
                 Sign Out
             </button>
@@ -1735,6 +1813,34 @@ const observer = new IntersectionObserver((entries) => {
 observer.observe(routeGraphic);
 </script>
 
+<!-- ─── PASSWORD RECOVERY MODAL ──────────────────────────────── -->
+<div id="recoveryOverlay" style="display:none;position:fixed;inset:0;background:rgba(6,6,5,0.65);z-index:1001;transition:opacity 0.25s;" onclick="closeRecoveryModalMarketing()"></div>
+<div id="recoveryModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:420px;max-width:95vw;background:var(--surface);border:1px solid var(--border);border-radius:4px;z-index:1002;display:flex;flex-direction:column;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.8);">
+  <div style="height:3px;background:linear-gradient(to right,#0C1C4A 20%,#1248A0 40%,#E06018 50%,#1248A0 60%,#0C1C4A 80%);flex-shrink:0;"></div>
+  <div style="padding:18px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+    <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;letter-spacing:0.08em;text-transform:uppercase;color:var(--cream);">Set New Password</span>
+    <button style="background:none;border:none;color:var(--dust);font-size:22px;cursor:pointer;padding:2px 6px;line-height:1;transition:color 0.2s;" onmouseover="this.style.color='var(--cream)'" onmouseout="this.style.color='var(--dust)'" onclick="closeRecoveryModalMarketing()">×</button>
+  </div>
+  <div style="padding:22px 20px;flex:1;">
+    <div id="recoveryFormMarketing">
+      <div style="margin-bottom:14px;">
+        <label style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--dust);display:block;margin-bottom:5px;">New Password</label>
+        <input type="password" id="recoveryPasswordMarketing" placeholder="8+ characters" autocomplete="new-password" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 12px;outline:none;transition:border-color 0.2s;border-radius:2px;" />
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--dust);display:block;margin-bottom:5px;">Confirm Password</label>
+        <input type="password" id="recoveryConfirmMarketing" placeholder="Confirm your password" autocomplete="new-password" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 12px;outline:none;transition:border-color 0.2s;border-radius:2px;" />
+      </div>
+      <div id="recoveryMsgMarketing" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;padding:9px 12px;margin-bottom:14px;display:none;background:rgba(224,82,82,0.1);border:1px solid rgba(224,82,82,0.3);color:#E05252;"></div>
+      <button id="recoveryBtnMarketing" onclick="submitRecoveryPasswordMarketing()" style="width:100%;background:var(--orange);border:none;color:var(--bg);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;padding:13px;cursor:pointer;margin-top:4px;transition:opacity 0.2s;border-radius:2px;">Save Password</button>
+    </div>
+    <div id="recoverySuccessMarketing" style="display:none;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;color:#3CB87A;text-align:center;margin-bottom:8px;">✓ Password updated successfully!</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:var(--dust);text-align:center;">You can now sign in with your new password.</div>
+    </div>
+  </div>
+</div>
+
 <!-- ─── AUTH + SIGNUP VIEW ENGINE ─────────────────────────────────── -->
 <script>
 (async function() {
@@ -1751,10 +1857,20 @@ observer.observe(routeGraphic);
     const hashParams = new URLSearchParams(hash.substring(1));
     const accessToken = hashParams.get('access_token');
     const refreshToken = hashParams.get('refresh_token');
-    if (accessToken && refreshToken) {
-      await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
-      // Clean hash and land on account page
-      history.replaceState(null, '', '?view=account');
+    const type = hashParams.get('type');
+    if (accessToken) {
+      if (type === 'recovery') {
+        // Password recovery flow — show recovery modal
+        window.recoveryAccessTokenMarketing = accessToken;
+        showRecoveryModalMarketing();
+        // Clean hash but keep token
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      } else if (refreshToken) {
+        // Normal OAuth/signin flow
+        await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        // Clean hash and land on account page
+        history.replaceState(null, '', '?view=account');
+      }
     }
   }
 
@@ -1764,24 +1880,9 @@ observer.observe(routeGraphic);
   const accountView  = document.getElementById('accountView');
 
   // ── View routing ──
-  async function checkRoute() {
+  function checkRoute() {
     const params = new URLSearchParams(window.location.search);
     const view   = params.get('view');
-
-    // If signed-in user hits signup/signin, bounce to account
-    if (view === 'signup' || view === 'signin') {
-      try {
-        const { data } = await sb.auth.getSession();
-        if (data?.session) {
-          history.replaceState(null, '', '?view=account');
-          signupView.classList.remove('active');
-          accountView.classList.add('active');
-          populateAccount(data.session);
-          return;
-        }
-      } catch(e) {}
-    }
-
     if (view === 'account') {
       signupView.classList.remove('active');
       accountView.classList.add('active');
@@ -1859,7 +1960,7 @@ observer.observe(routeGraphic);
       errEl.textContent = error.message;
     } else if (data.user && !data.session) {
       // Email confirmation required
-      okEl.textContent = 'Check your email to confirm your account — once confirmed, sign in to access your P9I dashboard and start your first brief.';
+      okEl.textContent = 'Check your email to confirm your account, then head to HQ to start your first brief.';
       okEl.style.display = 'block';
     } else if (data.session) {
       // Auto-confirmed — redirect to account page
@@ -1934,10 +2035,6 @@ observer.observe(routeGraphic);
     document.getElementById('acctMemberSince').textContent = created.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     const provider = user.app_metadata?.provider || 'email';
     document.getElementById('acctAuthMethod').textContent = provider === 'google' ? 'Google' : 'Email';
-
-    // Hide reset password for Google OAuth users (no password to reset)
-    const resetLink = document.getElementById('acctResetPassword');
-    if (resetLink) resetLink.style.display = provider === 'google' ? 'none' : 'block';
 
     // Plan
     const { data: userData } = await sb.from('users').select('plan, is_founding_member').eq('id', user.id).single();
@@ -2027,24 +2124,11 @@ observer.observe(routeGraphic);
 
   window.acctDoSignOut = async function() {
     await sb.auth.signOut();
-    // Reset nav auth button to signed-out state
-    const authBtn = document.getElementById('navAuthBtn');
-    if (authBtn) {
-      authBtn.href = '?view=signin';
-      authBtn.title = 'Sign In';
-      authBtn.classList.remove('signed-in');
-      const icon = document.getElementById('navAuthIcon');
-      if (icon) icon.textContent = '◎';
-      const label = document.getElementById('navAuthLabel');
-      if (label) label.textContent = 'Sign In';
-    }
-    const navCta = document.getElementById('navCta');
-    if (navCta) { navCta.href = '?view=signup'; navCta.textContent = 'Get Access →'; }
     history.replaceState(null, '', '/');
     accountView.classList.remove('active');
   };
 
-  // ── Forgot Password (sign-in form) ──
+  // ── Forgot Password ──
   document.getElementById('forgotPasswordLink').addEventListener('click', async function() {
     const email = document.getElementById('signinEmail').value.trim();
     const errEl = document.getElementById('signinError');
@@ -2059,31 +2143,6 @@ observer.observe(routeGraphic);
       okEl.style.cssText = 'color:#3CB87A;font-size:13px;margin-top:8px;';
       okEl.textContent = 'Password reset email sent! Check your inbox.';
       this.parentElement.insertBefore(okEl, this.nextSibling);
-    }
-  });
-
-  // ── Reset Password (account page) ──
-  document.getElementById('acctResetPassword').addEventListener('click', async function() {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) return;
-    const email = session.user.email;
-    this.textContent = 'Sending…';
-    this.style.pointerEvents = 'none';
-    const { error } = await sb.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://project9ind.com/?view=account'
-    });
-    if (error) {
-      this.textContent = error.message;
-      this.style.color = '#e04040';
-      this.style.pointerEvents = 'auto';
-    } else {
-      this.textContent = 'Reset email sent — check your inbox';
-      this.style.color = '#3CB87A';
-      setTimeout(() => {
-        this.textContent = 'Reset Password';
-        this.style.color = '';
-        this.style.pointerEvents = 'auto';
-      }, 4000);
     }
   });
 
@@ -2109,45 +2168,131 @@ observer.observe(routeGraphic);
 
 })();
 
-// Update nav based on auth state
+// ── Password Recovery Modal Functions ──
+window.showRecoveryModalMarketing = function() {
+  const overlay = document.getElementById('recoveryOverlay');
+  const modal = document.getElementById('recoveryModal');
+  if (overlay && modal) {
+    overlay.style.display = 'block';
+    modal.style.display = 'flex';
+    setTimeout(() => {
+      const pwInput = document.getElementById('recoveryPasswordMarketing');
+      if (pwInput) pwInput.focus();
+    }, 100);
+  }
+};
+
+window.closeRecoveryModalMarketing = function() {
+  const overlay = document.getElementById('recoveryOverlay');
+  const modal = document.getElementById('recoveryModal');
+  if (overlay && modal) {
+    overlay.style.display = 'none';
+    modal.style.display = 'none';
+  }
+  window.recoveryAccessTokenMarketing = null;
+};
+
+window.submitRecoveryPasswordMarketing = async function() {
+  const pw = document.getElementById('recoveryPasswordMarketing')?.value || '';
+  const confirm = document.getElementById('recoveryConfirmMarketing')?.value || '';
+  const msgEl = document.getElementById('recoveryMsgMarketing');
+  const btn = document.getElementById('recoveryBtnMarketing');
+
+  msgEl.textContent = '';
+  msgEl.style.display = 'none';
+
+  // Validate
+  if (!pw || !confirm) {
+    msgEl.textContent = 'Both fields are required.';
+    msgEl.style.display = 'block';
+    return;
+  }
+  if (pw.length < 8) {
+    msgEl.textContent = 'Password must be at least 8 characters.';
+    msgEl.style.display = 'block';
+    return;
+  }
+  if (pw !== confirm) {
+    msgEl.textContent = 'Passwords do not match.';
+    msgEl.style.display = 'block';
+    return;
+  }
+
+  if (!window.recoveryAccessTokenMarketing) {
+    msgEl.textContent = 'Recovery token expired. Please request a new password reset.';
+    msgEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    // Get the sb client
+    const sbMarketing = window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co', 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8');
+
+    // Set session with recovery token
+    await sbMarketing.auth.setSession({
+      access_token: window.recoveryAccessTokenMarketing,
+      refresh_token: null
+    });
+
+    // Update password
+    const { error } = await sbMarketing.auth.updateUser({ password: pw });
+
+    if (!error) {
+      // Show success state
+      document.getElementById('recoveryFormMarketing').style.display = 'none';
+      const successEl = document.getElementById('recoverySuccessMarketing');
+      if (successEl) successEl.style.display = 'block';
+
+      // Close modal after 2 seconds and redirect
+      setTimeout(() => {
+        closeRecoveryModalMarketing();
+        window.recoveryAccessTokenMarketing = null;
+        // Redirect to sign-in
+        window.location.href = '/?view=signin';
+      }, 2000);
+    } else {
+      msgEl.textContent = error.message || 'Failed to update password. Please try again.';
+      msgEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Save Password';
+    }
+  } catch(e) {
+    msgEl.textContent = 'Network error. Please try again.';
+    msgEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Save Password';
+  }
+};
+
+// Update nav based on auth state + cross-site token handoff
 (async function() {
     try {
         const sb2 = window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co', 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8');
         const { data: { session } } = await sb2.auth.getSession();
         if (session) {
-            const user = session.user;
-            // Update CTA
-            const navCta = document.getElementById('navCta');
+            const navCta = document.querySelector('.nav-cta');
             if (navCta) {
                 navCta.href = '?view=account';
                 navCta.textContent = 'Account →';
             }
-            // Update auth button — green border + name + plan badge (like HQ)
-            const authBtn = document.getElementById('navAuthBtn');
-            if (authBtn) {
-                authBtn.href = '?view=account';
-                authBtn.title = 'Your Account';
-                authBtn.classList.add('signed-in');
-                const icon = document.getElementById('navAuthIcon');
-                if (icon) icon.textContent = '●';
-                // Get user name and plan
-                const name = user.user_metadata?.full_name
-                    ? user.user_metadata.full_name.split(' ')[0]
-                    : (user.email ? user.email.split('@')[0] : 'You');
-                // Fetch plan from DB
-                let plan = 'free';
-                try {
-                    const { data: userData } = await sb2.from('users').select('plan').eq('id', user.id).single();
-                    if (userData?.plan) plan = userData.plan;
-                } catch(e) {}
-                const label = document.getElementById('navAuthLabel');
-                if (label) {
-                    label.innerHTML = '<span class="nav-auth-inner">'
-                        + '<span class="nav-auth-name">' + name + '</span>'
-                        + '<span class="nav-auth-plan">' + (plan === 'pro' ? '⚡ PRO' : 'FREE') + '</span>'
-                        + '</span>';
-                }
-            }
+            // Show profile icon
+            const navProfile = document.getElementById('navProfile');
+            if (navProfile) navProfile.style.display = 'flex';
+
+            // Cross-site auth handoff: append session tokens to ALL HQ links
+            // so signed-in users stay signed in when navigating to hq.project9ind.com
+            var hqHash = '#access_token=' + session.access_token
+                + '&refresh_token=' + (session.refresh_token || '')
+                + '&expires_in=' + (session.expires_in || 3600)
+                + '&token_type=bearer';
+            document.querySelectorAll('a[href*="hq.project9ind.com"]').forEach(function(a) {
+                // Preserve any existing path/query, just replace hash
+                var base = a.href.split('#')[0];
+                a.href = base + hqHash;
+            });
         }
     } catch(e) {}
 })();
