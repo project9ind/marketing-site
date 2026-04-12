@@ -41,7 +41,7 @@
         /* ── LAUNCH BANNER ───────────────────────────────────── */
         .launch-banner {
             position: fixed;
-            top: 6px; left: 0; right: 0;
+            top: 0; left: 0; right: 0;
             height: 32px;
             background: var(--surface);
             border-bottom: 1px solid var(--border);
@@ -169,7 +169,7 @@
         /* ── NAV ─────────────────────────────────────────────── */
         nav {
             position: fixed;
-            top: 38px; left: 0; right: 0; /* 6px stripe + 32px launch banner */
+            top: 32px; left: 0; right: 0; /* 32px launch banner (static stripe removed) */
             height: 60px;
             background: rgba(14,13,12,0.0);
             backdrop-filter: none;
@@ -311,7 +311,7 @@
             position: relative;
             height: 100vh;
             overflow: hidden;
-            margin-top: 38px; /* 6px stripe + 32px launch banner */
+            margin-top: 32px; /* 32px launch banner (static stripe removed) */
             background-color: #080807;
         }
 
@@ -2024,10 +2024,7 @@
 <!-- SCROLL PROGRESS -->
 <div class="scroll-progress" id="scrollProgress"></div>
 
-<!-- FIXED TOP STRIPE -->
-<div class="stripe" style="position:fixed;top:0;left:0;right:0;z-index:200;">
-    <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
-</div>
+<!-- FIXED TOP STRIPE REMOVED Session 17 — scroll-progress reactive bar kept -->
 
 <!-- LAUNCH BANNER -->
 <div class="launch-banner" id="launchBanner">
@@ -3235,8 +3232,8 @@ routeObs.observe(routeGraphic);
             const banner = document.getElementById('launchBanner');
             if (banner && now > new Date('2026-04-21T00:00:00-07:00')) {
                 banner.style.display = 'none';
-                document.querySelector('nav').style.top = '6px';
-                document.querySelector('.hero').style.marginTop = '6px';
+                document.querySelector('nav').style.top = '0';
+                document.querySelector('.hero').style.marginTop = '0';
             }
             return;
         }
