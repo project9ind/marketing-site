@@ -506,6 +506,85 @@
             max-width: 520px;
         }
 
+        /* ── ONE BRIEF hero element ──────────────────────────── */
+        .platform-hero {
+            display: flex;
+            align-items: center;
+            gap: 48px;
+            max-width: 1100px;
+        }
+        .platform-hero-left {
+            flex: 1;
+            max-width: 640px;
+        }
+        .one-brief-wrap {
+            position: relative;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .one-brief-text {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 88px;
+            line-height: 0.92;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--orange);
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            user-select: none;
+        }
+        .one-brief-line { display: block; }
+        .one-brief-dot {
+            display: inline-block;
+            animation: dotPulseOrange 3s ease-in-out infinite;
+        }
+        @keyframes dotPulseOrange {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .one-brief-glow {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 280px; height: 140px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse, rgba(212,98,26,0.10) 0%, transparent 70%);
+            pointer-events: none;
+            animation: briefGlow 4s ease-in-out infinite;
+        }
+        @keyframes briefGlow {
+            0%, 100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%,-50%) scale(1.15); }
+        }
+        /* Glitch effect */
+        @keyframes briefGlitch {
+            0%   { transform: translate(0,0); text-shadow: none; }
+            15%  { transform: translate(-3px,1px); text-shadow: 3px 0 rgba(30,95,168,0.8), -3px 0 rgba(212,98,26,0.8); }
+            30%  { transform: translate(2px,-2px); text-shadow: -2px 0 rgba(30,95,168,0.6), 2px 0 rgba(212,98,26,0.6); clip-path: inset(30% 0 20% 0); }
+            50%  { transform: translate(-1px,0px); text-shadow: 2px 0 rgba(30,95,168,0.7), -2px 0 rgba(212,98,26,0.7); clip-path: none; }
+            70%  { transform: translate(3px,1px); text-shadow: -1px 0 rgba(30,95,168,0.5), 1px 0 rgba(212,98,26,0.5); clip-path: inset(10% 0 60% 0); }
+            85%  { transform: translate(-1px,-1px); text-shadow: none; clip-path: none; }
+            100% { transform: translate(0,0); text-shadow: none; }
+        }
+        .one-brief-text.glitch {
+            animation: briefGlitch 0.18s linear;
+        }
+
+        @media (max-width: 900px) {
+            .platform-hero { flex-direction: column; gap: 8px; align-items: flex-start; }
+            .one-brief-text { font-size: 64px; gap: 16px; }
+        }
+        @media (max-width: 640px) {
+            .platform-hero { gap: 4px; }
+            .one-brief-text { font-size: 52px; gap: 12px; }
+            .one-brief-glow { width: 180px; height: 100px; }
+        }
+
         /* ── PRODUCT CARDS — INTERACTIVE ─────────────────────── */
         .prod-grid {
             margin-top: 52px;
@@ -1691,10 +1770,19 @@
 
 <!-- PLATFORM SECTION -->
 <div class="section">
-    <div style="max-width:800px;">
-        <div class="eyebrow reveal">The Platform</div>
-        <h2 class="sec-h2 reveal reveal-delay-1">6 Government Sources.<br>40+ Data Points Synthesized. One Brief.</h2>
-        <p class="sec-p reveal reveal-delay-2">HQ pulls live data from NPS, NOAA, USGS, NIFC, Recreation.gov, and open terrain databases — synthesizes 40+ data points into one actionable brief. Not cached, not estimated. Fresh intel, every time.</p>
+    <div class="platform-hero">
+        <div class="platform-hero-left">
+            <div class="eyebrow reveal">The Platform</div>
+            <h2 class="sec-h2 reveal reveal-delay-1">6 Government Sources.<br>40+ Data Points Synthesized.</h2>
+            <p class="sec-p reveal reveal-delay-3">HQ pulls live data from NPS, NOAA, USGS, NIFC, Recreation.gov, and open terrain databases — synthesizes 40+ data points into one actionable brief. Not cached, not estimated. Fresh intel, every time.</p>
+        </div>
+        <div class="one-brief-wrap reveal reveal-delay-2">
+            <div class="one-brief-text" id="oneBriefText">
+                <span class="one-brief-line">ONE</span>
+                <span class="one-brief-line">BRIEF<span class="one-brief-dot">.</span></span>
+            </div>
+            <div class="one-brief-glow"></div>
+        </div>
     </div>
 
     <div class="prod-grid">
@@ -2531,6 +2619,20 @@ routeObs.observe(routeGraphic);
         resetDemo();
         setTimeout(runDemo, 200);
     });
+})();
+
+// ── ONE BRIEF GLITCH EFFECT ─────────────────────────────────────
+(function initBriefGlitch() {
+    const el = document.getElementById('oneBriefText');
+    if (!el) return;
+    function triggerGlitch() {
+        el.classList.add('glitch');
+        setTimeout(() => el.classList.remove('glitch'), 180);
+        // Frequent glitch: every 2-4 seconds
+        setTimeout(triggerGlitch, 2000 + Math.random() * 2000);
+    }
+    // First glitch after 1.5 seconds
+    setTimeout(triggerGlitch, 1500);
 })();
 
 // ── TERRAIN CANVAS (topographic lines behind intel) ─────────────
