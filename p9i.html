@@ -875,8 +875,10 @@
             z-index: 9999;
             background: var(--bg);
             overflow-y: auto;
+            overflow-x: hidden;
         }
-        .account-view.active { display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .account-view.active { display: flex; flex-direction: column; align-items: center; }
+        body.acct-open { overflow: hidden; }
 
         .acct-stripe-top { display:flex; width:100%; height:6px; flex-shrink:0; position:fixed; top:0; z-index:10; }
         .acct-back {
@@ -987,6 +989,54 @@
             transition: color 0.2s, border-color 0.2s; text-align:center;
         }
         .acct-signout-btn:hover { color:var(--cream); border-color:var(--dust); }
+
+        .acct-action-btn {
+            display:block; width:100%; padding:13px;
+            background:transparent; color:var(--cream); border:1px solid var(--border);
+            border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-weight:600;
+            font-size:13px; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer;
+            transition: border-color 0.2s, color 0.2s; text-align:center; margin-top:8px;
+        }
+        .acct-action-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+        .acct-invite-card { position: relative; }
+        .acct-invite-input-row {
+            display: flex; gap: 8px; margin-top: 12px;
+        }
+        .acct-invite-input {
+            flex: 1; padding: 11px 14px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            border-radius: 4px; color: var(--cream);
+            font-family: 'DM Sans', sans-serif; font-size: 14px;
+            outline: none; transition: border-color 0.2s;
+        }
+        .acct-invite-input::placeholder { color: var(--dust); opacity: 0.6; }
+        .acct-invite-input:focus { border-color: var(--orange); }
+        .acct-invite-send {
+            padding: 11px 20px; background: var(--orange); color: #fff; border: none;
+            border-radius: 4px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+            font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em;
+            cursor: pointer; transition: background 0.2s; white-space: nowrap;
+        }
+        .acct-invite-send:hover { background: #f06d22; }
+        .acct-invite-send:disabled { opacity: 0.6; cursor: not-allowed; }
+        .acct-invite-status {
+            font-family: 'DM Sans', sans-serif; font-size: 12px;
+            margin-top: 8px; min-height: 18px;
+        }
+        .acct-invite-or {
+            font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+            letter-spacing: 0.12em; text-transform: uppercase; color: var(--dust);
+            text-align: center; margin: 12px 0 8px;
+        }
+        .acct-invite-copy {
+            display: block; width: 100%; padding: 11px;
+            background: transparent; border: 1px dashed var(--border); border-radius: 4px;
+            color: var(--dust); font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+            font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;
+            cursor: pointer; transition: border-color 0.2s, color 0.2s; text-align: center;
+        }
+        .acct-invite-copy:hover { border-color: var(--orange); color: var(--orange); }
 
         .acct-hq-link {
             display:block; text-align:center; margin-top:24px;
@@ -1601,6 +1651,18 @@
             </div>
         </div>
 
+        <!-- Invite Card -->
+        <div class="acct-card acct-invite-card">
+            <div class="acct-section-label">Invite a Friend</div>
+            <div class="acct-invite-input-row">
+                <input type="email" class="acct-invite-input" id="acctInviteEmail" placeholder="friend@email.com" />
+                <button class="acct-invite-send" id="acctInviteSend" onclick="acctSendInvite()">Send</button>
+            </div>
+            <div class="acct-invite-status" id="acctInviteStatus"></div>
+            <div class="acct-invite-or">or</div>
+            <button class="acct-invite-copy" id="acctInviteCopy" onclick="acctCopyInviteLink()">Copy Invite Link</button>
+        </div>
+
         <!-- Actions Card -->
         <div class="acct-card" id="acctActionsCard">
             <div class="acct-section-label">Actions</div>
@@ -1611,6 +1673,12 @@
             <!-- Pro user: manage billing -->
             <button class="acct-manage-btn" id="acctManageBtn" style="display:none;" onclick="acctDoManageBilling()">
                 Manage Subscription →
+            </button>
+            <button class="acct-action-btn" id="acctChangeEmailBtn" onclick="acctChangeEmail()">
+                Change Email Address
+            </button>
+            <button class="acct-action-btn" id="acctChangePwBtn" onclick="acctChangePassword()">
+                Change Password
             </button>
             <button class="acct-signout-btn" id="acctSignoutBtn" onclick="acctDoSignOut()" style="margin-top:16px;">
                 Sign Out
@@ -1953,9 +2021,11 @@ observer.observe(routeGraphic);
     if (view === 'account') {
       signupView.classList.remove('active');
       accountView.classList.add('active');
+      document.body.classList.add('acct-open');
       populateAccount();
     } else if (view === 'signup' || view === 'signin') {
       accountView.classList.remove('active');
+      document.body.classList.remove('acct-open');
       signupView.classList.add('active');
       if (view === 'signin') {
         signupForm.style.display = 'none';
@@ -1967,6 +2037,7 @@ observer.observe(routeGraphic);
     } else {
       signupView.classList.remove('active');
       accountView.classList.remove('active');
+      document.body.classList.remove('acct-open');
     }
   }
   checkRoute();
@@ -1984,6 +2055,7 @@ observer.observe(routeGraphic);
     e.preventDefault();
     history.pushState(null, '', '/');
     accountView.classList.remove('active');
+    document.body.classList.remove('acct-open');
   });
 
   // Toggle between sign-up and sign-in
@@ -2191,8 +2263,84 @@ observer.observe(routeGraphic);
 
   window.acctDoSignOut = async function() {
     await sb.auth.signOut();
+    document.body.classList.remove('acct-open');
     history.replaceState(null, '', '/');
     accountView.classList.remove('active');
+  };
+
+  // ── Change Email ──
+  window.acctChangeEmail = async function() {
+    var newEmail = prompt('Enter your new email address:');
+    if (!newEmail || !newEmail.trim()) return;
+    var btn = document.getElementById('acctChangeEmailBtn');
+    btn.disabled = true; btn.textContent = 'Sending verification…';
+    var { error } = await sb.auth.updateUser({
+      email: newEmail.trim()
+    }, { emailRedirectTo: 'https://project9ind.com/?view=account' });
+    if (error) {
+      alert('Error: ' + error.message);
+      btn.disabled = false; btn.textContent = 'Change Email Address';
+    } else {
+      btn.textContent = '✓ Verification sent to both addresses';
+      setTimeout(function() { btn.disabled = false; btn.textContent = 'Change Email Address'; }, 4000);
+    }
+  };
+
+  // ── Change Password ──
+  window.acctChangePassword = async function() {
+    var newPw = prompt('Enter your new password (min 6 characters):');
+    if (!newPw || newPw.length < 6) { if (newPw) alert('Password must be at least 6 characters.'); return; }
+    var btn = document.getElementById('acctChangePwBtn');
+    btn.disabled = true; btn.textContent = 'Updating…';
+    var { error } = await sb.auth.updateUser({ password: newPw });
+    if (error) {
+      alert('Error: ' + error.message);
+      btn.disabled = false; btn.textContent = 'Change Password';
+    } else {
+      btn.textContent = '✓ Password updated';
+      setTimeout(function() { btn.disabled = false; btn.textContent = 'Change Password'; }, 3000);
+    }
+  };
+
+  // ── Invite a Friend ──
+  window.acctSendInvite = async function() {
+    var emailInput = document.getElementById('acctInviteEmail');
+    var btn = document.getElementById('acctInviteSend');
+    var status = document.getElementById('acctInviteStatus');
+    var email = emailInput.value.trim();
+    if (!email) { status.style.color = '#E06018'; status.textContent = 'Enter an email address.'; return; }
+    btn.disabled = true; btn.textContent = '…';
+    try {
+      var { data: { session } } = await sb.auth.getSession();
+      if (!session) { status.style.color = '#E06018'; status.textContent = 'Please sign in first.'; return; }
+      var res = await fetch('https://hq.project9ind.com/.netlify/functions/invite-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+        body: JSON.stringify({ email: email })
+      });
+      var data = await res.json();
+      if (res.ok && data.success) {
+        status.style.color = '#3CB87A'; status.textContent = '✓ Invite sent to ' + email;
+        emailInput.value = '';
+      } else {
+        status.style.color = '#E06018'; status.textContent = data.error || 'Failed to send invite.';
+      }
+    } catch(e) {
+      status.style.color = '#E06018'; status.textContent = 'Network error — try again.';
+    }
+    btn.disabled = false; btn.textContent = 'Send';
+  };
+
+  window.acctCopyInviteLink = async function() {
+    var btn = document.getElementById('acctInviteCopy');
+    var link = 'https://project9ind.com/?view=signup&ref=invite';
+    try { await navigator.clipboard.writeText(link); } catch(e) {}
+    btn.textContent = '✓ COPIED';
+    btn.style.borderColor = '#3CB87A'; btn.style.color = '#3CB87A';
+    setTimeout(function() {
+      btn.textContent = 'Copy Invite Link';
+      btn.style.borderColor = ''; btn.style.color = '';
+    }, 2500);
   };
 
   // ── Forgot Password ──
@@ -2340,11 +2488,10 @@ window.submitRecoveryPasswordMarketing = async function() {
         const sb2 = window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co', 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8');
         const { data: { session } } = await sb2.auth.getSession();
         if (session) {
+            // Hide "Get Access" CTA — replaced by profile icon with tier badge
             const navCta = document.querySelector('.nav-cta');
-            if (navCta) {
-                navCta.href = '?view=account';
-                navCta.textContent = 'Account →';
-            }
+            if (navCta) navCta.style.display = 'none';
+
             // Show profile wrap with tier badge
             const navWrap = document.getElementById('navProfileWrap');
             if (navWrap) navWrap.style.display = 'flex';
