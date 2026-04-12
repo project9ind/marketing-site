@@ -896,6 +896,62 @@
             margin: 0 auto;
         }
 
+        /* ── TWO-COLUMN LAYOUT ── */
+        .acct-header-area {
+            text-align:center; padding:28px 20px 32px;
+        }
+        .acct-layout {
+            display:grid; grid-template-columns:340px 1fr;
+            gap:24px; max-width:1100px; margin:0 auto; padding:0 32px 60px;
+        }
+        @media(max-width:820px) {
+            .acct-layout { grid-template-columns:1fr; max-width:600px; }
+        }
+        .acct-left { display:flex; flex-direction:column; gap:16px; }
+        .acct-right { display:flex; flex-direction:column; gap:20px; }
+
+        /* ── Compact Vehicle Rows ── */
+        .garage-vehicle-row {
+            display:flex; align-items:center; gap:12px;
+            padding:12px 0; border-bottom:1px solid rgba(42,41,38,0.5); cursor:default;
+        }
+        .garage-vehicle-row:last-of-type { border-bottom:none; }
+        .garage-vehicle-icon {
+            width:36px; height:36px; border-radius:4px; flex-shrink:0;
+            background:rgba(255,255,255,0.03); border:1px solid var(--border);
+            display:flex; align-items:center; justify-content:center; font-size:16px;
+        }
+        .garage-vehicle-info { flex:1; min-width:0; }
+        .garage-vehicle-row .garage-vehicle-name {
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px;
+            letter-spacing:0.03em; color:var(--cream); text-transform:uppercase;
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        .garage-vehicle-sub {
+            font-family:'DM Sans',sans-serif; font-size:11px; color:var(--fog);
+            margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        .garage-vehicle-sub .nick { color:var(--dust); font-style:italic; }
+        .garage-vehicle-sub .ev-badge { color:#4BC97A; font-weight:500; }
+        .garage-vehicle-actions-inline { display:flex; gap:4px; flex-shrink:0; }
+        .garage-inline-btn {
+            background:none; border:none; color:var(--fog); cursor:pointer;
+            font-size:13px; padding:4px 6px; transition:color 0.2s; border-radius:2px;
+        }
+        .garage-inline-btn:hover { color:var(--cream); background:rgba(255,255,255,0.04); }
+        .garage-inline-btn.delete:hover { color:#E05252; }
+        .garage-count-bar {
+            display:flex; justify-content:space-between; align-items:center;
+            padding-top:12px; margin-top:4px;
+        }
+        .garage-count-text {
+            font-family:'DM Sans',sans-serif; font-size:11px; color:var(--fog);
+        }
+        .garage-placeholder {
+            padding:16px 0; text-align:center;
+            font-family:'DM Sans',sans-serif; font-size:12px; color:var(--fog);
+        }
+
         .acct-logo {
             font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:28px;
             color:var(--cream); text-decoration:none; letter-spacing:0.08em;
@@ -989,6 +1045,232 @@
             transition: color 0.2s, border-color 0.2s; text-align:center;
         }
         .acct-signout-btn:hover { color:var(--cream); border-color:var(--dust); }
+
+        /* ── MY GARAGE + MY GEAR ── */
+        .acct-card-locked { position:relative; }
+        .acct-lock-overlay {
+            position:absolute; inset:0; z-index:2; background:rgba(14,13,12,0.82);
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            border-radius:6px; gap:10px;
+        }
+        .acct-lock-icon { font-size:28px; opacity:0.7; }
+        .acct-lock-label {
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px;
+            letter-spacing:0.14em; text-transform:uppercase; color:var(--dust);
+        }
+        .acct-lock-cta {
+            background:var(--orange); color:#fff; border:none; border-radius:3px;
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px;
+            letter-spacing:0.1em; text-transform:uppercase; padding:8px 18px; cursor:pointer;
+            transition:opacity 0.2s;
+        }
+        .acct-lock-cta:hover { opacity:0.85; }
+
+        /* Vehicle list */
+        .garage-list { display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
+        .garage-vehicle {
+            background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:4px;
+            padding:16px 18px; position:relative;
+        }
+        .garage-vehicle-head {
+            display:flex; align-items:center; gap:10px; margin-bottom:8px;
+        }
+        .garage-vehicle-cat {
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:9px;
+            letter-spacing:0.16em; text-transform:uppercase; color:var(--bg);
+            background:var(--orange); padding:3px 8px; border-radius:2px;
+        }
+        .garage-vehicle-name {
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px;
+            letter-spacing:0.04em; text-transform:uppercase; color:var(--cream); flex:1;
+        }
+        .garage-vehicle-nickname {
+            font-family:'DM Sans',sans-serif; font-size:12px; color:var(--dust);
+            margin-bottom:6px; font-style:italic;
+        }
+        .garage-vehicle-meta {
+            display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;
+        }
+        .garage-tag {
+            font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600;
+            letter-spacing:0.08em; text-transform:uppercase; color:var(--dust);
+            background:rgba(255,255,255,0.04); border:1px solid rgba(42,41,38,0.6);
+            padding:3px 8px; border-radius:2px;
+        }
+        .garage-tag.ev { color:#4BC97A; border-color:rgba(75,201,122,0.3); background:rgba(75,201,122,0.08); }
+        .garage-vehicle-actions {
+            display:flex; gap:8px; margin-top:12px; padding-top:10px;
+            border-top:1px solid rgba(42,41,38,0.4);
+        }
+        .garage-btn {
+            font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700;
+            letter-spacing:0.14em; text-transform:uppercase; border:none; cursor:pointer;
+            padding:6px 14px; border-radius:2px; transition:opacity 0.2s;
+        }
+        .garage-btn-edit { background:rgba(255,255,255,0.06); color:var(--cream); }
+        .garage-btn-edit:hover { opacity:0.8; }
+        .garage-btn-delete { background:rgba(224,82,82,0.1); color:#E05252; }
+        .garage-btn-delete:hover { opacity:0.8; }
+        .garage-empty {
+            font-family:'DM Sans',sans-serif; font-size:13px; color:var(--fog);
+            text-align:center; padding:20px 0;
+        }
+        .garage-count {
+            font-family:'DM Sans',sans-serif; font-size:12px; color:var(--fog);
+            text-align:right; margin-top:4px;
+        }
+
+        /* Add/Edit vehicle form */
+        .garage-form { display:none; margin-top:12px; }
+        .garage-form.active { display:block; }
+        .garage-form-field { margin-bottom:14px; }
+        .garage-form-label {
+            font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:600;
+            letter-spacing:0.2em; text-transform:uppercase; color:var(--dust);
+            display:block; margin-bottom:5px;
+        }
+        .garage-form-input {
+            width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border);
+            color:var(--cream); font-family:'DM Sans',sans-serif; font-size:13px;
+            padding:10px 12px; outline:none; border-radius:2px; transition:border-color 0.2s;
+        }
+        .garage-form-input:focus { border-color:var(--orange); }
+        .garage-form-input::placeholder { color:var(--muted); }
+        .garage-form-select {
+            width:100%; background:#14120F; border:1px solid var(--border);
+            color:var(--cream); font-family:'DM Sans',sans-serif; font-size:13px;
+            padding:10px 12px; outline:none; border-radius:2px; cursor:pointer;
+        }
+        .garage-cat-grid {
+            display:grid; grid-template-columns:repeat(4,1fr); gap:6px;
+        }
+        @media(max-width:500px) { .garage-cat-grid { grid-template-columns:repeat(3,1fr); } }
+        .garage-cat-btn {
+            background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:3px;
+            padding:10px 4px; text-align:center; cursor:pointer; transition:border-color 0.2s, background 0.2s;
+        }
+        .garage-cat-btn:hover { border-color:var(--dust); }
+        .garage-cat-btn.selected { border-color:var(--orange); background:rgba(224,96,24,0.08); }
+        .garage-cat-icon { font-size:18px; display:block; margin-bottom:4px; }
+        .garage-cat-name {
+            font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700;
+            letter-spacing:0.1em; text-transform:uppercase; color:var(--dust);
+        }
+        .garage-cat-btn.selected .garage-cat-name { color:var(--orange); }
+        .garage-check-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px; }
+        .garage-check-item {
+            display:flex; align-items:center; gap:8px; cursor:pointer; padding:7px 0;
+        }
+        .garage-check-item input[type="checkbox"] {
+            width:16px; height:16px; border:1px solid var(--border); background:transparent;
+            appearance:none; -webkit-appearance:none; cursor:pointer; flex-shrink:0;
+            position:relative; border-radius:2px; transition:background 0.15s, border-color 0.15s;
+        }
+        .garage-check-item input[type="checkbox"]:checked {
+            background:var(--orange); border-color:var(--orange);
+        }
+        .garage-check-item input[type="checkbox"]:checked::after {
+            content:'✓'; position:absolute; top:50%; left:50%;
+            transform:translate(-50%,-50%); font-size:9px; color:white; font-weight:bold;
+        }
+        .garage-check-label {
+            font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:0.03em; color:var(--dust);
+        }
+        .garage-check-item:has(input:checked) .garage-check-label { color:var(--cream); }
+        .garage-ev-fields { display:none; margin-top:10px; }
+        .garage-ev-fields.active { display:block; }
+        .garage-form-actions {
+            display:flex; gap:8px; margin-top:16px; padding-top:14px;
+            border-top:1px solid rgba(42,41,38,0.4);
+        }
+        .garage-form-save {
+            flex:1; background:var(--orange); color:#fff; border:none; border-radius:3px;
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px;
+            letter-spacing:0.12em; text-transform:uppercase; padding:12px; cursor:pointer;
+            transition:opacity 0.2s;
+        }
+        .garage-form-save:hover { opacity:0.85; }
+        .garage-form-save:disabled { opacity:0.4; cursor:not-allowed; }
+        .garage-form-cancel {
+            background:transparent; color:var(--dust); border:1px solid var(--border);
+            border-radius:3px; font-family:'Barlow Condensed',sans-serif; font-weight:600;
+            font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:12px 20px;
+            cursor:pointer; transition:border-color 0.2s;
+        }
+        .garage-form-cancel:hover { border-color:var(--dust); }
+        .garage-add-btn {
+            display:block; width:100%; padding:12px; background:transparent;
+            border:1px dashed var(--border); border-radius:4px; color:var(--dust);
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px;
+            letter-spacing:0.12em; text-transform:uppercase; cursor:pointer;
+            transition:border-color 0.2s, color 0.2s; text-align:center;
+        }
+        .garage-add-btn:hover { border-color:var(--orange); color:var(--orange); }
+        .garage-form-msg {
+            font-family:'DM Sans',sans-serif; font-size:12px; padding:8px 10px;
+            margin-bottom:10px; display:none; border-radius:2px;
+        }
+        .garage-form-msg.error { display:block; background:rgba(224,82,82,0.1); border:1px solid rgba(224,82,82,0.3); color:#E05252; }
+        .garage-form-msg.success { display:block; background:rgba(75,201,122,0.1); border:1px solid rgba(75,201,122,0.3); color:#4BC97A; }
+
+        /* Gear list */
+        .gear-categories { display:flex; flex-direction:column; gap:8px; }
+        .gear-category {
+            background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:4px;
+            overflow:hidden;
+        }
+        .gear-cat-header {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:12px 16px; cursor:pointer; transition:background 0.2s;
+        }
+        .gear-cat-header:hover { background:rgba(255,255,255,0.02); }
+        .gear-cat-left { display:flex; align-items:center; gap:10px; }
+        .gear-cat-icon { font-size:16px; }
+        .gear-cat-label {
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:12px;
+            letter-spacing:0.1em; text-transform:uppercase; color:var(--cream);
+        }
+        .gear-cat-count {
+            font-family:'DM Sans',sans-serif; font-size:11px; color:var(--fog);
+            background:rgba(255,255,255,0.04); padding:2px 8px; border-radius:10px;
+        }
+        .gear-cat-arrow {
+            font-size:12px; color:var(--fog); transition:transform 0.2s;
+        }
+        .gear-category.open .gear-cat-arrow { transform:rotate(90deg); }
+        .gear-cat-body {
+            display:none; padding:0 16px 14px; border-top:1px solid rgba(42,41,38,0.4);
+        }
+        .gear-category.open .gear-cat-body { display:block; }
+        .gear-item {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:8px 0; border-bottom:1px solid rgba(42,41,38,0.3);
+        }
+        .gear-item:last-of-type { border-bottom:none; }
+        .gear-item-name {
+            font-family:'DM Sans',sans-serif; font-size:13px; color:var(--cream);
+        }
+        .gear-item-delete {
+            background:none; border:none; color:var(--fog); cursor:pointer;
+            font-size:14px; padding:2px 6px; transition:color 0.2s;
+        }
+        .gear-item-delete:hover { color:#E05252; }
+        .gear-add-row {
+            display:flex; gap:6px; margin-top:10px;
+        }
+        .gear-add-input {
+            flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--border);
+            color:var(--cream); font-family:'DM Sans',sans-serif; font-size:12px;
+            padding:8px 10px; outline:none; border-radius:2px;
+        }
+        .gear-add-input:focus { border-color:var(--orange); }
+        .gear-add-input::placeholder { color:var(--muted); }
+        .gear-add-submit {
+            background:var(--orange); color:#fff; border:none; border-radius:2px;
+            font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:10px;
+            letter-spacing:0.1em; text-transform:uppercase; padding:8px 14px; cursor:pointer;
+        }
+        .gear-add-submit:hover { opacity:0.85; }
 
         .acct-action-btn {
             display:block; width:100%; padding:13px;
@@ -1606,9 +1888,14 @@
         <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
     </div>
     <a href="/" class="acct-back" id="accountBack">← Back to Project 9</a>
-    <div class="acct-container">
+    <div class="acct-header-area">
         <a href="/" class="acct-logo">PROJ<span class="nine">9</span></a>
         <div class="acct-tagline">Your Account</div>
+    </div>
+    <div class="acct-layout">
+
+      <!-- ─── LEFT COLUMN: Account Admin ─── -->
+      <div class="acct-left">
 
         <!-- Profile Card -->
         <div class="acct-card">
@@ -1666,29 +1953,79 @@
         <!-- Actions Card -->
         <div class="acct-card" id="acctActionsCard">
             <div class="acct-section-label">Actions</div>
-            <!-- Free user: upgrade CTA -->
-            <button class="acct-upgrade-btn" id="acctUpgradeBtn" onclick="acctDoUpgrade()">
-                Join P9I Pro — $1/mo →
-            </button>
-            <!-- Pro user: manage billing -->
-            <button class="acct-manage-btn" id="acctManageBtn" style="display:none;" onclick="acctDoManageBilling()">
-                Manage Subscription →
-            </button>
-            <button class="acct-action-btn" id="acctChangeEmailBtn" onclick="acctChangeEmail()">
-                Change Email Address
-            </button>
-            <button class="acct-action-btn" id="acctChangePwBtn" onclick="acctChangePassword()">
-                Change Password
-            </button>
-            <button class="acct-signout-btn" id="acctSignoutBtn" onclick="acctDoSignOut()" style="margin-top:16px;">
-                Sign Out
-            </button>
+            <button class="acct-upgrade-btn" id="acctUpgradeBtn" onclick="acctDoUpgrade()">Join P9I Pro — $1/mo →</button>
+            <button class="acct-manage-btn" id="acctManageBtn" style="display:none;" onclick="acctDoManageBilling()">Manage Subscription →</button>
+            <button class="acct-action-btn" id="acctChangeEmailBtn" onclick="acctChangeEmail()">Change Email Address</button>
+            <button class="acct-action-btn" id="acctChangePwBtn" onclick="acctChangePassword()">Change Password</button>
+            <button class="acct-signout-btn" id="acctSignoutBtn" onclick="acctDoSignOut()" style="margin-top:12px;">Sign Out</button>
         </div>
 
-        <a href="https://hq.project9ind.com" class="acct-hq-link" id="acctHqLink">
-            Go to HQ — Run a Brief →
-        </a>
-    </div>
+        <a href="https://hq.project9ind.com" class="acct-hq-link" id="acctHqLink">Go to HQ — Run a Brief →</a>
+
+      </div><!-- /acct-left -->
+
+      <!-- ─── RIGHT COLUMN: My Garage + My Gear ─── -->
+      <div class="acct-right">
+
+        <!-- My Garage Card -->
+        <div class="acct-card" id="acctGarageCard">
+            <div class="acct-section-label">My Garage</div>
+            <div id="garageList" class="garage-list"></div>
+            <div class="garage-count-bar"><span id="garageCount" class="garage-count-text"></span><button class="garage-add-btn" id="garageAddBtn" onclick="garageShowForm()">+ Add Vehicle</button></div>
+
+            <div class="garage-form" id="garageForm">
+                <input type="hidden" id="garageEditId" value="" />
+                <div id="garageFormMsg" class="garage-form-msg"></div>
+                <div class="garage-form-field">
+                    <label class="garage-form-label">Vehicle Type</label>
+                    <div class="garage-cat-grid" id="garageCatGrid">
+                        <div class="garage-cat-btn" data-cat="truck" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🛻</span><span class="garage-cat-name">Truck</span></div>
+                        <div class="garage-cat-btn" data-cat="suv" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🚙</span><span class="garage-cat-name">SUV</span></div>
+                        <div class="garage-cat-btn" data-cat="car" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🚗</span><span class="garage-cat-name">Car</span></div>
+                        <div class="garage-cat-btn" data-cat="motorcycle" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🏍️</span><span class="garage-cat-name">Moto</span></div>
+                        <div class="garage-cat-btn" data-cat="side-by-side" onclick="garageSelectCat(this)"><span class="garage-cat-icon">⛰️</span><span class="garage-cat-name">SxS</span></div>
+                        <div class="garage-cat-btn" data-cat="atv" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🏔️</span><span class="garage-cat-name">ATV</span></div>
+                        <div class="garage-cat-btn" data-cat="boat" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🚤</span><span class="garage-cat-name">Boat</span></div>
+                    </div>
+                    <input type="hidden" id="garageSelectedCat" value="" />
+                </div>
+                <div class="garage-form-field"><label class="garage-form-label">Make / Model</label><input type="text" class="garage-form-input" id="garageMakeModel" placeholder="e.g. Ford F-150 Raptor" /></div>
+                <div class="garage-form-field"><label class="garage-form-label">Nickname (optional)</label><input type="text" class="garage-form-input" id="garageNickname" placeholder="e.g. The Beast, Trail Rig" /></div>
+                <div class="garage-form-field"><label class="garage-form-label">Clearance</label><select class="garage-form-select" id="garageClearance"><option value="stock">Stock / Street clearance</option><option value="high" selected>High clearance (lift / 4"+)</option><option value="extreme">Extreme / Modified build</option></select></div>
+                <div class="garage-form-field">
+                    <label class="garage-form-label">Features</label>
+                    <div class="garage-check-grid">
+                        <label class="garage-check-item"><input type="checkbox" class="garage-feature-check" value="locking differentials" /><span class="garage-check-label">Lockers</span></label>
+                        <label class="garage-check-item"><input type="checkbox" class="garage-feature-check" value="skid plates" /><span class="garage-check-label">Skid plates</span></label>
+                        <label class="garage-check-item"><input type="checkbox" class="garage-feature-check" value="long range fuel tank" /><span class="garage-check-label">Long range tank</span></label>
+                        <label class="garage-check-item"><input type="checkbox" class="garage-feature-check" value="snorkel" /><span class="garage-check-label">Snorkel</span></label>
+                        <label class="garage-check-item"><input type="checkbox" class="garage-feature-check" value="all-terrain tires" /><span class="garage-check-label">All-terrain tires</span></label>
+                        <label class="garage-check-item"><input type="checkbox" class="garage-feature-check" value="winch and recovery gear" /><span class="garage-check-label">Winch / recovery</span></label>
+                    </div>
+                </div>
+                <div class="garage-form-field">
+                    <label class="garage-check-item" style="padding:0;"><input type="checkbox" id="garageEvToggle" onchange="garageToggleEv(this.checked)" style="width:16px;height:16px;border:1px solid var(--border);background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer;position:relative;border-radius:2px;" /><span class="garage-check-label" style="font-size:13px;color:var(--cream);">⚡ Electric Vehicle</span></label>
+                    <div class="garage-ev-fields" id="garageEvFields">
+                        <div class="garage-form-field" style="margin-top:10px;"><label class="garage-form-label">Range (miles)</label><input type="number" class="garage-form-input" id="garageEvRange" placeholder="e.g. 314" min="50" max="600" /></div>
+                        <div class="garage-form-field"><label class="garage-form-label">Charging Networks</label><div class="garage-check-grid"><label class="garage-check-item"><input type="checkbox" class="garage-charging-check" value="Tesla Supercharger / NACS" checked /><span class="garage-check-label">Tesla / NACS</span></label><label class="garage-check-item"><input type="checkbox" class="garage-charging-check" value="CCS / Electrify America" /><span class="garage-check-label">CCS / EA</span></label><label class="garage-check-item"><input type="checkbox" class="garage-charging-check" value="CHAdeMO" /><span class="garage-check-label">CHAdeMO</span></label><label class="garage-check-item"><input type="checkbox" class="garage-charging-check" value="J1772 Level 2" /><span class="garage-check-label">J1772 L2</span></label></div></div>
+                    </div>
+                </div>
+                <div class="garage-form-actions"><button class="garage-form-save" id="garageSaveBtn" onclick="garageSave()">Save Vehicle</button><button class="garage-form-cancel" onclick="garageCancelForm()">Cancel</button></div>
+            </div>
+
+            <div class="acct-lock-overlay" id="garageLock" style="display:none;"><div class="acct-lock-icon">🔒</div><div class="acct-lock-label">Pro Feature</div><button class="acct-lock-cta" onclick="acctDoUpgrade()">Upgrade to Pro — $1/mo →</button></div>
+        </div>
+
+        <!-- My Gear Card -->
+        <div class="acct-card" id="acctGearCard">
+            <div class="acct-section-label">My Gear</div>
+            <div class="gear-categories" id="gearCategories"></div>
+            <div class="acct-lock-overlay" id="gearLock" style="display:none;"><div class="acct-lock-icon">🔒</div><div class="acct-lock-label">Pro Feature</div><button class="acct-lock-cta" onclick="acctDoUpgrade()">Upgrade to Pro — $1/mo →</button></div>
+        </div>
+
+      </div><!-- /acct-right -->
+
+    </div><!-- /acct-layout -->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -2215,6 +2552,21 @@ observer.observe(routeGraphic);
         + '&expires_in=' + (session.expires_in || 3600)
         + '&token_type=bearer';
     }
+
+    // My Garage + My Gear — show locked teaser for free, load data for pro
+    const garageCard = document.getElementById('acctGarageCard');
+    const gearCard = document.getElementById('acctGearCard');
+    if (plan !== 'pro') {
+      // Lock both sections
+      if (garageCard) { garageCard.classList.add('acct-card-locked'); document.getElementById('garageLock').style.display = 'flex'; }
+      if (gearCard) { gearCard.classList.add('acct-card-locked'); document.getElementById('gearLock').style.display = 'flex'; }
+    } else {
+      // Unlock and load data
+      if (garageCard) { garageCard.classList.remove('acct-card-locked'); document.getElementById('garageLock').style.display = 'none'; }
+      if (gearCard) { gearCard.classList.remove('acct-card-locked'); document.getElementById('gearLock').style.display = 'none'; }
+      loadGarage(user.id);
+      loadGear(user.id);
+    }
   }
 
   // ── Account Actions (window-global) ──
@@ -2480,6 +2832,278 @@ window.submitRecoveryPasswordMarketing = async function() {
     btn.disabled = false;
     btn.textContent = 'Save Password';
   }
+};
+
+// ══════════════════════════════════════════════════════════
+// MY GARAGE — CRUD Functions
+// ══════════════════════════════════════════════════════════
+const GARAGE_MAX = 5;
+const GARAGE_CAT_LABELS = { truck:'Truck', suv:'SUV', car:'Car', motorcycle:'Moto', 'side-by-side':'SxS', atv:'ATV', boat:'Boat' };
+const GARAGE_CAT_ICONS = { truck:'🛻', suv:'🚙', car:'🏎️', motorcycle:'🏍️', 'side-by-side':'🏁', atv:'🏁', boat:'🚤' };
+const CLEARANCE_LABELS = { stock:'Stock', high:'High Clearance', extreme:'Extreme' };
+
+function _sbClient() {
+  return window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co','sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8');
+}
+
+async function loadGarage(userId) {
+  const sb = _sbClient();
+  const { data: vehicles, error } = await sb.from('user_vehicles').select('*').eq('user_id', userId).order('created_at', { ascending: true });
+  const list = document.getElementById('garageList');
+  const countEl = document.getElementById('garageCount');
+  const addBtn = document.getElementById('garageAddBtn');
+  if (error || !vehicles) { list.innerHTML = '<div class="garage-empty">Unable to load vehicles.</div>'; return; }
+
+  if (vehicles.length === 0) {
+    list.innerHTML = '<div class="garage-placeholder">No vehicles saved yet. Add your first rig below.</div>';
+    if (countEl) countEl.innerHTML = '';
+  } else {
+    list.innerHTML = vehicles.map(v => {
+      const icon = GARAGE_CAT_ICONS[v.category] || '🚙';
+      const nickPart = v.nickname ? `<span class="nick">"${v.nickname}"</span> · ` : '';
+      const clearPart = CLEARANCE_LABELS[v.clearance] || v.clearance;
+      const featurePart = (v.features || []).join(', ');
+      const evPart = v.is_ev ? ` · <span class="ev-badge">⚡ EV ${v.ev_range || '—'}mi</span>` : '';
+      const subLine = nickPart + clearPart + (featurePart ? ' · ' + featurePart : '') + evPart;
+      return `<div class="garage-vehicle-row" data-id="${v.id}">
+        <div class="garage-vehicle-icon">${icon}</div>
+        <div class="garage-vehicle-info">
+          <div class="garage-vehicle-name">${v.make_model}</div>
+          <div class="garage-vehicle-sub">${subLine}</div>
+        </div>
+        <div class="garage-vehicle-actions-inline">
+          <button class="garage-inline-btn" onclick="garageEdit('${v.id}')" title="Edit">✏️</button>
+          <button class="garage-inline-btn delete" onclick="garageDelete('${v.id}')" title="Delete">🗑️</button>
+        </div>
+      </div>`;
+    }).join('');
+    if (countEl) countEl.textContent = vehicles.length + ' / ' + GARAGE_MAX + ' vehicles';
+  }
+  addBtn.style.display = vehicles.length >= GARAGE_MAX ? 'none' : 'block';
+  // Store for HQ cross-ref
+  window._p9iGarageVehicles = vehicles;
+}
+
+window.garageShowForm = function(editData) {
+  const form = document.getElementById('garageForm');
+  const msg = document.getElementById('garageFormMsg');
+  msg.className = 'garage-form-msg'; msg.textContent = '';
+  form.classList.add('active');
+
+  // Reset form
+  document.getElementById('garageEditId').value = editData ? editData.id : '';
+  document.getElementById('garageMakeModel').value = editData ? editData.make_model : '';
+  document.getElementById('garageNickname').value = editData ? (editData.nickname || '') : '';
+  document.getElementById('garageClearance').value = editData ? editData.clearance : 'high';
+  document.getElementById('garageEvToggle').checked = editData ? editData.is_ev : false;
+  document.getElementById('garageEvRange').value = editData ? (editData.ev_range || '') : '';
+  garageToggleEv(editData ? editData.is_ev : false);
+
+  // Category
+  document.querySelectorAll('#garageCatGrid .garage-cat-btn').forEach(b => {
+    b.classList.toggle('selected', editData && b.dataset.cat === editData.category);
+  });
+  document.getElementById('garageSelectedCat').value = editData ? editData.category : '';
+
+  // Features
+  const editFeatures = editData ? (editData.features || []) : [];
+  document.querySelectorAll('.garage-feature-check').forEach(cb => {
+    cb.checked = editFeatures.includes(cb.value);
+  });
+
+  // Charging networks
+  const editNetworks = editData ? (editData.ev_networks || []) : ['Tesla Supercharger / NACS'];
+  document.querySelectorAll('.garage-charging-check').forEach(cb => {
+    cb.checked = editNetworks.includes(cb.value);
+  });
+
+  document.getElementById('garageSaveBtn').textContent = editData ? 'Update Vehicle' : 'Save Vehicle';
+  document.getElementById('garageAddBtn').style.display = 'none';
+
+  // Scroll form into view
+  setTimeout(() => form.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+};
+
+window.garageCancelForm = function() {
+  document.getElementById('garageForm').classList.remove('active');
+  document.getElementById('garageAddBtn').style.display = 'block';
+};
+
+window.garageSelectCat = function(el) {
+  document.querySelectorAll('#garageCatGrid .garage-cat-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('garageSelectedCat').value = el.dataset.cat;
+};
+
+window.garageToggleEv = function(checked) {
+  const evFields = document.getElementById('garageEvFields');
+  if (checked) evFields.classList.add('active');
+  else evFields.classList.remove('active');
+};
+
+window.garageSave = async function() {
+  const msg = document.getElementById('garageFormMsg');
+  const btn = document.getElementById('garageSaveBtn');
+  msg.className = 'garage-form-msg'; msg.textContent = '';
+
+  const category = document.getElementById('garageSelectedCat').value;
+  const makeModel = document.getElementById('garageMakeModel').value.trim();
+  const nickname = document.getElementById('garageNickname').value.trim() || null;
+  const clearance = document.getElementById('garageClearance').value;
+  const features = [...document.querySelectorAll('.garage-feature-check:checked')].map(c => c.value);
+  const isEv = document.getElementById('garageEvToggle').checked;
+  const evRange = isEv ? parseInt(document.getElementById('garageEvRange').value) || null : null;
+  const evNetworks = isEv ? [...document.querySelectorAll('.garage-charging-check:checked')].map(c => c.value) : [];
+  const editId = document.getElementById('garageEditId').value;
+
+  // Validate
+  if (!category) { msg.textContent = 'Select a vehicle type.'; msg.className = 'garage-form-msg error'; return; }
+  if (!makeModel) { msg.textContent = 'Make / Model is required.'; msg.className = 'garage-form-msg error'; return; }
+
+  btn.disabled = true;
+  btn.textContent = editId ? 'Updating…' : 'Saving…';
+
+  try {
+    const sb = _sbClient();
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { msg.textContent = 'Session expired. Please sign in again.'; msg.className = 'garage-form-msg error'; btn.disabled = false; btn.textContent = 'Save Vehicle'; return; }
+
+    const payload = { user_id: session.user.id, category, make_model: makeModel, nickname, clearance, features, is_ev: isEv, ev_range: evRange, ev_networks: evNetworks, updated_at: new Date().toISOString() };
+
+    if (editId) {
+      const { error } = await sb.from('user_vehicles').update(payload).eq('id', editId).eq('user_id', session.user.id);
+      if (error) throw error;
+    } else {
+      // Check limit
+      const { count } = await sb.from('user_vehicles').select('id', { count: 'exact', head: true }).eq('user_id', session.user.id);
+      if (count >= GARAGE_MAX) { msg.textContent = 'Maximum ' + GARAGE_MAX + ' vehicles. Delete one first.'; msg.className = 'garage-form-msg error'; btn.disabled = false; btn.textContent = 'Save Vehicle'; return; }
+      const { error } = await sb.from('user_vehicles').insert(payload);
+      if (error) throw error;
+    }
+
+    garageCancelForm();
+    await loadGarage(session.user.id);
+  } catch(e) {
+    msg.textContent = e.message || 'Failed to save. Try again.';
+    msg.className = 'garage-form-msg error';
+  }
+  btn.disabled = false;
+  btn.textContent = editId ? 'Update Vehicle' : 'Save Vehicle';
+};
+
+window.garageEdit = async function(id) {
+  const sb = _sbClient();
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data: vehicle } = await sb.from('user_vehicles').select('*').eq('id', id).eq('user_id', session.user.id).single();
+  if (vehicle) garageShowForm(vehicle);
+};
+
+window.garageDelete = async function(id) {
+  if (!confirm('Delete this vehicle from your garage?')) return;
+  const sb = _sbClient();
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  await sb.from('user_vehicles').delete().eq('id', id).eq('user_id', session.user.id);
+  await loadGarage(session.user.id);
+};
+
+
+// ══════════════════════════════════════════════════════════
+// MY GEAR — CRUD Functions
+// ══════════════════════════════════════════════════════════
+const GEAR_CATEGORIES = [
+  { key:'camping',  icon:'⛺', label:'Camping Gear' },
+  { key:'hiking',   icon:'🥾', label:'Hiking Gear' },
+  { key:'climbing', icon:'🧗', label:'Rock Climbing Gear' },
+  { key:'offroad',  icon:'🔧', label:'Off-Road / Recovery Gear' },
+  { key:'water',    icon:'🌊', label:'Water Sports Gear' },
+  { key:'snow',     icon:'❄️', label:'Snow / Winter Gear' },
+  { key:'safety',   icon:'🆘', label:'Safety & Emergency' },
+  { key:'comms',    icon:'📡', label:'Comms & Navigation' },
+];
+
+async function loadGear(userId) {
+  const sb = _sbClient();
+  const { data: items, error } = await sb.from('user_gear').select('*').eq('user_id', userId).order('created_at', { ascending: true });
+  const container = document.getElementById('gearCategories');
+  if (error) { container.innerHTML = '<div class="garage-empty">Unable to load gear.</div>'; return; }
+
+  const byCategory = {};
+  (items || []).forEach(item => {
+    if (!byCategory[item.category]) byCategory[item.category] = [];
+    byCategory[item.category].push(item);
+  });
+
+  container.innerHTML = GEAR_CATEGORIES.map(cat => {
+    const catItems = byCategory[cat.key] || [];
+    const itemsHtml = catItems.map(item =>
+      `<div class="gear-item">
+        <span class="gear-item-name">${item.name}</span>
+        <button class="gear-item-delete" onclick="gearDeleteItem('${item.id}')" title="Remove">×</button>
+      </div>`
+    ).join('');
+    return `<div class="gear-category" data-cat="${cat.key}">
+      <div class="gear-cat-header" onclick="gearToggleCat(this.parentElement)">
+        <div class="gear-cat-left">
+          <span class="gear-cat-icon">${cat.icon}</span>
+          <span class="gear-cat-label">${cat.label}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="gear-cat-count">${catItems.length}</span>
+          <span class="gear-cat-arrow">▶</span>
+        </div>
+      </div>
+      <div class="gear-cat-body">
+        <div class="gear-items-list" id="gearItems-${cat.key}">${itemsHtml}</div>
+        <div class="gear-add-row">
+          <input type="text" class="gear-add-input" id="gearInput-${cat.key}" placeholder="Add ${cat.label.toLowerCase().replace(' gear','').replace(' & ','/').replace('comms/navigation','gear')}…" onkeydown="if(event.key==='Enter')gearAddItem('${cat.key}')" />
+          <button class="gear-add-submit" onclick="gearAddItem('${cat.key}')">Add</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Store for HQ cross-ref
+  window._p9iGearItems = items || [];
+}
+
+window.gearToggleCat = function(el) {
+  el.classList.toggle('open');
+};
+
+window.gearAddItem = async function(category) {
+  const input = document.getElementById('gearInput-' + category);
+  const name = input.value.trim();
+  if (!name) return;
+
+  const sb = _sbClient();
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+
+  input.disabled = true;
+  const { error } = await sb.from('user_gear').insert({ user_id: session.user.id, category, name });
+  input.disabled = false;
+
+  if (!error) {
+    input.value = '';
+    await loadGear(session.user.id);
+    // Re-open the category that was being edited
+    const catEl = document.querySelector(`.gear-category[data-cat="${category}"]`);
+    if (catEl && !catEl.classList.contains('open')) catEl.classList.add('open');
+  }
+};
+
+window.gearDeleteItem = async function(id) {
+  const sb = _sbClient();
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  await sb.from('user_gear').delete().eq('id', id).eq('user_id', session.user.id);
+  await loadGear(session.user.id);
+  // Re-open all previously open categories
+  document.querySelectorAll('.gear-category').forEach(el => {
+    if (el.dataset.wasOpen) el.classList.add('open');
+  });
 };
 
 // Update nav based on auth state + cross-site token handoff
