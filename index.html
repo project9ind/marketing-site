@@ -165,6 +165,52 @@
         }
         .nav-cta:hover { background: #e0732a; transform: translateY(-1px); }
 
+        .nav-profile-wrap {
+            display: none; align-items: center; gap: 0;
+            margin-left: 6px;
+            position: relative;
+            text-decoration: none;
+        }
+        .nav-profile {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px;
+            border: 1.5px solid rgba(245,242,236,0.25);
+            border-radius: 50%;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .nav-profile:hover { border-color: var(--orange); }
+        .nav-profile svg { display: block; }
+        .nav-profile-wrap.tier-pro .nav-profile {
+            border-color: var(--orange);
+            box-shadow: 0 0 12px rgba(212,98,26,0.4), 0 0 24px rgba(212,98,26,0.15);
+        }
+        .nav-profile-wrap.tier-pro .nav-profile svg { stroke: var(--orange); }
+        .nav-profile-wrap.tier-founder .nav-profile {
+            border-color: var(--orange);
+            box-shadow: 0 0 14px rgba(212,98,26,0.5), 0 0 28px rgba(212,98,26,0.2), 0 0 4px rgba(212,98,26,0.8);
+        }
+        .nav-profile-wrap.tier-founder .nav-profile svg { stroke: #F5A623; }
+        .nav-profile-wrap.tier-free .nav-profile {
+            border-color: rgba(245,242,236,0.25);
+        }
+        .nav-tier-badge {
+            position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 8px;
+            letter-spacing: 0.14em; text-transform: uppercase; padding: 1px 6px;
+            border-radius: 6px; white-space: nowrap; line-height: 1.4; pointer-events: none;
+        }
+        .tier-pro .nav-tier-badge { background: var(--orange); color: #fff; box-shadow: 0 0 8px rgba(212,98,26,0.5); }
+        .tier-founder .nav-tier-badge { background: linear-gradient(135deg, var(--orange), #F5A623); color: #fff; box-shadow: 0 0 10px rgba(212,98,26,0.6); }
+        .tier-free .nav-tier-badge { background: rgba(245,242,236,0.1); color: rgba(245,242,236,0.5); }
+        @keyframes profileGlowPulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(212,98,26,0.4), 0 0 24px rgba(212,98,26,0.15); }
+            50% { box-shadow: 0 0 16px rgba(212,98,26,0.55), 0 0 32px rgba(212,98,26,0.25); }
+        }
+        .nav-profile-wrap.tier-pro .nav-profile,
+        .nav-profile-wrap.tier-founder .nav-profile {
+            animation: profileGlowPulse 3s ease-in-out infinite;
+        }
+
         .nav-auth-btn {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
@@ -1728,6 +1774,10 @@
             .nav-cta { padding: 10px 18px; font-size: 12px; }
             .nav-auth-btn { padding: 8px 14px; font-size: 11px; }
             .nav-hq { font-size: 11px; }
+            .nav-profile-wrap { margin-left: 2px; }
+            .nav-profile { width: 32px; height: 32px; }
+            .nav-profile svg { width: 24px; height: 24px; }
+            .nav-tier-badge { font-size: 7px; bottom: -7px; }
             .hero { height: 100svh; }
             .hero-content { left: 20px; right: 20px; bottom: 72px; max-width: none; }
             .hero-headline { font-size: 44px; line-height: 1.05; }
@@ -1797,6 +1847,15 @@
         <a href="?view=signin" class="nav-auth-btn" id="navAuthBtn" title="Sign In">
             <span id="navAuthIcon">◎</span>
             <span id="navAuthLabel">Sign In</span>
+        </a>
+        <a href="?view=account" class="nav-profile-wrap" id="navProfileWrap" title="Your Account">
+            <div class="nav-profile" id="navProfile">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F5F2EC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 21v-1a6 6 0 0 1 12 0v1"/>
+                </svg>
+            </div>
+            <span class="nav-tier-badge" id="navTierBadge"></span>
         </a>
     </div>
 </nav>
@@ -3435,18 +3494,44 @@ document.getElementById('recovery-password')?.addEventListener('keydown', functi
         const { data: { session } } = await sb2.auth.getSession();
         if (session) {
             const user = session.user;
+            // Hide "Get Access" CTA and Sign In — replaced by profile icon
             const navCta = document.getElementById('navCta');
-            if (navCta) { navCta.href = '?view=account'; navCta.textContent = 'Account →'; }
+            if (navCta) navCta.style.display = 'none';
             const authBtn = document.getElementById('navAuthBtn');
-            if (authBtn) {
-                authBtn.href = '?view=account'; authBtn.title = 'Your Account'; authBtn.classList.add('signed-in');
-                const icon = document.getElementById('navAuthIcon'); if (icon) icon.textContent = '●';
-                const name = user.user_metadata?.full_name ? user.user_metadata.full_name.split(' ')[0] : (user.email ? user.email.split('@')[0] : 'You');
-                let plan = 'free';
-                try { const { data: userData } = await sb2.from('users').select('plan').eq('id', user.id).single(); if (userData?.plan) plan = userData.plan; } catch(e) {}
-                const label = document.getElementById('navAuthLabel');
-                if (label) { label.innerHTML = '<span class="nav-auth-inner"><span class="nav-auth-name">' + name + '</span><span class="nav-auth-plan">' + (plan === 'pro' ? '⚡ PRO' : 'FREE') + '</span></span>'; }
-            }
+            if (authBtn) authBtn.style.display = 'none';
+
+            // Show profile wrap with tier badge
+            const navWrap = document.getElementById('navProfileWrap');
+            if (navWrap) navWrap.style.display = 'flex';
+
+            // Fetch plan + founding status for tier glow
+            try {
+                const { data: uData } = await sb2.from('users').select('plan, is_founding_member, account_type').eq('id', session.user.id).single();
+                const plan = uData?.plan || 'free';
+                const isFounding = uData?.is_founding_member || false;
+                const acctType = uData?.account_type || 'user';
+                const badge = document.getElementById('navTierBadge');
+                if (acctType === 'pioneer' || isFounding) {
+                    navWrap.classList.add('tier-founder');
+                    badge.textContent = isFounding ? 'FOUNDER' : 'PIONEER';
+                } else if (plan === 'pro') {
+                    navWrap.classList.add('tier-pro');
+                    badge.textContent = 'PRO';
+                } else {
+                    navWrap.classList.add('tier-free');
+                    badge.textContent = 'FREE';
+                }
+            } catch(e2) {}
+
+            // Cross-site auth handoff: append session tokens to ALL HQ links
+            var hqHash = '#access_token=' + session.access_token
+                + '&refresh_token=' + (session.refresh_token || '')
+                + '&expires_in=' + (session.expires_in || 3600)
+                + '&token_type=bearer';
+            document.querySelectorAll('a[href*="hq.project9ind.com"]').forEach(function(a) {
+                var base = a.href.split('#')[0];
+                a.href = base + hqHash;
+            });
         }
     } catch(e) {}
 })();
