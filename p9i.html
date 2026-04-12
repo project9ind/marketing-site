@@ -38,7 +38,79 @@
             font-weight: 300;
         }
 
-        /* ── STRIPE ──────────────────────────────────────────── */
+        /* ── LAUNCH BANNER ───────────────────────────────────── */
+        .launch-banner {
+            position: fixed;
+            top: 6px; left: 0; right: 0;
+            height: 32px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 150;
+            overflow: hidden;
+        }
+        .launch-banner-text {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--mid);
+        }
+        .launch-banner-text strong {
+            color: var(--orange);
+            font-weight: 800;
+        }
+        .launch-banner-date {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            color: var(--orange);
+        }
+        .launch-banner-dot {
+            width: 4px; height: 4px;
+            background: var(--orange);
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+        .launch-banner-countdown {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600;
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 2px 8px;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+        }
+        .launch-banner-cta {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--orange);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .launch-banner-cta:hover { color: #e0732a; }
+        @media (max-width: 768px) {
+            .launch-banner { gap: 8px; }
+            .launch-banner-text { font-size: 10px; letter-spacing: 0.16em; }
+            .launch-banner-countdown { display: none; }
+        }
+        @media (max-width: 480px) {
+            .launch-banner-text { font-size: 9px; letter-spacing: 0.12em; }
+            .launch-banner-date { font-size: 10px; }
+            .launch-banner-cta { display: none; }
+        }
+
+        /* ── STRIPE (racing-stripe 5-band: navy·cobalt·orange·cobalt·navy) ── */
         .stripe { width:100%; display:flex; height:6px; flex-shrink:0; }
         .stripe.thin { height:4px; }
         .stripe.micro { height:3px; }
@@ -97,7 +169,7 @@
         /* ── NAV ─────────────────────────────────────────────── */
         nav {
             position: fixed;
-            top: 6px; left: 0; right: 0;
+            top: 38px; left: 0; right: 0; /* 6px stripe + 32px launch banner */
             height: 60px;
             background: rgba(14,13,12,0.0);
             backdrop-filter: none;
@@ -239,7 +311,7 @@
             position: relative;
             height: 100vh;
             overflow: hidden;
-            margin-top: 6px;
+            margin-top: 38px; /* 6px stripe + 32px launch banner */
             background-color: #080807;
         }
 
@@ -1416,6 +1488,115 @@
             animation-delay: 3s;
         }
 
+        /* ── WALL OF FOUNDERS ────────────────────────────────── */
+        .founders-wall {
+            padding: 56px 72px 48px;
+            background: var(--bg);
+            text-align: center;
+            position: relative;
+        }
+        .founders-wall-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .founders-wall-eyebrow::before,
+        .founders-wall-eyebrow::after {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: var(--orange);
+            opacity: 0.4;
+        }
+        .founders-wall-headline {
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 400;
+            font-size: 20px;
+            color: var(--cream);
+            margin-bottom: 28px;
+            letter-spacing: -0.01em;
+        }
+        .founders-plaque {
+            max-width: 680px;
+            margin: 0 auto 24px;
+            min-height: 48px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+        }
+        .founder-name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+            color: var(--orange);
+            white-space: nowrap;
+            line-height: 2.2;
+        }
+        .founder-divider {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 10px;
+            color: var(--muted);
+            padding: 0 10px;
+            user-select: none;
+            line-height: 2.2;
+        }
+        .founder-slot {
+            width: 48px;
+            height: 1px;
+            background: var(--border);
+            margin: 0 6px;
+            display: inline-block;
+            vertical-align: middle;
+            opacity: 0.5;
+        }
+        .founders-count {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--mid);
+            margin-bottom: 16px;
+        }
+        .founders-count strong {
+            color: var(--orange);
+            font-weight: 800;
+        }
+        .founders-cta {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .founders-cta:hover {
+            color: var(--orange);
+        }
+        @media (max-width: 768px) {
+            .founders-wall { padding: 40px 32px 36px; }
+            .founders-wall-headline { font-size: 18px; }
+        }
+        @media (max-width: 480px) {
+            .founders-wall { padding: 36px 20px 28px; }
+            .founders-wall-headline { font-size: 16px; }
+            .founder-name { font-size: 11px; }
+        }
+
         /* ── FOOTER ──────────────────────────────────────────── */
         footer {
             padding: 26px 72px;
@@ -1848,6 +2029,16 @@
     <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
 </div>
 
+<!-- LAUNCH BANNER -->
+<div class="launch-banner" id="launchBanner">
+    <span class="launch-banner-text"><strong>Founding Members</strong> Deploy</span>
+    <span class="launch-banner-dot"></span>
+    <span class="launch-banner-date">04.20.2026</span>
+    <span class="launch-banner-dot"></span>
+    <span class="launch-banner-countdown" id="launchCountdown"></span>
+    <a href="#pricingSection" class="launch-banner-cta">Claim Your Spot →</a>
+</div>
+
 <!-- NAV -->
 <nav id="mainNav">
     <a href="/" class="nav-logo">PROJ<span class="nine">9</span></a>
@@ -2216,6 +2407,30 @@
                     <div class="feat-tag">Every tool we build ships to founding members first.</div>
                 </div>
             </div>
+            <div style="border-top:1px solid var(--border);margin-top:14px;padding-top:14px;">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;">Founding Member Exclusives</div>
+                <div class="pricing-feature">
+                    <div class="feat-check" style="color:var(--orange);">★</div>
+                    <div>
+                        <div class="feat-app">Wall of Founders</div>
+                        <div class="feat-tag">Your name on the site — permanently. Like signing the trophy.</div>
+                    </div>
+                </div>
+                <div class="pricing-feature">
+                    <div class="feat-check" style="color:var(--orange);">★</div>
+                    <div>
+                        <div class="feat-app">Founding Member Badge</div>
+                        <div class="feat-tag">Visible across every Project 9 app. You were here first.</div>
+                    </div>
+                </div>
+                <div class="pricing-feature">
+                    <div class="feat-check" style="color:var(--orange);">★</div>
+                    <div>
+                        <div class="feat-app">Shape the Roadmap</div>
+                        <div class="feat-tag">Vote on what we build next. Founders steer the mission.</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -2322,6 +2537,18 @@
             <text x="340" y="148" text-anchor="middle" fill="#2A2926" font-family="Barlow Condensed, sans-serif" font-size="9" font-weight="700" letter-spacing="0.22em">ROUTE INTELLIGENCE · GENERATED IN &lt;30 SECONDS</text>
         </svg>
     </div>
+</div>
+
+<!-- WALL OF FOUNDERS -->
+<div class="stripe thin"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
+<div class="founders-wall" id="foundersWall">
+    <div class="founders-wall-eyebrow">The First 100</div>
+    <div class="founders-wall-headline">Signed by the founders who got here first.</div>
+    <div class="founders-plaque" id="foundersPlaque">
+        <!-- Populated by JS — founding member names from Supabase -->
+    </div>
+    <div class="founders-count"><strong id="foundersSignedCount">0</strong> of 100 spots signed</div>
+    <a href="?view=signup" class="founders-cta">Claim your spot →</a>
 </div>
 
 <!-- FOOTER -->
@@ -2994,6 +3221,38 @@ routeObs.observe(routeGraphic);
     window.addEventListener('resize', resize);
 })();
 
+// ── LAUNCH COUNTDOWN ────────────────────────────────────────────
+(function initLaunchCountdown() {
+    const el = document.getElementById('launchCountdown');
+    if (!el) return;
+    const launch = new Date('2026-04-20T00:00:00-07:00'); // PDT
+    function update() {
+        const now = new Date();
+        const diff = launch - now;
+        if (diff <= 0) {
+            el.textContent = 'LIVE NOW';
+            // Remove banner after launch day
+            const banner = document.getElementById('launchBanner');
+            if (banner && now > new Date('2026-04-21T00:00:00-07:00')) {
+                banner.style.display = 'none';
+                document.querySelector('nav').style.top = '6px';
+                document.querySelector('.hero').style.marginTop = '6px';
+            }
+            return;
+        }
+        const days = Math.floor(diff / 86400000);
+        const hrs = Math.floor((diff % 86400000) / 3600000);
+        if (days > 0) {
+            el.textContent = days + 'D ' + hrs + 'H';
+        } else {
+            const mins = Math.floor((diff % 3600000) / 60000);
+            el.textContent = hrs + 'H ' + mins + 'M';
+        }
+    }
+    update();
+    setInterval(update, 60000); // Update every minute
+})();
+
 // ── SPOTS REMAINING COUNTER ANIMATION ───────────────────────────
 (function initSpotsCounter() {
     const el = document.getElementById('spotsRemaining');
@@ -3486,6 +3745,67 @@ routeObs.observe(routeGraphic);
     document.getElementById('foundingBarFill').style.width = Math.min(100, (claimed / 100) * 100) + '%';
   } catch(e) {
     document.getElementById('foundingClaimed').textContent = '0';
+  }
+
+  // ── WALL OF FOUNDERS (live names from Supabase) ───────────────
+  try {
+    const { data: founders } = await sb
+      .from('founding_wall')
+      .select('full_name, created_at')
+      .order('created_at', { ascending: true });
+
+    const plaque = document.getElementById('foundersPlaque');
+    const countEl = document.getElementById('foundersSignedCount');
+    if (plaque && founders) {
+      const validFounders = founders.filter(f => f.full_name && f.full_name.trim());
+      const total = validFounders.length;
+      if (countEl) countEl.textContent = total;
+
+      if (total === 0) {
+        // Empty state — show ghost slots waiting to be claimed
+        const emptyMsg = document.createElement('div');
+        emptyMsg.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-weight:400;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 0;';
+        emptyMsg.textContent = 'Be the first to sign.';
+        plaque.appendChild(emptyMsg);
+      } else {
+        // Render founder names with diamond dividers
+        validFounders.forEach((f, i) => {
+          const name = document.createElement('span');
+          name.className = 'founder-name';
+          name.textContent = f.full_name.trim();
+          plaque.appendChild(name);
+          if (i < total - 1) {
+            const div = document.createElement('span');
+            div.className = 'founder-divider';
+            div.textContent = '◆';
+            plaque.appendChild(div);
+          }
+        });
+        // Show empty slots remaining as subtle dashes
+        const remaining = 100 - total;
+        if (remaining > 0) {
+          const slotsHint = document.createElement('span');
+          slotsHint.className = 'founder-divider';
+          slotsHint.textContent = '◆';
+          plaque.appendChild(slotsHint);
+          const slots = Math.min(remaining, 6); // Show up to 6 ghost slots
+          for (let s = 0; s < slots; s++) {
+            const slot = document.createElement('span');
+            slot.className = 'founder-slot';
+            plaque.appendChild(slot);
+            if (s < slots - 1) {
+              const spacer = document.createElement('span');
+              spacer.style.cssText = 'width:4px;display:inline-block;';
+              plaque.appendChild(spacer);
+            }
+          }
+        }
+      }
+    }
+  } catch(e) {
+    // Silent fail — wall just shows empty state
+    const countEl = document.getElementById('foundersSignedCount');
+    if (countEl) countEl.textContent = '0';
   }
 
 })();
