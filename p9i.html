@@ -1440,6 +1440,9 @@
             color: var(--muted);
             line-height: 1.5;
         }
+        .foot-links { display:flex; gap:16px; }
+        .foot-links a { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color 0.2s; }
+        .foot-links a:hover { color:var(--orange); }
         .foot-r {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 400;
@@ -1595,12 +1598,21 @@
         .acct-founding-note { font-family:'Barlow',sans-serif; font-size:13px; color:var(--orange); margin-top:8px; font-style:italic; }
         .acct-usage-bar-track { width:100%; height:6px; background:var(--border); border-radius:3px; margin-top:8px; }
         .acct-usage-bar-fill { height:100%; background:var(--orange); border-radius:3px; transition:width 0.4s ease; }
+        .acct-consent-box { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:12px; margin-top:12px; }
+        .acct-consent-terms { font-family:'Barlow',sans-serif; font-size:11px; color:var(--mid); line-height:1.5; margin-bottom:8px; }
+        .acct-consent-terms strong { color:var(--cream); }
+        .acct-consent-terms a { color:var(--cobalt,#1E5FA8); text-decoration:none; }
+        .acct-consent-terms a:hover { text-decoration:underline; }
+        .acct-consent-label { display:flex; align-items:flex-start; gap:8px; font-family:'Barlow',sans-serif; font-size:11px; color:var(--cream); line-height:1.4; cursor:pointer; }
+        .acct-consent-label input[type="checkbox"] { margin-top:2px; accent-color:var(--orange); flex-shrink:0; }
         .acct-upgrade-btn { display:block; width:100%; padding:16px; background:var(--orange); color:#fff; border:none; border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; transition:background 0.2s; text-align:center; margin-top:8px; }
         .acct-upgrade-btn:hover { background:#e0732a; }
         .acct-upgrade-btn:disabled { opacity:0.6; cursor:not-allowed; }
         .acct-manage-btn { display:block; width:100%; padding:14px; background:transparent; color:var(--cream); border:1px solid var(--border); border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; transition:border-color 0.2s; text-align:center; margin-top:8px; }
         .acct-manage-btn:hover { border-color: var(--mid); }
         .acct-manage-btn:disabled { opacity:0.6; cursor:not-allowed; }
+        .acct-cancel-btn { display:block; width:100%; padding:14px; background:transparent; color:var(--mid); border:1px solid var(--border); border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; transition:all 0.2s; text-align:center; margin-top:4px; }
+        .acct-cancel-btn:hover { border-color:#E05252; color:#E05252; }
         .acct-signout-btn { display:block; width:100%; padding:12px; background:transparent; color:var(--mid); border:1px solid rgba(42,41,38,0.4); border-radius:4px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:color 0.2s,border-color 0.2s; text-align:center; }
         .acct-signout-btn:hover { color:var(--cream); border-color:var(--mid); }
         .acct-hq-link { display:block; text-align:center; margin-top:24px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:0.1em; color:var(--orange); text-decoration:none; transition:color 0.2s; }
@@ -2318,6 +2330,10 @@
         <div class="foot-logo">PROJ<span class="nine">9</span></div>
         <div class="foot-copy">© 2026 Project 9 Industries</div>
     </div>
+    <div class="foot-links">
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+    </div>
     <div class="foot-r">project9industries.com</div>
 </footer>
 
@@ -2432,8 +2448,13 @@
         <!-- Actions Card -->
         <div class="acct-card" id="acctActionsCard">
             <div class="acct-section-label">Actions</div>
-            <button class="acct-upgrade-btn" id="acctUpgradeBtn" onclick="acctDoUpgrade()">Join P9I Pro — $1/mo →</button>
+            <div class="acct-consent-box" id="acctConsentBox">
+                <p class="acct-consent-terms">Your subscription is <strong>$1.00 USD/month</strong>, billed monthly on the day you sign up until you cancel. You can cancel anytime in Account Settings or by emailing go@project9ind.com. <a href="terms.html" target="_blank">Terms</a> · <a href="privacy.html" target="_blank">Privacy</a></p>
+                <label class="acct-consent-label"><input type="checkbox" id="acctConsentCheck" onchange="document.getElementById('acctUpgradeBtn').disabled=!this.checked"> I agree to the monthly auto-renewal subscription and authorize recurring charges to my payment method.</label>
+            </div>
+            <button class="acct-upgrade-btn" id="acctUpgradeBtn" onclick="acctDoUpgrade()" disabled>Join P9I Pro — $1/mo →</button>
             <button class="acct-manage-btn" id="acctManageBtn" style="display:none;" onclick="acctDoManageBilling()">Manage Subscription →</button>
+            <button class="acct-cancel-btn" id="acctCancelBtn" style="display:none;" onclick="acctDoManageBilling()">Cancel Subscription</button>
             <button class="acct-action-btn" id="acctChangeEmailBtn" onclick="acctChangeEmail()">Change Email Address</button>
             <button class="acct-action-btn" id="acctChangePwBtn" onclick="acctChangePassword()">Change Password</button>
             <button class="acct-signout-btn" id="acctSignoutBtn" onclick="acctDoSignOut()" style="margin-top:12px;">Sign Out</button>
@@ -3121,6 +3142,10 @@ routeObs.observe(routeGraphic);
     if (plan === 'pro') document.getElementById('acctUsageFill').parentElement.style.display = 'none';
     document.getElementById('acctUpgradeBtn').style.display = plan === 'pro' ? 'none' : 'block';
     document.getElementById('acctManageBtn').style.display = plan === 'pro' ? 'block' : 'none';
+    var consentBox = document.getElementById('acctConsentBox');
+    if (consentBox) consentBox.style.display = plan === 'pro' ? 'none' : 'block';
+    var cancelBtn = document.getElementById('acctCancelBtn');
+    if (cancelBtn) cancelBtn.style.display = plan === 'pro' ? 'block' : 'none';
     const hqLink = document.getElementById('acctHqLink');
     if (hqLink && session.access_token) {
       hqLink.href = 'https://hq.project9ind.com#access_token=' + session.access_token + '&refresh_token=' + (session.refresh_token || '') + '&expires_in=' + (session.expires_in || 3600) + '&token_type=bearer';
@@ -3134,7 +3159,7 @@ routeObs.observe(routeGraphic);
     const btn = document.getElementById('acctUpgradeBtn');
     btn.disabled = true; btn.textContent = 'Opening checkout…';
     try {
-      const res = await fetch('https://hq.project9ind.com/.netlify/functions/stripe-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: session.user.id, email: session.user.email, returnUrl: window.location.origin + '/?view=account' }) });
+      const res = await fetch('https://hq.project9ind.com/.netlify/functions/stripe-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: session.user.id, email: session.user.email, returnUrl: window.location.origin + '/?view=account', consent_timestamp: new Date().toISOString() }) });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
       else { btn.textContent = 'Checkout unavailable — try again'; btn.disabled = false; }
