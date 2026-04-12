@@ -267,7 +267,7 @@
 <div class="page-hero">
   <div class="eyebrow">Legal</div>
   <h1>Privacy Policy</h1>
-  <div class="effective-date">Effective Date: April 12, 2026 &mdash; Last Updated: April 12, 2026</div>
+  <div class="effective-date">Effective Date: April 12, 2026 &mdash; Last Updated: April 12, 2026 (Session 17)</div>
 </div>
 
 <!-- Content -->
@@ -282,6 +282,7 @@
       <li><a href="#share">How We Share Your Information</a></li>
       <li><a href="#retention">Data Retention</a></li>
       <li><a href="#ccpa">Your Privacy Rights (California / CCPA)</a></li>
+      <li><a href="#do-not-sell">Your Privacy Choices (Do Not Sell or Share)</a></li>
       <li><a href="#security">Security</a></li>
       <li><a href="#cookies">Cookies and Tracking</a></li>
       <li><a href="#third-party">Third-Party Services</a></li>
@@ -434,7 +435,7 @@
       <tr>
         <td><strong>Anthropic (Claude API)</strong></td>
         <td>Briefing generation</td>
-        <td>Trip preferences and queries (to generate Briefings). Anthropic may use prompts and outputs to improve its services, as described in <a href="https://www.anthropic.com/legal/privacy">Anthropic's Privacy Policy</a>.</td>
+        <td>Trip destinations, dates, vehicle details, activity interests, group size, accessibility needs, and gear inventory. <strong>Anthropic may use prompts and outputs to train and improve its AI models, including analysis of user preferences and trip patterns.</strong> This data is transmitted via API for each Briefing request. See <a href="https://www.anthropic.com/legal/privacy">Anthropic's Privacy Policy</a> for full details on how they process and retain data.</td>
       </tr>
       <tr>
         <td><strong>Resend</strong></td>
@@ -447,19 +448,34 @@
         <td>IP address, page views, device type (analytics)</td>
       </tr>
       <tr>
-        <td><strong>OpenWeather</strong></td>
-        <td>Weather data for Briefings</td>
-        <td>Location queries (destination coordinates)</td>
+        <td><strong>Nominatim (OpenStreetMap)</strong></td>
+        <td>Geocoding (destination name → coordinates)</td>
+        <td>Destination name or area you enter. Free service, no API key. See <a href="https://osmfoundation.org/wiki/Privacy_Policy">OSM Foundation Privacy Policy</a>.</td>
       </tr>
       <tr>
-        <td><strong>National Park Service</strong></td>
-        <td>Park information for Briefings</td>
-        <td>Park interest queries</td>
+        <td><strong>OpenWeather</strong></td>
+        <td>Weather forecasts and air quality</td>
+        <td>Latitude and longitude of your destination (derived from geocoding). Used to fetch current conditions, UV index, moon phase, forecasts, and AQI/PM2.5 data.</td>
+      </tr>
+      <tr>
+        <td><strong>USGS Water Services</strong></td>
+        <td>Real-time stream gauge data</td>
+        <td>Latitude and longitude of your destination. Returns stream discharge and water level readings for nearby waterways. Free U.S. government API, no API key.</td>
+      </tr>
+      <tr>
+        <td><strong>National Park Service (NPS)</strong></td>
+        <td>Park alerts, closures, and conditions</td>
+        <td>Park name or location coordinates. Returns current alerts, road closures, trail conditions, fire restrictions.</td>
+      </tr>
+      <tr>
+        <td><strong>NIFC (National Interagency Fire Center)</strong></td>
+        <td>Active wildfire data</td>
+        <td>Latitude and longitude of your destination. Returns active fires within approximately 55 miles, including fire name, acreage, and containment. Free U.S. government GeoJSON feed, no API key.</td>
       </tr>
       <tr>
         <td><strong>Recreation.gov (RIDB)</strong></td>
-        <td>Campground data for Briefings</td>
-        <td>Recreation area queries</td>
+        <td>Campground and facility data</td>
+        <td>Destination name or area. Returns campground names, reservation requirements, fees, and facility types.</td>
       </tr>
     </tbody>
   </table>
@@ -508,7 +524,7 @@
   <p>You may request correction of inaccurate personal information. We will process correction requests within <strong>45 days</strong> of verification.</p>
 
   <h3>6.4 Right to Opt-Out of Sale or Sharing</h3>
-  <p>You have the right to opt out of the "sale" or "sharing" of your personal information. <strong>We do not sell or share your personal information for cross-context behavioral advertising.</strong> If our practices change, we will provide a "Do Not Sell or Share My Personal Information" link on our website.</p>
+  <p>You have the right to opt out of the "sale" or "sharing" of your personal information. <strong>We do not sell your personal information for monetary consideration.</strong> We do share certain data with service providers to deliver our Services (see <a href="#do-not-sell">Section 6A</a> below). You may exercise your opt-out rights as described in <a href="#do-not-sell">Your Privacy Choices</a>.</p>
 
   <h3>6.5 Right to Limit Use of Sensitive Information</h3>
   <p>Project 9 Industries does not collect sensitive personal information as defined under the CPRA (Social Security numbers, financial account details, precise geolocation, health data, etc.).</p>
@@ -526,6 +542,53 @@
 
   <h3>6.8 Right to Appeal</h3>
   <p>If we deny your request, you may appeal by emailing <a href="mailto:go@project9ind.com">go@project9ind.com</a> with "Privacy Request Appeal" in the subject line. You may also file a complaint with the <a href="https://cppa.ca.gov">California Privacy Protection Agency</a> or the <a href="https://oag.ca.gov/privacy">California Attorney General</a>.</p>
+
+  <!-- 6A — Do Not Sell or Share -->
+  <h2 id="do-not-sell">6A. Your Privacy Choices (Do Not Sell or Share)</h2>
+
+  <div class="highlight-box">
+    <p><strong>We do not sell your personal information.</strong> We do not share your personal information for cross-context behavioral advertising.</p>
+  </div>
+
+  <h3>What We Share and Why</h3>
+  <p>To generate your adventure intelligence Briefings, we transmit certain data to third-party service providers. This sharing is necessary to provide the core functionality of the Services — without it, we cannot generate Briefings. The data shared includes:</p>
+  <ul>
+    <li><strong>Destination coordinates</strong> (derived from destination names you enter) — shared with OpenWeather, USGS, NPS, NIFC, Recreation.gov, and Nominatim for weather, water, park, fire, campground, and geocoding data</li>
+    <li><strong>Trip preferences</strong> (dates, vehicle, activities, gear) — shared with Anthropic's Claude API for AI-powered Briefing synthesis</li>
+    <li><strong>Email address</strong> — shared with Supabase (authentication), Stripe (payment processing), and Resend (transactional email delivery)</li>
+  </ul>
+  <p>None of these providers pay us for your data. None of these providers use your data for advertising or behavioral profiling on our behalf.</p>
+
+  <h3>Your Right to Opt Out</h3>
+  <p>Under CCPA/CPRA, you have the right to direct us to stop sharing your personal information with third parties. If you exercise this right:</p>
+  <ul>
+    <li>We will stop generating Briefings for your account (since Briefing generation requires sending data to external APIs and Anthropic)</li>
+    <li>Your account, subscription, and profile data will remain intact</li>
+    <li>You may reverse this choice at any time</li>
+  </ul>
+
+  <h3>How to Exercise This Right</h3>
+  <p>Email <a href="mailto:go@project9ind.com">go@project9ind.com</a> with the subject line <strong>"Do Not Share My Data"</strong> and include your account email. We will process your request within 15 business days and confirm by email.</p>
+
+  <h3>Authorized Agents</h3>
+  <p>You may designate an authorized agent to submit a request on your behalf. We will require verification of both the agent's identity and their written authorization from you.</p>
+
+  <!-- 6B — Email Communications -->
+  <h2 id="email-comms">6B. Email Communications and Unsubscribe</h2>
+
+  <h3>Transactional Emails (Cannot Be Opted Out)</h3>
+  <p>We send transactional emails that are necessary to operate your account. These include: subscription confirmations, billing receipts, password reset requests, security alerts, and policy change notices. These emails are required for service operation and cannot be opted out of while your account is active.</p>
+
+  <h3>Marketing and Promotional Emails</h3>
+  <p>We may occasionally send emails about new features, product launches, or special offers. You can opt out of these emails at any time by:</p>
+  <ul>
+    <li>Clicking the "Unsubscribe" link at the bottom of any promotional email</li>
+    <li>Emailing <a href="mailto:go@project9ind.com">go@project9ind.com</a> with "Unsubscribe" in the subject line</li>
+  </ul>
+  <p>We will process unsubscribe requests within <strong>10 business days</strong> as required by the CAN-SPAM Act. Opting out of marketing emails does not affect transactional emails.</p>
+
+  <h3>Email Sender</h3>
+  <p>All emails from Project 9 Industries are sent from <strong>go@project9ind.com</strong>. We will never send email from any other address. If you receive a suspicious email claiming to be from Project 9 Industries from a different address, do not click any links and report it to us.</p>
 
   <!-- 7 -->
   <h2 id="security">7. Security</h2>
@@ -558,13 +621,16 @@
   <h3>8.1 Essential Cookies</h3>
   <p>We use essential cookies that are required for the Services to function properly. These include authentication tokens (to keep you logged in) and security tokens (to prevent cross-site attacks). These cookies cannot be disabled without breaking core functionality.</p>
 
-  <h3>8.2 Analytics</h3>
+  <h3>8.2 Local Storage</h3>
+  <p>Our HQ application uses your browser's localStorage to store your authentication session token and guest brief usage count. Unlike cookies, localStorage data persists indefinitely until you manually clear your browser data. If you delete your account, we cannot remotely clear your browser's localStorage — you must clear it from your browser settings. The data stored is limited to session authentication and a numeric brief counter; no trip details, destinations, or personal preferences are stored in localStorage.</p>
+
+  <h3>8.3 Analytics</h3>
   <p>Netlify, our hosting provider, may collect basic analytics data including page views, device type, and approximate geographic location (city level). This data is used solely for service improvement and is not sold to or shared with advertisers.</p>
 
-  <h3>8.3 Third-Party Cookies</h3>
+  <h3>8.4 Third-Party Cookies</h3>
   <p>Third-party services may set their own cookies during authentication (Google OAuth) and payment processing (Stripe). These are governed by their respective privacy policies.</p>
 
-  <h3>8.4 Managing Cookies</h3>
+  <h3>8.5 Managing Cookies and Local Storage</h3>
   <p>You can manage or disable cookies through your browser settings. Note that disabling essential cookies may affect your ability to log in and use the Services.</p>
 
   <!-- 9 -->
@@ -581,6 +647,10 @@
     <li><a href="https://www.netlify.com/privacy/">Netlify Privacy Policy</a></li>
     <li><a href="https://policies.google.com/privacy">Google Privacy Policy</a></li>
     <li><a href="https://openweathermap.org/privacy-policy">OpenWeather Privacy Policy</a></li>
+    <li><a href="https://osmfoundation.org/wiki/Privacy_Policy">OpenStreetMap Foundation Privacy Policy</a> (Nominatim geocoding)</li>
+    <li><a href="https://www.usgs.gov/privacy-policies">USGS Privacy Policy</a></li>
+    <li><a href="https://www.nps.gov/aboutus/website-policies.htm">National Park Service Website Policies</a></li>
+    <li><a href="https://www.recreation.gov/privacy">Recreation.gov Privacy Policy</a></li>
   </ul>
 
   <!-- 10 -->
@@ -628,6 +698,7 @@
     <a href="https://project9ind.com">Home</a>
     <a href="terms.html">Terms</a>
     <a href="privacy.html">Privacy</a>
+    <a href="privacy.html#do-not-sell">Your Privacy Choices</a>
   </div>
 </div>
 
