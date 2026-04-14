@@ -2618,15 +2618,8 @@
             <div class="pricing-feature">
                 <div class="feat-check">✓</div>
                 <div>
-                    <div class="feat-app">EYES <span class="feat-badge badge-soon">Soon</span></div>
-                    <div class="feat-tag">Race-day intelligence — conditions, hazards, and timing.</div>
-                </div>
-            </div>
-            <div class="pricing-feature">
-                <div class="feat-check">✓</div>
-                <div>
-                    <div class="feat-app">COMMS <span class="feat-badge badge-soon">Soon</span></div>
-                    <div class="feat-tag">Satellite-capable field comms and team coordination.</div>
+                    <div class="feat-app">RECOVERY <span class="feat-badge badge-soon">Soon</span></div>
+                    <div class="feat-tag">AI-guided recovery intelligence for off-road and rally.</div>
                 </div>
             </div>
             <div class="pricing-feature">
@@ -4009,28 +4002,31 @@ routeObs.observe(routeGraphic);
     const countEl = document.getElementById('foundersSignedCount');
     if (plaque && founders) {
       const validFounders = founders.filter(f => f.full_name && f.full_name.trim());
-      const total = validFounders.length;
+      // IX is always first on the wall — founder #0
+      const ixName = document.createElement('span');
+      ixName.className = 'founder-name';
+      ixName.textContent = 'IX';
+      plaque.appendChild(ixName);
+      const total = validFounders.length + 1; // +1 for IX
       if (countEl) countEl.textContent = total;
 
-      if (total === 0) {
-        // Empty state — show ghost slots waiting to be claimed
+      if (total === 1) {
+        // Only IX — show ghost slots waiting to be claimed
         const emptyMsg = document.createElement('div');
         emptyMsg.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-weight:400;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 0;';
-        emptyMsg.textContent = 'Be the first to sign.';
+        emptyMsg.textContent = 'Be the next to sign.';
         plaque.appendChild(emptyMsg);
       } else {
-        // Render founder names with diamond dividers
+        // Render founder names with diamond dividers (IX already on wall)
         validFounders.forEach((f, i) => {
-          const name = document.createElement('span');
+          var d = document.createElement('span');
+          d.className = 'founder-divider';
+          d.textContent = '◆';
+          plaque.appendChild(d);
+          var name = document.createElement('span');
           name.className = 'founder-name';
           name.textContent = f.full_name.trim();
           plaque.appendChild(name);
-          if (i < total - 1) {
-            const div = document.createElement('span');
-            div.className = 'founder-divider';
-            div.textContent = '◆';
-            plaque.appendChild(div);
-          }
         });
         // Show empty slots remaining as subtle dashes
         const remaining = 100 - total;
