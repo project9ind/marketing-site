@@ -2642,7 +2642,7 @@
                 <span class="acct-plan-badge free" id="acctPlanBadge">FREE</span>
             </div>
             <div class="acct-founding-note" id="acctFoundingNote" style="display:none;">
-                ⚡ Founding Member — $1/mo for life, every app, every feature
+                Founding Member — $1/mo for life, every app, every feature
             </div>
         </div>
 
@@ -2704,13 +2704,13 @@
                 <div class="garage-form-field">
                     <label class="garage-form-label">Vehicle Type</label>
                     <div class="garage-cat-grid" id="garageCatGrid">
-                        <div class="garage-cat-btn" data-cat="truck" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🛻</span><span class="garage-cat-name">Truck</span></div>
-                        <div class="garage-cat-btn" data-cat="suv" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🚙</span><span class="garage-cat-name">SUV</span></div>
-                        <div class="garage-cat-btn" data-cat="car" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🚗</span><span class="garage-cat-name">Car</span></div>
-                        <div class="garage-cat-btn" data-cat="motorcycle" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🏍️</span><span class="garage-cat-name">Moto</span></div>
-                        <div class="garage-cat-btn" data-cat="side-by-side" onclick="garageSelectCat(this)"><span class="garage-cat-icon">⛰️</span><span class="garage-cat-name">SxS</span></div>
-                        <div class="garage-cat-btn" data-cat="atv" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🏔️</span><span class="garage-cat-name">ATV</span></div>
-                        <div class="garage-cat-btn" data-cat="boat" onclick="garageSelectCat(this)"><span class="garage-cat-icon">🚤</span><span class="garage-cat-name">Boat</span></div>
+                        <div class="garage-cat-btn" data-cat="truck" onclick="garageSelectCat(this)"><span class="garage-cat-icon"><svg width="18" height="18" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 24h30M6 24v-8l3-6h8l2 3h8l3 3v8M10 26a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM26 26a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg></span><span class="garage-cat-name">Truck</span></div>
+                        <div class="garage-cat-btn" data-cat="suv" onclick="garageSelectCat(this)"><span class="garage-cat-icon"><svg width="18" height="18" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 24h30M5 24v-7l2-5h10l4 3h8l2 2v7M10 26a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM26 26a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg></span><span class="garage-cat-name">SUV</span></div>
+                        <div class="garage-cat-btn" data-cat="car" onclick="garageSelectCat(this)"><span class="garage-cat-icon"><svg width="18" height="18" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 23h30M6 23v-5l4-5h12l5 4h3l2 1v5M10 25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM26 25a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg></span><span class="garage-cat-name">Car</span></div>
+                        <div class="garage-cat-btn" data-cat="motorcycle" onclick="garageSelectCat(this)"><span class="garage-cat-icon"><svg width="18" height="18" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="24" r="5"/><circle cx="27" cy="24" r="5"/><path d="M14 24l4-10h4l3 4 2-4M9 24l6-8h6"/></svg></span><span class="garage-cat-name">Moto</span></div>
+                        <div class="garage-cat-btn" data-cat="side-by-side" onclick="garageSelectCat(this)"><span class="garage-cat-icon"><svg width="18" height="18" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 22h26M7 22v-6l2-3h14l3 3v6"/><rect x="10" y="13" width="12" height="6" rx="1" fill="none"/><path d="M16 13v6"/></svg></span><span class="garage-cat-name">SxS</span></div>
+                        <div class="garage-cat-btn" data-cat="atv" onclick="garageSelectCat(this)"><span class="garage-cat-icon"><svg width="18" height="18" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="24" r="5"/><circle cx="28" cy="24" r="5"/><path d="M13 24h10M14 20l2-6h4l3 4M12 18h8"/></svg></span><span class="garage-cat-name">ATV</span></div>
+                        <div class="garage-cat-btn" data-cat="boat" onclick="garageSelectCat(this)"><span class="garage-cat-icon"><svg width="18" height="18" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22c2 4 8 6 14 6s12-2 14-6l-4-8H8l-4 8z"/><path d="M2 28c3-2 6-2 9 0s6 2 9 0 6-2 9 0"/></svg></span><span class="garage-cat-name">Boat</span></div>
                     </div>
                     <input type="hidden" id="garageSelectedCat" value="" />
                 </div>
@@ -2729,7 +2729,7 @@
                     </div>
                 </div>
                 <div class="garage-form-field">
-                    <label class="garage-check-item" style="padding:0;"><input type="checkbox" id="garageEvToggle" onchange="garageToggleEv(this.checked)" style="width:16px;height:16px;border:1px solid var(--border);background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer;position:relative;border-radius:2px;" /><span class="garage-check-label" style="font-size:13px;color:var(--cream);">⚡ Electric Vehicle</span></label>
+                    <label class="garage-check-item" style="padding:0;"><input type="checkbox" id="garageEvToggle" onchange="garageToggleEv(this.checked)" style="width:16px;height:16px;border:1px solid var(--border);background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer;position:relative;border-radius:2px;" /><span class="garage-check-label" style="font-size:13px;color:var(--cream);">Electric Vehicle</span></label>
                     <div class="garage-ev-fields" id="garageEvFields">
                         <div class="garage-form-field" style="margin-top:10px;"><label class="garage-form-label">Range (miles)</label><input type="number" class="garage-form-input" id="garageEvRange" placeholder="e.g. 314" min="50" max="600" /></div>
                         <div class="garage-form-field"><label class="garage-form-label">Charging Networks</label><div class="garage-check-grid"><label class="garage-check-item"><input type="checkbox" class="garage-charging-check" value="Tesla Supercharger / NACS" checked /><span class="garage-check-label">Tesla / NACS</span></label><label class="garage-check-item"><input type="checkbox" class="garage-charging-check" value="CCS / Electrify America" /><span class="garage-check-label">CCS / EA</span></label><label class="garage-check-item"><input type="checkbox" class="garage-charging-check" value="CHAdeMO" /><span class="garage-check-label">CHAdeMO</span></label><label class="garage-check-item"><input type="checkbox" class="garage-charging-check" value="J1772 Level 2" /><span class="garage-check-label">J1772 L2</span></label></div></div>
@@ -2738,14 +2738,14 @@
                 <div class="garage-form-actions"><button class="garage-form-save" id="garageSaveBtn" onclick="garageSave()">Save Vehicle</button><button class="garage-form-cancel" onclick="garageCancelForm()">Cancel</button></div>
             </div>
 
-            <div class="acct-lock-overlay" id="garageLock" style="display:none;"><div class="acct-lock-icon">🔒</div><div class="acct-lock-label">Pro Feature</div><button class="acct-lock-cta" onclick="acctDoUpgrade()">Upgrade to Pro — $1/mo →</button></div>
+            <div class="acct-lock-overlay" id="garageLock" style="display:none;"><div class="acct-lock-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="acct-lock-label">Pro Feature</div><button class="acct-lock-cta" onclick="acctDoUpgrade()">Upgrade to Pro — $1/mo →</button></div>
         </div>
 
         <!-- My Gear Card -->
         <div class="acct-card" id="acctGearCard">
             <div class="acct-section-label">My Gear</div>
             <div class="gear-categories" id="gearCategories"></div>
-            <div class="acct-lock-overlay" id="gearLock" style="display:none;"><div class="acct-lock-icon">🔒</div><div class="acct-lock-label">Pro Feature</div><button class="acct-lock-cta" onclick="acctDoUpgrade()">Upgrade to Pro — $1/mo →</button></div>
+            <div class="acct-lock-overlay" id="gearLock" style="display:none;"><div class="acct-lock-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="acct-lock-label">Pro Feature</div><button class="acct-lock-cta" onclick="acctDoUpgrade()">Upgrade to Pro — $1/mo →</button></div>
         </div>
 
       </div><!-- /acct-right -->
@@ -3385,7 +3385,7 @@ routeObs.observe(routeGraphic);
     const plan = userData?.plan || 'free';
     const isFounding = userData?.is_founding_member || false;
     const badge = document.getElementById('acctPlanBadge');
-    badge.textContent = plan === 'pro' ? '⚡ P9I PRO' : 'FREE';
+    badge.textContent = plan === 'pro' ? 'P9I PRO' : 'FREE';
     badge.className = 'acct-plan-badge ' + plan;
     const foundingNote = document.getElementById('acctFoundingNote');
     foundingNote.style.display = (isFounding && plan === 'pro') ? 'block' : 'none';
@@ -3451,7 +3451,7 @@ routeObs.observe(routeGraphic);
   // ══════════════════════════════════════════════════════════
   const GARAGE_MAX = 5;
   const GARAGE_CAT_LABELS = { truck:'Truck', suv:'SUV', car:'Car', motorcycle:'Moto', 'side-by-side':'SxS', atv:'ATV', boat:'Boat' };
-  const GARAGE_CAT_ICONS = { truck:'🛻', suv:'🚙', car:'🏎️', motorcycle:'🏍️', 'side-by-side':'🏁', atv:'🏁', boat:'🚤' };
+  const GARAGE_CAT_ICONS = { truck:'T', suv:'S', car:'C', motorcycle:'M', 'side-by-side':'SxS', atv:'A', boat:'B' };
   const CLEARANCE_LABELS = { stock:'Stock', high:'High Clearance', extreme:'Extreme' };
 
   function _sbClient() {
@@ -3471,11 +3471,11 @@ routeObs.observe(routeGraphic);
       if (countEl) countEl.innerHTML = '';
     } else {
       list.innerHTML = vehicles.map(v => {
-        const icon = GARAGE_CAT_ICONS[v.category] || '🚙';
+        const icon = GARAGE_CAT_ICONS[v.category] || 'V';
         const nickPart = v.nickname ? `<span class="nick">"${v.nickname}"</span> · ` : '';
         const clearPart = CLEARANCE_LABELS[v.clearance] || v.clearance;
         const featurePart = (v.features || []).join(', ');
-        const evPart = v.is_ev ? ` · <span class="ev-badge">⚡ EV ${v.ev_range || '—'}mi</span>` : '';
+        const evPart = v.is_ev ? ` · <span class="ev-badge">EV ${v.ev_range || '—'}mi</span>` : '';
         const subLine = nickPart + clearPart + (featurePart ? ' · ' + featurePart : '') + evPart;
         return `<div class="garage-vehicle-row" data-id="${v.id}">
           <div class="garage-vehicle-icon">${icon}</div>
@@ -3484,8 +3484,8 @@ routeObs.observe(routeGraphic);
             <div class="garage-vehicle-sub">${subLine}</div>
           </div>
           <div class="garage-vehicle-actions-inline">
-            <button class="garage-inline-btn" onclick="garageEdit('${v.id}')" title="Edit">✏️</button>
-            <button class="garage-inline-btn delete" onclick="garageDelete('${v.id}')" title="Delete">🗑️</button>
+            <button class="garage-inline-btn" onclick="garageEdit('${v.id}')" title="Edit"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></button>
+            <button class="garage-inline-btn delete" onclick="garageDelete('${v.id}')" title="Delete"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
           </div>
         </div>`;
       }).join('');
@@ -3616,14 +3616,14 @@ routeObs.observe(routeGraphic);
   // MY GEAR — CRUD Functions
   // ══════════════════════════════════════════════════════════
   const GEAR_CATEGORIES = [
-    { key:'camping',  icon:'⛺', label:'Camping Gear' },
-    { key:'hiking',   icon:'🥾', label:'Hiking Gear' },
-    { key:'climbing', icon:'🧗', label:'Rock Climbing Gear' },
-    { key:'offroad',  icon:'🔧', label:'Off-Road / Recovery Gear' },
-    { key:'water',    icon:'🌊', label:'Water Sports Gear' },
-    { key:'snow',     icon:'❄️', label:'Snow / Winter Gear' },
-    { key:'safety',   icon:'🆘', label:'Safety & Emergency' },
-    { key:'comms',    icon:'📡', label:'Comms & Navigation' },
+    { key:'camping',  icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/><path d="M12 12v6"/></svg>', label:'Camping Gear' },
+    { key:'hiking',   icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-1 7h4l-5 9 1-6H8l5-10z"/></svg>', label:'Hiking Gear' },
+    { key:'climbing', icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20l8-16 8 16"/><path d="M8 12h8"/></svg>', label:'Rock Climbing Gear' },
+    { key:'offroad',  icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>', label:'Off-Road / Recovery Gear' },
+    { key:'water',    icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg>', label:'Water Sports Gear' },
+    { key:'snow',     icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"/></svg>', label:'Snow / Winter Gear' },
+    { key:'safety',   icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>', label:'Safety & Emergency' },
+    { key:'comms',    icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v8"/><path d="M4.93 10.93l1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="M19.07 10.93l-1.41 1.41"/><path d="M22 22H2"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>', label:'Comms & Navigation' },
   ];
 
   async function loadGear(userId) {
