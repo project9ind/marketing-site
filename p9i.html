@@ -3992,68 +3992,76 @@ routeObs.observe(routeGraphic);
   }
 
   // ── WALL OF FOUNDERS (live names from Supabase) ───────────────
-  try {
-    const { data: founders } = await sb
-      .from('founding_wall')
-      .select('full_name, created_at')
-      .order('created_at', { ascending: true });
-
+  // IX is ALWAYS first on the wall — renders regardless of Supabase query
+  (function renderFounderWall() {
     const plaque = document.getElementById('foundersPlaque');
     const countEl = document.getElementById('foundersSignedCount');
-    if (plaque && founders) {
-      const validFounders = founders.filter(f => f.full_name && f.full_name.trim());
-      // IX is always first on the wall — founder #0
-      const ixName = document.createElement('span');
-      ixName.className = 'founder-name';
-      ixName.textContent = 'IX';
-      plaque.appendChild(ixName);
-      const total = validFounders.length + 1; // +1 for IX
-      if (countEl) countEl.textContent = total;
+    if (!plaque) return;
 
-      if (total === 1) {
-        // Only IX — show ghost slots waiting to be claimed
-        const emptyMsg = document.createElement('div');
-        emptyMsg.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-weight:400;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 0;';
-        emptyMsg.textContent = 'Be the next to sign.';
-        plaque.appendChild(emptyMsg);
-      } else {
-        // Render founder names with diamond dividers (IX already on wall)
-        validFounders.forEach((f, i) => {
-          var d = document.createElement('span');
-          d.className = 'founder-divider';
-          d.textContent = '◆';
-          plaque.appendChild(d);
-          var name = document.createElement('span');
-          name.className = 'founder-name';
-          name.textContent = f.full_name.trim();
-          plaque.appendChild(name);
-        });
-        // Show empty slots remaining as subtle dashes
-        const remaining = 100 - total;
-        if (remaining > 0) {
-          const slotsHint = document.createElement('span');
-          slotsHint.className = 'founder-divider';
-          slotsHint.textContent = '◆';
-          plaque.appendChild(slotsHint);
-          const slots = Math.min(remaining, 6); // Show up to 6 ghost slots
-          for (let s = 0; s < slots; s++) {
-            const slot = document.createElement('span');
-            slot.className = 'founder-slot';
-            plaque.appendChild(slot);
-            if (s < slots - 1) {
-              const spacer = document.createElement('span');
-              spacer.style.cssText = 'width:4px;display:inline-block;';
-              plaque.appendChild(spacer);
+    // Step 1: IX is founder #0 — always engraved
+    const ixName = document.createElement('span');
+    ixName.className = 'founder-name';
+    ixName.textContent = 'IX';
+    plaque.appendChild(ixName);
+
+    // Step 2: Pull additional founders from Supabase
+    sb.from('founding_wall')
+      .select('full_name, created_at')
+      .order('created_at', { ascending: true })
+      .then(function(res) {
+        var founders = (res && res.data) ? res.data : [];
+        var validFounders = founders.filter(function(f) { return f.full_name && f.full_name.trim(); });
+        var total = validFounders.length + 1; // +1 for IX
+        if (countEl) countEl.textContent = total;
+
+        if (total === 1) {
+          // Only IX — show ghost slots waiting to be claimed
+          var emptyMsg = document.createElement('div');
+          emptyMsg.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-weight:400;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 0;';
+          emptyMsg.textContent = 'Be the next to sign.';
+          plaque.appendChild(emptyMsg);
+        } else {
+          // Render founder names with diamond dividers (IX already on wall)
+          validFounders.forEach(function(f) {
+            var d = document.createElement('span');
+            d.className = 'founder-divider';
+            d.textContent = '\u25C6';
+            plaque.appendChild(d);
+            var name = document.createElement('span');
+            name.className = 'founder-name';
+            name.textContent = f.full_name.trim();
+            plaque.appendChild(name);
+          });
+          // Show empty slots remaining as subtle dashes
+          var remaining = 100 - total;
+          if (remaining > 0) {
+            var slotsHint = document.createElement('span');
+            slotsHint.className = 'founder-divider';
+            slotsHint.textContent = '\u25C6';
+            plaque.appendChild(slotsHint);
+            var slots = Math.min(remaining, 6);
+            for (var s = 0; s < slots; s++) {
+              var slot = document.createElement('span');
+              slot.className = 'founder-slot';
+              plaque.appendChild(slot);
+              if (s < slots - 1) {
+                var spacer = document.createElement('span');
+                spacer.style.cssText = 'width:4px;display:inline-block;';
+                plaque.appendChild(spacer);
+              }
             }
           }
         }
-      }
-    }
-  } catch(e) {
-    // Silent fail — wall just shows empty state
-    const countEl = document.getElementById('foundersSignedCount');
-    if (countEl) countEl.textContent = '0';
-  }
+      })
+      .catch(function() {
+        // Supabase failed — IX is already on wall, just show count of 1
+        if (countEl) countEl.textContent = '1';
+        var emptyMsg = document.createElement('div');
+        emptyMsg.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-weight:400;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 0;';
+        emptyMsg.textContent = 'Be the next to sign.';
+        plaque.appendChild(emptyMsg);
+      });
+  })();
 
 })();
 
