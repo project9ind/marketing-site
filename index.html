@@ -545,6 +545,53 @@
         }
         .ps-cell.dim .ps-desc { color: var(--muted); }
 
+        /* ── IDEA FORM (platform strip) ─────────────────────── */
+        .ps-status.idea-label { color: var(--orange); }
+        .ps-status.idea-label::before { content:''; }
+        .ps-idea-cell { display: flex; flex-direction: column; }
+        .ps-idea-cell .ps-name { font-size: 16px; margin-bottom: 6px; color: var(--cream); }
+        .ps-idea-form {
+            display: flex; gap: 8px; margin-top: 4px; width: 100%;
+        }
+        .ps-idea-input {
+            flex: 1;
+            background: rgba(14,13,12,0.6);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-family: 'Barlow', sans-serif;
+            font-weight: 300;
+            font-size: 13px;
+            color: var(--cream);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .ps-idea-input::placeholder { color: var(--muted); font-style: italic; }
+        .ps-idea-input:focus { border-color: var(--orange); }
+        .ps-idea-submit {
+            background: var(--orange);
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: var(--cream);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s, transform 0.2s;
+            flex-shrink: 0;
+        }
+        .ps-idea-submit:hover { background: #e06f22; transform: scale(1.05); }
+        .ps-idea-form.submitted .ps-idea-input,
+        .ps-idea-form.submitted .ps-idea-submit { display: none; }
+        .ps-idea-thanks {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--green);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 8px 0;
+        }
+
         /* ── DATA TICKER ──────────────────────────────────────── */
         .data-ticker {
             overflow: hidden;
@@ -702,6 +749,9 @@
             .one-brief-text { font-size: 52px; gap: 12px; }
             .one-brief-glow { width: 180px; height: 100px; }
         }
+
+        /* ── Platform section tightened (prod-grid removed S21) ── */
+        .section:has(.platform-hero) { padding-bottom: 48px; }
 
         /* ── PRODUCT CARDS — INTERACTIVE ─────────────────────── */
         .prod-grid {
@@ -1984,6 +2034,7 @@
             .platform-strip { grid-template-columns: 1fr; }
             .ps-cell { padding: 20px 24px; border-right: none; border-bottom: 1px solid var(--border); }
             .ps-cell:last-child { border-bottom: none; }
+            .ps-idea-input { font-size: 14px; padding: 10px 12px; }
             .section { padding: 64px 20px; }
             .sec-h2 { font-size: 26px; }
             .sec-p { font-size: 16px; }
@@ -2100,7 +2151,7 @@
             <div class="act-dot-item">CANYON</div>
             <div class="act-dot-item">TRAIL</div>
         </div>
-        <span>HQ · EYES · COMMS</span>
+        <span>HQ · RECOVERY · YOUR IDEA</span>
     </div>
 </section>
 
@@ -2131,13 +2182,19 @@
     </div>
     <div class="ps-cell dim">
         <div class="ps-status soon">Coming Soon</div>
-        <div class="ps-name">EYES</div>
-        <div class="ps-desc">Live race intelligence for off-road and rally.</div>
+        <div class="ps-name">RECOVERY</div>
+        <div class="ps-desc">Incident intelligence for off-road and rally.</div>
     </div>
-    <div class="ps-cell dim">
-        <div class="ps-status soon">Coming Soon</div>
-        <div class="ps-name">COMMS</div>
-        <div class="ps-desc">Satellite-capable team coordination in the field.</div>
+    <div class="ps-cell ps-idea-cell">
+        <div class="ps-status idea-label">Community</div>
+        <div class="ps-name">SHARE YOUR IDEA</div>
+        <form name="idea-submission" method="POST" data-netlify="true" class="ps-idea-form">
+            <input type="hidden" name="form-name" value="idea-submission">
+            <input type="text" name="idea" class="ps-idea-input" placeholder="What app or feature should we build next?" maxlength="280" required>
+            <button type="submit" class="ps-idea-submit" aria-label="Submit idea">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </form>
     </div>
 </div>
 
@@ -2155,30 +2212,6 @@
                 <span class="one-brief-line">BRIEF<span class="one-brief-dot">.</span></span>
             </div>
             <div class="one-brief-glow"></div>
-        </div>
-    </div>
-
-    <div class="prod-grid">
-        <div class="prod-card reveal reveal-delay-1">
-            <div class="prod-status live">Live Now</div>
-            <div class="prod-name">HQ</div>
-            <div class="prod-tag">Expedition Intelligence</div>
-            <p class="prod-desc">Conditions, closures, fire activity, permits, weather, air quality, emergency contacts, and access status — for any destination in the U.S. One brief. Everything you need.</p>
-            <a href="https://hq.project9ind.com" class="prod-cta" style="text-decoration:none;">Open HQ <span>→</span></a>
-        </div>
-        <div class="prod-card dim reveal reveal-delay-2">
-            <div class="prod-status soon">Coming Soon</div>
-            <div class="prod-name">EYES</div>
-            <div class="prod-tag">Race Intelligence</div>
-            <p class="prod-desc">Course conditions, hazard zones, weather windows, and stage timing for off-road racing and rally events. Built for race day, not race week.</p>
-            <span class="prod-cta">Notify Me <span>→</span></span>
-        </div>
-        <div class="prod-card dim reveal reveal-delay-3">
-            <div class="prod-status soon">Coming Soon</div>
-            <div class="prod-name">COMMS</div>
-            <div class="prod-tag">Field Coordination</div>
-            <p class="prod-desc">Satellite messaging, live team positioning, emergency broadcast, and waypoint sharing. Anyone can have a race team now — no cell tower required.</p>
-            <span class="prod-cta">Notify Me <span>→</span></span>
         </div>
     </div>
 </div>
@@ -3877,6 +3910,33 @@ document.getElementById('recovery-password')?.addEventListener('keydown', functi
             });
         }
     } catch(e) {}
+})();
+
+// ── IDEA FORM HANDLER ──────────────────────────────────────────
+(function() {
+    const form = document.querySelector('.ps-idea-form');
+    if (!form) return;
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const data = new FormData(form);
+        fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(data).toString()
+        }).then(function() {
+            form.classList.add('submitted');
+            const thanks = document.createElement('div');
+            thanks.className = 'ps-idea-thanks';
+            thanks.textContent = 'Received — thank you.';
+            form.appendChild(thanks);
+        }).catch(function() {
+            form.classList.add('submitted');
+            var thanks = document.createElement('div');
+            thanks.className = 'ps-idea-thanks';
+            thanks.textContent = 'Received — thank you.';
+            form.appendChild(thanks);
+        });
+    });
 })();
 </script>
 </body>
