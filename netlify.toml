@@ -1,0 +1,36 @@
+# ─────────────────────────────────────────────────────────────
+# P9I Marketing Site — netlify.toml
+# Security hardened: Session 20 · 2026-04-13
+# ─────────────────────────────────────────────────────────────
+
+# ── Routing ───────────────────────────────────────────────────
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ── Security Headers (all routes) ─────────────────────────────
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), payment=(), usb=(), bluetooth=(), geolocation=(self)"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://volrckfyznnhamdunact.supabase.co https://api.stripe.com; frame-src https://js.stripe.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self';"
+
+# ── Static Asset Caching ───────────────────────────────────────
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
