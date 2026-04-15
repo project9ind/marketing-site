@@ -2264,6 +2264,33 @@
             .signup-back { left: 20px; top: 16px; }
         }
     </style>
+
+    <!-- ── GOOGLE ANALYTICS 4 ──────────────────────────────── -->
+    <!-- GA4 Measurement ID: REPLACE G-LSPF46G515 with your real G- ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LSPF46G515"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LSPF46G515');
+    </script>
+
+    <!-- ── META PIXEL ──────────────────────────────────────── -->
+    <!-- Meta Pixel ID: REPLACE 1862395621142942 with your real Pixel ID -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1862395621142942');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1862395621142942&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -3574,7 +3601,16 @@ routeObs.observe(routeGraphic);
       try { const { data } = await sb.auth.getSession(); if (data?.session) { history.replaceState(null, '', '?view=account'); signupView.classList.remove('active'); accountView.classList.add('active'); populateAccount(data.session); return; } } catch(e) {}
     }
     if (view === 'account') { signupView.classList.remove('active'); accountView.classList.add('active'); populateAccount(); }
-    else if (view === 'signup' || view === 'signin') { accountView.classList.remove('active'); signupView.classList.add('active'); if (view === 'signin') { signupForm.style.display = 'none'; signinForm.style.display = 'block'; } else { signupForm.style.display = 'block'; signinForm.style.display = 'none'; } }
+    else if (view === 'signup' || view === 'signin') {
+      accountView.classList.remove('active'); signupView.classList.add('active');
+      if (view === 'signin') { signupForm.style.display = 'none'; signinForm.style.display = 'block'; }
+      else {
+        signupForm.style.display = 'block'; signinForm.style.display = 'none';
+        // ── Conversion tracking: signup intent (reached signup form) ──
+        if (typeof gtag === 'function') gtag('event', 'begin_sign_up', { method: 'form_view' });
+        if (typeof fbq === 'function') fbq('track', 'InitiateCheckout');
+      }
+    }
     else { signupView.classList.remove('active'); accountView.classList.remove('active'); }
   }
   checkRoute();
@@ -3595,8 +3631,18 @@ routeObs.observe(routeGraphic);
     const { data, error } = await sb.auth.signUp({ email, password: pass, options: { emailRedirectTo: 'https://project9ind.com/?view=account' } });
     btn.disabled = false; btn.textContent = 'Create Account →';
     if (error) { errEl.textContent = error.message; }
-    else if (data.user && !data.session) { okEl.textContent = 'Check your email to confirm your account — once confirmed, sign in to access your dashboard and run your first brief.'; okEl.style.display = 'block'; }
-    else if (data.session) { history.replaceState(null, '', '?view=account'); checkRoute(); }
+    else if (data.user && !data.session) {
+      okEl.textContent = 'Check your email to confirm your account — once confirmed, sign in to access your dashboard and run your first brief.'; okEl.style.display = 'block';
+      // ── Conversion tracking: signup complete ──
+      if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'email' });
+      if (typeof fbq === 'function') fbq('track', 'CompleteRegistration');
+    }
+    else if (data.session) {
+      // ── Conversion tracking: instant session (e.g. OAuth) ──
+      if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'email' });
+      if (typeof fbq === 'function') fbq('track', 'CompleteRegistration');
+      history.replaceState(null, '', '?view=account'); checkRoute();
+    }
   });
 
   document.getElementById('signinBtn').addEventListener('click', async function() {
