@@ -3604,13 +3604,13 @@ routeObs.observe(routeGraphic);
 </script>
 
 <!-- ── AUTH ENGINE ─────────────────────────────────────────────── -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
 <script>
 (async function() {
   const SUPABASE_URL = 'https://volrckfyznnhamdunact.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8';
   let sb;
-  try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.warn('Supabase SDK not loaded'); return; }
+  try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); console.log('[P9I] Supabase client created'); } catch(e) { console.error('[P9I] Supabase SDK failed:', e.message); return; }
 
   // Handle OAuth / email-confirmation / recovery redirect
   const hash = window.location.hash;
@@ -3661,13 +3661,17 @@ routeObs.observe(routeGraphic);
     if (view === 'account') { populateAccount(); }
   }
   checkRoute();
+  console.log('[P9I] checkRoute dispatched');
 
-  document.getElementById('signupBack').addEventListener('click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); signupView.classList.remove('active'); });
-  document.getElementById('accountBack').addEventListener('click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); accountView.classList.remove('active'); });
-  document.getElementById('showSignin').addEventListener('click', function() { history.replaceState(null, '', '?view=signin'); signupForm.style.display = 'none'; signinForm.style.display = 'block'; });
-  document.getElementById('showSignup').addEventListener('click', function() { history.replaceState(null, '', '?view=signup'); signupForm.style.display = 'block'; signinForm.style.display = 'none'; });
+  // Helper: safe event listener — prevents one missing element from killing the whole IIFE
+  function _on(id, evt, fn) { var el = document.getElementById(id); if (el) el.addEventListener(evt, fn); else console.warn('[P9I] Missing element:', id); }
 
-  document.getElementById('signupBtn').addEventListener('click', async function() {
+  _on('signupBack', 'click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); signupView.classList.remove('active'); });
+  _on('accountBack', 'click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); accountView.classList.remove('active'); });
+  _on('showSignin', 'click', function() { history.replaceState(null, '', '?view=signin'); signupForm.style.display = 'none'; signinForm.style.display = 'block'; });
+  _on('showSignup', 'click', function() { history.replaceState(null, '', '?view=signup'); signupForm.style.display = 'block'; signinForm.style.display = 'none'; });
+
+  _on('signupBtn', 'click', async function() {
     const btn = this, email = document.getElementById('signupEmail').value.trim(), pass = document.getElementById('signupPassword').value;
     const errEl = document.getElementById('signupError'), okEl = document.getElementById('signupSuccess');
     errEl.textContent = ''; okEl.style.display = 'none';
@@ -3691,7 +3695,7 @@ routeObs.observe(routeGraphic);
     }
   });
 
-  document.getElementById('signinBtn').addEventListener('click', async function() {
+  _on('signinBtn', 'click', async function() {
     const btn = this, email = document.getElementById('signinEmail').value.trim(), pass = document.getElementById('signinPassword').value;
     const errEl = document.getElementById('signinError');
     errEl.textContent = '';
@@ -3707,8 +3711,8 @@ routeObs.observe(routeGraphic);
     const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://project9ind.com/?view=account' } });
     if (error) { document.getElementById('signupError').textContent = error.message; document.getElementById('signinError').textContent = error.message; }
   }
-  document.getElementById('googleSignupBtn').addEventListener('click', googleAuth);
-  document.getElementById('googleSigninBtn').addEventListener('click', googleAuth);
+  _on('googleSignupBtn', 'click', googleAuth);
+  _on('googleSigninBtn', 'click', googleAuth);
 
   async function populateAccount(passedSession) {
     let session = passedSession;
@@ -4046,7 +4050,7 @@ routeObs.observe(routeGraphic);
     });
   };
 
-  document.getElementById('forgotPasswordLink').addEventListener('click', async function() {
+  _on('forgotPasswordLink', 'click', async function() {
     const email = document.getElementById('signinEmail').value.trim();
     const errEl = document.getElementById('signinError');
     if (!email) { errEl.textContent = 'Enter your email above, then click forgot password.'; return; }
@@ -4067,8 +4071,10 @@ routeObs.observe(routeGraphic);
     });
   }
 
-  document.getElementById('signupPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('signupBtn').click(); });
-  document.getElementById('signinPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('signinBtn').click(); });
+  _on('signupPassword', 'keydown', function(e) { if (e.key === 'Enter') { var b = document.getElementById('signupBtn'); if (b) b.click(); } });
+  _on('signinPassword', 'keydown', function(e) { if (e.key === 'Enter') { var b = document.getElementById('signinBtn'); if (b) b.click(); } });
+
+  console.log('[P9I] All auth event listeners registered');
 
   // Click interception for ?view= links is handled by the independent routing script above.
   // This listener adds session-aware behavior (redirect logged-in users to account).
