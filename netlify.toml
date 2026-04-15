@@ -21,7 +21,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), payment=(), usb=(), bluetooth=(), geolocation=(self)"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://volrckfyznnhamdunact.supabase.co https://api.stripe.com; frame-src https://js.stripe.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self';"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://volrckfyznnhamdunact.supabase.co https://api.stripe.com https://www.google-analytics.com https://www.facebook.com; frame-src https://js.stripe.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self';"
 
 # ── Static Asset Caching ───────────────────────────────────────
 
