@@ -4009,14 +4009,17 @@ routeObs.observe(routeGraphic);
     else { errEl.textContent = ''; const okEl = document.createElement('div'); okEl.style.cssText = 'color:#4BC97A;font-size:13px;margin-top:8px;'; okEl.textContent = 'Password reset email sent! Check your inbox.'; this.parentElement.insertBefore(okEl, this.nextSibling); }
   });
 
-  document.getElementById('acctResetPassword').addEventListener('click', async function() {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) return;
-    this.textContent = 'Sending…'; this.style.pointerEvents = 'none';
-    const { error } = await sb.auth.resetPasswordForEmail(session.user.email, { redirectTo: 'https://project9ind.com/?view=account' });
-    if (error) { this.textContent = error.message; this.style.color = '#e04040'; this.style.pointerEvents = 'auto'; }
-    else { this.textContent = 'Reset email sent — check your inbox'; this.style.color = '#4BC97A'; setTimeout(() => { this.textContent = 'Reset Password'; this.style.color = ''; this.style.pointerEvents = 'auto'; }, 4000); }
-  });
+  const acctResetPwEl = document.getElementById('acctResetPassword');
+  if (acctResetPwEl) {
+    acctResetPwEl.addEventListener('click', async function() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) return;
+      this.textContent = 'Sending…'; this.style.pointerEvents = 'none';
+      const { error } = await sb.auth.resetPasswordForEmail(session.user.email, { redirectTo: 'https://project9ind.com/?view=account' });
+      if (error) { this.textContent = error.message; this.style.color = '#e04040'; this.style.pointerEvents = 'auto'; }
+      else { this.textContent = 'Reset email sent — check your inbox'; this.style.color = '#4BC97A'; setTimeout(() => { this.textContent = 'Reset Password'; this.style.color = ''; this.style.pointerEvents = 'auto'; }, 4000); }
+    });
+  }
 
   document.getElementById('signupPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('signupBtn').click(); });
   document.getElementById('signinPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('signinBtn').click(); });
