@@ -3560,6 +3560,49 @@ routeObs.observe(routeGraphic);
 })();
 </script>
 
+<!-- ── VIEW ROUTING (independent of Supabase) ────────────────── -->
+<script>
+(function() {
+  var signupView = document.getElementById('signupView');
+  var signupForm = document.getElementById('signupForm');
+  var signinForm = document.getElementById('signinForm');
+  var accountView = document.getElementById('accountView');
+
+  function showView() {
+    var params = new URLSearchParams(window.location.search);
+    var view = params.get('view');
+    if (view === 'account') {
+      if (signupView) signupView.classList.remove('active');
+      if (accountView) accountView.classList.add('active');
+    } else if (view === 'signup' || view === 'signin') {
+      if (accountView) accountView.classList.remove('active');
+      if (signupView) signupView.classList.add('active');
+      if (view === 'signin') { if (signupForm) signupForm.style.display = 'none'; if (signinForm) signinForm.style.display = 'block'; }
+      else { if (signupForm) signupForm.style.display = 'block'; if (signinForm) signinForm.style.display = 'none'; }
+    } else {
+      if (signupView) signupView.classList.remove('active');
+      if (accountView) accountView.classList.remove('active');
+    }
+  }
+
+  showView();
+  window.addEventListener('popstate', showView);
+
+  document.addEventListener('click', function(e) {
+    var a = e.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (href === '?view=signup' || href === '?view=signin' || href === '?view=account') {
+      e.preventDefault();
+      history.pushState(null, '', href);
+      showView();
+    }
+  });
+
+  window._p9iShowView = showView;
+})();
+</script>
+
 <!-- ── AUTH ENGINE ─────────────────────────────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
@@ -3594,27 +3637,30 @@ routeObs.observe(routeGraphic);
   const signinForm = document.getElementById('signinForm');
   const accountView = document.getElementById('accountView');
 
+  // Session-aware routing: if user is logged in and hits signup/signin, redirect to account.
+  // Basic view routing (showing/hiding panels) is handled by the independent script above.
   async function checkRoute() {
     const params = new URLSearchParams(window.location.search);
     const view = params.get('view');
     if (view === 'signup' || view === 'signin') {
-      try { const { data } = await sb.auth.getSession(); if (data?.session) { history.replaceState(null, '', '?view=account'); signupView.classList.remove('active'); accountView.classList.add('active'); populateAccount(data.session); return; } } catch(e) {}
-    }
-    if (view === 'account') { signupView.classList.remove('active'); accountView.classList.add('active'); populateAccount(); }
-    else if (view === 'signup' || view === 'signin') {
-      accountView.classList.remove('active'); signupView.classList.add('active');
-      if (view === 'signin') { signupForm.style.display = 'none'; signinForm.style.display = 'block'; }
-      else {
-        signupForm.style.display = 'block'; signinForm.style.display = 'none';
-        // ── Conversion tracking: signup intent (reached signup form) ──
+      try {
+        const { data } = await sb.auth.getSession();
+        if (data?.session) {
+          history.replaceState(null, '', '?view=account');
+          if (window._p9iShowView) window._p9iShowView();
+          populateAccount(data.session);
+          return;
+        }
+      } catch(e) {}
+      // Conversion tracking: signup intent (reached signup form)
+      if (view === 'signup') {
         if (typeof gtag === 'function') gtag('event', 'begin_sign_up', { method: 'form_view' });
         if (typeof fbq === 'function') fbq('track', 'InitiateCheckout');
       }
     }
-    else { signupView.classList.remove('active'); accountView.classList.remove('active'); }
+    if (view === 'account') { populateAccount(); }
   }
   checkRoute();
-  window.addEventListener('popstate', checkRoute);
 
   document.getElementById('signupBack').addEventListener('click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); signupView.classList.remove('active'); });
   document.getElementById('accountBack').addEventListener('click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); accountView.classList.remove('active'); });
@@ -4024,11 +4070,13 @@ routeObs.observe(routeGraphic);
   document.getElementById('signupPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('signupBtn').click(); });
   document.getElementById('signinPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('signinBtn').click(); });
 
+  // Click interception for ?view= links is handled by the independent routing script above.
+  // This listener adds session-aware behavior (redirect logged-in users to account).
   document.addEventListener('click', function(e) {
     const a = e.target.closest('a');
     if (!a) return;
     const href = a.getAttribute('href');
-    if (href === '?view=signup' || href === '?view=signin' || href === '?view=account') { e.preventDefault(); history.pushState(null, '', href); checkRoute(); }
+    if (href === '?view=signup' || href === '?view=signin' || href === '?view=account') { checkRoute(); }
   });
 
   // ── FOUNDING MEMBER COUNTER (live from Supabase) ───────────────
