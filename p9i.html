@@ -2789,9 +2789,10 @@
     <div class="founders-wall-eyebrow">The First 100</div>
     <div class="founders-wall-headline">Signed by the founders who got here first.</div>
     <div class="founders-plaque" id="foundersPlaque">
-        <!-- Populated by JS — founding member names from Supabase -->
+        <span class="founder-name">IX</span>
+        <!-- Additional founders populated by JS from Supabase -->
     </div>
-    <div class="founders-count"><strong id="foundersSignedCount">0</strong> of 100 spots signed</div>
+    <div class="founders-count"><strong id="foundersSignedCount">1</strong> of 100 spots signed</div>
     <a href="?view=signup" class="founders-cta">Claim your spot →</a>
 </div>
 
@@ -3992,36 +3993,36 @@ routeObs.observe(routeGraphic);
   }
 
   // ── WALL OF FOUNDERS (live names from Supabase) ───────────────
-  // IX is ALWAYS first on the wall — renders regardless of Supabase query
+  // IX is hardcoded in HTML — always visible even if JS/Supabase fails.
+  // This function enhances the wall with additional founders from Supabase.
   (function renderFounderWall() {
     const plaque = document.getElementById('foundersPlaque');
     const countEl = document.getElementById('foundersSignedCount');
     if (!plaque) return;
 
-    // Step 1: IX is founder #0 — always engraved
-    const ixName = document.createElement('span');
-    ixName.className = 'founder-name';
-    ixName.textContent = 'IX';
-    plaque.appendChild(ixName);
+    // IX is already in the HTML — pull additional founders from Supabase
+    if (!sb) {
+      // Supabase unavailable — IX shows from HTML, count defaults to 1
+      return;
+    }
 
-    // Step 2: Pull additional founders from Supabase
     sb.from('founding_wall')
       .select('full_name, created_at')
       .order('created_at', { ascending: true })
       .then(function(res) {
         var founders = (res && res.data) ? res.data : [];
         var validFounders = founders.filter(function(f) { return f.full_name && f.full_name.trim(); });
-        var total = validFounders.length + 1; // +1 for IX
+        var total = validFounders.length + 1; // +1 for IX (in HTML)
         if (countEl) countEl.textContent = total;
 
-        if (total === 1) {
+        if (validFounders.length === 0) {
           // Only IX — show ghost slots waiting to be claimed
           var emptyMsg = document.createElement('div');
           emptyMsg.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-weight:400;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 0;';
           emptyMsg.textContent = 'Be the next to sign.';
           plaque.appendChild(emptyMsg);
         } else {
-          // Render founder names with diamond dividers (IX already on wall)
+          // Render founder names with diamond dividers after IX
           validFounders.forEach(function(f) {
             var d = document.createElement('span');
             d.className = 'founder-divider';
@@ -4054,12 +4055,7 @@ routeObs.observe(routeGraphic);
         }
       })
       .catch(function() {
-        // Supabase failed — IX is already on wall, just show count of 1
-        if (countEl) countEl.textContent = '1';
-        var emptyMsg = document.createElement('div');
-        emptyMsg.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-weight:400;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 0;';
-        emptyMsg.textContent = 'Be the next to sign.';
-        plaque.appendChild(emptyMsg);
+        // Supabase query failed — IX still visible from HTML, count stays at 1
       });
   })();
 
