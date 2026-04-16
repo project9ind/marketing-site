@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project 9 Industries — Adventure Intelligence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
@@ -184,15 +184,59 @@
             background: rgba(14,13,12,0.92);
             backdrop-filter: blur(12px);
         }
-        .nav-logo {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: 0.08em;
-            color: var(--cream);
+        /* ── P9I SPLIT-RECT LOGO MARK ──────────────────────── */
+        .p9i-mark {
+            display: inline-flex;
+            align-items: stretch;
             text-decoration: none;
+            line-height: 1;
         }
-        .nav-logo .nine { color: var(--orange); }
+        .p9i-mark-proj {
+            background: #0D0C0B;
+            color: #F2F1EF;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            padding: 0.12em 0.18em 0.12em 0.22em;
+            letter-spacing: 0.01em;
+        }
+        .p9i-mark-nine {
+            background: #F2F1EF;
+            color: #0D0C0B;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            padding: 0.12em 0.18em 0.12em 0.14em;
+        }
+        .p9i-mark.on-dark {
+            border: 2px solid #F2F1EF;
+        }
+        .p9i-mark.on-dark .p9i-mark-nine {
+            border-left: 2px solid #F2F1EF;
+        }
+        .p9i-mark.on-light {
+            border: 2px solid #0D0C0B;
+        }
+        .p9i-mark.on-light .p9i-mark-proj {
+            border-right: 2px solid #0D0C0B;
+        }
+        .p9i-mark-sub {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.38em;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+            color: var(--mid);
+            margin-top: 0.3em;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 22px;
+        }
 
         .nav-right { display:flex; align-items:center; gap:28px; }
 
@@ -1852,12 +1896,8 @@
         }
         .foot-l { display:flex; align-items:center; gap:20px; }
         .foot-logo {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 800;
             font-size: 14px;
-            color: var(--cream);
         }
-        .foot-logo .nine { color: var(--orange); }
         .foot-copy {
             font-family: 'Barlow', sans-serif;
             font-weight: 300;
@@ -1892,16 +1932,11 @@
             padding: 40px 28px;
         }
         .signup-logo {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: 0.08em;
-            color: var(--cream);
             text-decoration: none;
             margin-bottom: 8px;
             display: block;
+            font-size: 22px;
         }
-        .signup-logo .nine { color: var(--orange); }
         .signup-tagline {
             font-family: 'Barlow', sans-serif;
             font-weight: 300;
@@ -2007,8 +2042,7 @@
         .acct-back { position:fixed; top:20px; left:28px; z-index:10; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:0.1em; color:var(--mid); text-decoration:none; transition:color 0.2s; }
         .acct-back:hover { color: var(--cream); }
         .acct-container { width:100%; max-width:560px; padding:80px 24px 60px; margin:0 auto; }
-        .acct-logo { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:28px; color:var(--cream); text-decoration:none; letter-spacing:0.08em; text-transform:uppercase; display:block; text-align:center; margin-bottom:8px; }
-        .acct-logo .nine { color: var(--orange); }
+        .acct-logo { text-decoration:none; display:flex; justify-content:center; margin-bottom:8px; font-size:28px; }
         .acct-tagline { font-family:'Barlow Condensed',sans-serif; font-weight:400; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mid); text-align:center; margin-bottom:40px; }
         .acct-card { background:#14120F; border:1px solid var(--border); border-radius:6px; padding:32px; margin-bottom:20px; }
         .acct-section-label { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--orange); margin-bottom:16px; padding-left:14px; position:relative; }
@@ -2327,7 +2361,7 @@
 
 <!-- NAV -->
 <nav id="mainNav">
-    <a href="/" class="nav-logo">PROJ<span class="nine">9</span></a>
+    <a href="/" class="nav-logo"><span class="p9i-mark on-dark"><span class="p9i-mark-proj">PROJ</span><span class="p9i-mark-nine">9</span></span></a>
     <div class="nav-right">
         <a href="https://hq.project9ind.com" class="nav-hq">
             <span class="live-dot"></span>HQ
@@ -2842,7 +2876,7 @@
 <!-- FOOTER -->
 <footer>
     <div class="foot-l">
-        <div class="foot-logo">PROJ<span class="nine">9</span></div>
+        <div class="foot-logo"><span class="p9i-mark on-dark"><span class="p9i-mark-proj">PROJ</span><span class="p9i-mark-nine">9</span></span></div>
         <div class="foot-copy">© 2026 Project 9 Industries</div>
     </div>
     <div class="foot-links">
@@ -2861,7 +2895,7 @@
     <div class="signup-stripe-top"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
     <a href="/" class="signup-back" id="signupBack">← Back to Project 9</a>
     <div class="signup-inner">
-        <a href="/" class="signup-logo">PROJ<span class="nine">9</span></a>
+        <a href="/" class="signup-logo"><span class="p9i-mark on-dark"><span class="p9i-mark-proj">PROJ</span><span class="p9i-mark-nine">9</span></span></a>
         <div class="signup-tagline">Adventure Intelligence Platform</div>
         <div id="signupForm">
             <div class="signup-heading">Join the mission.</div>
@@ -2899,7 +2933,7 @@
     <div class="acct-stripe-top"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
     <a href="/" class="acct-back" id="accountBack">← Back to Project 9</a>
     <div class="acct-header-area">
-        <a href="/" class="acct-logo">PROJ<span class="nine">9</span></a>
+        <a href="/" class="acct-logo"><span class="p9i-mark on-dark"><span class="p9i-mark-proj">PROJ</span><span class="p9i-mark-nine">9</span></span></a>
         <div class="acct-tagline">Your Account</div>
     </div>
 
