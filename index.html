@@ -3660,7 +3660,7 @@ routeObs.observe(routeGraphic);
   const SUPABASE_URL = 'https://volrckfyznnhamdunact.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8';
   let sb;
-  try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); console.log('[P9I] Supabase client created'); } catch(e) { console.error('[P9I] Supabase SDK failed:', e.message); return; }
+  try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.error('[P9I] Supabase SDK failed:', e.message); return; }
 
   // Handle OAuth / email-confirmation / recovery redirect
   const hash = window.location.hash;
@@ -3711,7 +3711,6 @@ routeObs.observe(routeGraphic);
     if (view === 'account') { populateAccount(); }
   }
   checkRoute();
-  console.log('[P9I] checkRoute dispatched');
 
   // Helper: safe event listener — prevents one missing element from killing the whole IIFE
   function _on(id, evt, fn) { var el = document.getElementById(id); if (el) el.addEventListener(evt, fn); else console.warn('[P9I] Missing element:', id); }
@@ -4124,8 +4123,6 @@ routeObs.observe(routeGraphic);
   _on('signupPassword', 'keydown', function(e) { if (e.key === 'Enter') { var b = document.getElementById('signupBtn'); if (b) b.click(); } });
   _on('signinPassword', 'keydown', function(e) { if (e.key === 'Enter') { var b = document.getElementById('signinBtn'); if (b) b.click(); } });
 
-  console.log('[P9I] All auth event listeners registered');
-
   // Click interception for ?view= links is handled by the independent routing script above.
   // This listener adds session-aware behavior (redirect logged-in users to account).
   document.addEventListener('click', function(e) {
@@ -4171,7 +4168,7 @@ routeObs.observe(routeGraphic);
         if (validFounders.length === 0) {
           // Only IX — show ghost slots waiting to be claimed
           var emptyMsg = document.createElement('div');
-          emptyMsg.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-weight:400;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 0;';
+          emptyMsg.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-weight:400;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:12px 0;width:100%;';
           emptyMsg.textContent = 'Be the next to sign.';
           plaque.appendChild(emptyMsg);
         } else {
