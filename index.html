@@ -2039,6 +2039,9 @@
         /* ── ACCOUNT VIEW ──────────────────────────────────────── */
         .account-view { display:none; position:fixed; inset:0; z-index:9999; background:var(--bg); overflow-y:auto; }
         .account-view.active { display:flex; flex-direction:column; align-items:stretch; min-height:100vh; }
+        /* S28 fix: lock body scroll when account view is active so we don't get
+           two nested scrollbars (outer page + inner account-view). */
+        body:has(.account-view.active) { overflow: hidden; }
         .acct-stripe-top { display:flex; width:100%; height:6px; flex-shrink:0; position:fixed; top:0; z-index:10; }
         .acct-back { position:fixed; top:20px; left:28px; z-index:10; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:0.1em; color:var(--mid); text-decoration:none; transition:color 0.2s; }
         .acct-back:hover { color: var(--cream); }
@@ -3006,8 +3009,8 @@
             <button class="acct-upgrade-btn" id="acctUpgradeBtn" onclick="acctDoUpgrade()" disabled>Join P9I Pro — $1/mo →</button>
             <button class="acct-manage-btn" id="acctManageBtn" style="display:none;" onclick="acctDoManageBilling()">Manage Subscription →</button>
             <button class="acct-cancel-btn" id="acctCancelBtn" style="display:none;" onclick="acctDoManageBilling()">Cancel Subscription</button>
-            <button class="acct-action-btn" id="acctChangeEmailBtn" onclick="acctChangeEmail()">Change Email Address</button>
-            <button class="acct-action-btn" id="acctChangePwBtn" onclick="acctChangePassword()">Change Password</button>
+            <button class="acct-action-btn" id="acctChangeEmailBtn">Change Email Address</button>
+            <button class="acct-action-btn" id="acctResetPassword">Change Password</button>
             <button class="acct-signout-btn" id="acctSignoutBtn" onclick="acctDoSignOut()" style="margin-top:12px;">Sign Out</button>
         </div>
 
@@ -3080,6 +3083,28 @@
 </div>
 
 <!-- Recovery Modal -->
+<!-- Change Email Modal (S28) -->
+<div id="email-change-overlay" class="recovery-overlay" style="display:none;" onclick="closeEmailChangeModal()"></div>
+<div id="email-change-modal" class="recovery-modal" style="display:none;">
+    <div class="recovery-panel-stripe"></div>
+    <div class="recovery-panel-head">
+        <span class="recovery-panel-title">Change Email Address</span>
+        <button class="recovery-panel-close" onclick="closeEmailChangeModal()">&times;</button>
+    </div>
+    <div class="recovery-panel-body">
+        <div id="email-change-form">
+            <div class="recovery-field"><label>Current Email</label><input type="email" id="email-change-current" disabled /></div>
+            <div class="recovery-field"><label>New Email</label><input type="email" id="email-change-new" placeholder="new@email.com" autocomplete="email" /></div>
+            <div id="email-change-msg" class="recovery-msg" style="color:#9B9890;">We'll send a verification link to your new email. Your account updates only after you confirm it.</div>
+            <button class="recovery-submit" id="email-change-btn" onclick="submitEmailChange()">Send Verification</button>
+        </div>
+        <div id="email-change-success" style="display:none;">
+            <div class="recovery-success-message">&#10003; Verification email sent!</div>
+            <div class="recovery-success-note">Check your new inbox to confirm the change.</div>
+        </div>
+    </div>
+</div>
+
 <div id="recovery-overlay" class="recovery-overlay" style="display:none;" onclick="closeRecoveryModal()"></div>
 <div id="recovery-modal" class="recovery-modal" style="display:none;">
     <div class="recovery-panel-stripe"></div>
@@ -3799,6 +3824,9 @@ routeObs.observe(routeGraphic);
     document.getElementById('acctAuthMethod').textContent = provider === 'google' ? 'Google' : 'Email';
     const resetLink = document.getElementById('acctResetPassword');
     if (resetLink) resetLink.style.display = provider === 'google' ? 'none' : 'block';
+    // S28: also hide Change Email for Google users (they manage email via Google)
+    const changeEmailBtn = document.getElementById('acctChangeEmailBtn');
+    if (changeEmailBtn) changeEmailBtn.style.display = provider === 'google' ? 'none' : 'block';
     const { data: userData } = await sb.from('users').select('plan, is_founding_member').eq('id', user.id).single();
     const plan = userData?.plan || 'free';
     const isFounding = userData?.is_founding_member || false;
@@ -4160,9 +4188,73 @@ routeObs.observe(routeGraphic);
       this.textContent = 'Sending…'; this.style.pointerEvents = 'none';
       const { error } = await sb.auth.resetPasswordForEmail(session.user.email, { redirectTo: 'https://project9ind.com/?view=account' });
       if (error) { this.textContent = error.message; this.style.color = '#e04040'; this.style.pointerEvents = 'auto'; }
-      else { this.textContent = 'Reset email sent — check your inbox'; this.style.color = '#4BC97A'; setTimeout(() => { this.textContent = 'Reset Password'; this.style.color = ''; this.style.pointerEvents = 'auto'; }, 4000); }
+      else { this.textContent = 'Reset email sent — check your inbox'; this.style.color = '#4BC97A'; setTimeout(() => { this.textContent = 'Change Password'; this.style.color = ''; this.style.pointerEvents = 'auto'; }, 4000); }
     });
   }
+
+  // S28: Change Email flow — open modal, submit via sb.auth.updateUser({email})
+  const acctChangeEmailEl = document.getElementById('acctChangeEmailBtn');
+  if (acctChangeEmailEl) {
+    acctChangeEmailEl.addEventListener('click', async function() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) return;
+      const provider = session.user.app_metadata?.provider || 'email';
+      if (provider === 'google') {
+        alert('Your account uses Google Sign-In. To change your email, change it in your Google Account settings.');
+        return;
+      }
+      document.getElementById('email-change-current').value = session.user.email || '';
+      document.getElementById('email-change-new').value = '';
+      const msg = document.getElementById('email-change-msg');
+      msg.textContent = "We'll send a verification link to your new email. Your account updates only after you confirm it.";
+      msg.style.color = '#9B9890';
+      document.getElementById('email-change-form').style.display = 'block';
+      document.getElementById('email-change-success').style.display = 'none';
+      const btn = document.getElementById('email-change-btn');
+      btn.disabled = false; btn.textContent = 'Send Verification';
+      document.getElementById('email-change-overlay').style.display = 'block';
+      document.getElementById('email-change-modal').style.display = 'block';
+      setTimeout(() => document.getElementById('email-change-new').focus(), 50);
+    });
+  }
+
+  window.closeEmailChangeModal = function() {
+    document.getElementById('email-change-overlay').style.display = 'none';
+    document.getElementById('email-change-modal').style.display = 'none';
+  };
+
+  window.submitEmailChange = async function() {
+    const newEmail = document.getElementById('email-change-new').value.trim();
+    const msg = document.getElementById('email-change-msg');
+    const btn = document.getElementById('email-change-btn');
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!newEmail || !emailRe.test(newEmail)) { msg.textContent = 'Enter a valid email address.'; msg.style.color = '#e04040'; return; }
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { msg.textContent = 'Session expired — please sign in again.'; msg.style.color = '#e04040'; return; }
+    if (newEmail.toLowerCase() === (session.user.email || '').toLowerCase()) {
+      msg.textContent = 'That is already your current email.'; msg.style.color = '#e04040'; return;
+    }
+    btn.disabled = true; btn.textContent = 'Sending…';
+    try {
+      const { error } = await sb.auth.updateUser({ email: newEmail });
+      if (error) {
+        msg.textContent = error.message || 'Could not update email.'; msg.style.color = '#e04040';
+        btn.disabled = false; btn.textContent = 'Send Verification';
+      } else {
+        document.getElementById('email-change-form').style.display = 'none';
+        document.getElementById('email-change-success').style.display = 'block';
+        setTimeout(function() { window.closeEmailChangeModal(); }, 3000);
+      }
+    } catch(e) {
+      msg.textContent = 'Network error — please try again.'; msg.style.color = '#e04040';
+      btn.disabled = false; btn.textContent = 'Send Verification';
+    }
+  };
+
+  // Enter key submits email change form
+  document.getElementById('email-change-new')?.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') window.submitEmailChange();
+  });
 
   _on('signupPassword', 'keydown', function(e) { if (e.key === 'Enter') { var b = document.getElementById('signupBtn'); if (b) b.click(); } });
   _on('signinPassword', 'keydown', function(e) { if (e.key === 'Enter') { var b = document.getElementById('signinBtn'); if (b) b.click(); } });
