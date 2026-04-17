@@ -3730,7 +3730,23 @@ routeObs.observe(routeGraphic);
     btn.disabled = true; btn.textContent = 'Creating…';
     const { data, error } = await sb.auth.signUp({ email, password: pass, options: { emailRedirectTo: 'https://project9ind.com/?view=account' } });
     btn.disabled = false; btn.textContent = 'Create Account →';
-    if (error) { errEl.textContent = error.message; }
+    if (error) {
+      const msg = String(error.message || '').toLowerCase();
+      if (msg.includes('already') || msg.includes('registered') || msg.includes('exists')) {
+        // Auto-switch to sign-in, pre-fill email, focus password
+        if (signupForm) signupForm.style.display = 'none';
+        if (signinForm) signinForm.style.display = 'block';
+        history.replaceState(null, '', '?view=signin');
+        const siEmail = document.getElementById('signinEmail');
+        const siPass  = document.getElementById('signinPassword');
+        const siErr   = document.getElementById('signinError');
+        if (siEmail) siEmail.value = email;
+        if (siErr)   { siErr.textContent = 'Account already exists — sign in below.'; siErr.style.color = '#5A9FE8'; }
+        if (siPass)  { try { siPass.focus(); } catch(e) {} }
+      } else {
+        errEl.textContent = error.message;
+      }
+    }
     else if (data.user && !data.session) {
       okEl.textContent = 'Check your email to confirm your account — once confirmed, sign in to access your dashboard and run your first brief.'; okEl.style.display = 'block';
       // ── Conversion tracking: signup complete ──
@@ -3810,10 +3826,22 @@ routeObs.observe(routeGraphic);
     const btn = document.getElementById('acctUpgradeBtn');
     btn.disabled = true; btn.textContent = 'Opening checkout…';
     try {
-      const res = await fetch('https://hq.project9ind.com/.netlify/functions/stripe-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: session.user.id, email: session.user.email, returnUrl: window.location.origin + '/?view=account', consent_timestamp: new Date().toISOString() }) });
+      const res = await fetch('https://hq.project9ind.com/.netlify/functions/stripe-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.access_token
+        },
+        body: JSON.stringify({
+          userId: session.user.id,
+          email: session.user.email,
+          returnUrl: window.location.origin + '/?view=account',
+          consent_timestamp: new Date().toISOString()
+        })
+      });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
-      else { btn.textContent = 'Checkout unavailable — try again'; btn.disabled = false; }
+      else { btn.textContent = data.error || 'Checkout unavailable — try again'; btn.disabled = false; }
     } catch(e) { btn.textContent = 'Network error — try again'; btn.disabled = false; }
   };
 
@@ -3823,10 +3851,17 @@ routeObs.observe(routeGraphic);
     const btn = document.getElementById('acctManageBtn');
     btn.disabled = true; btn.textContent = 'Opening portal…';
     try {
-      const res = await fetch('https://hq.project9ind.com/.netlify/functions/stripe-portal', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: session.user.id, returnUrl: window.location.origin + '/?view=account' }) });
+      const res = await fetch('https://hq.project9ind.com/.netlify/functions/stripe-portal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.access_token
+        },
+        body: JSON.stringify({ userId: session.user.id, returnUrl: window.location.origin + '/?view=account' })
+      });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
-      else { btn.textContent = 'Portal unavailable'; btn.disabled = false; }
+      else { btn.textContent = data.error || 'Portal unavailable'; btn.disabled = false; }
     } catch(e) { btn.textContent = 'Network error'; btn.disabled = false; }
   };
 
