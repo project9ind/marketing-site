@@ -2045,7 +2045,7 @@
         .acct-container { width:100%; max-width:560px; padding:80px 24px 60px; margin:0 auto; }
         .acct-logo { text-decoration:none; display:flex; justify-content:center; margin-bottom:8px; font-size:28px; }
         .acct-tagline { font-family:'Barlow Condensed',sans-serif; font-weight:400; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--mid); text-align:center; margin-bottom:40px; }
-        .acct-card { background:#14120F; border:1px solid var(--border); border-radius:6px; padding:32px; margin-bottom:20px; }
+        .acct-card { background:#14120F; border:1px solid var(--border); border-radius:6px; padding:32px; margin-bottom:20px; position:relative; }
         .acct-section-label { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--orange); margin-bottom:16px; padding-left:14px; position:relative; }
         .acct-section-label::before { content:''; position:absolute; left:0; top:0; width:3px; height:100%; background:var(--orange); border-radius:1px; }
         .acct-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid rgba(42,41,38,0.6); }
@@ -3672,9 +3672,17 @@ routeObs.observe(routeGraphic);
     const tokenType = hashParams.get('type');
     if (accessToken && refreshToken) {
       if (tokenType === 'recovery') {
-        await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        // S28 fix: recovery should land on the populated account page with the
+        // "Set New Password" modal on top — not a blank dashes-only account view.
+        // Establish session, keep ?view=account in URL, populate account data,
+        // THEN open the modal.
+        const { data: recSession } = await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
         window._p9iRecoverySb = sb;
-        history.replaceState(null, '', window.location.pathname);
+        // Strip the hash but keep (or set) ?view=account so the account view
+        // is the recognised route and populateAccount() below gets the data.
+        history.replaceState(null, '', '?view=account');
+        if (window._p9iShowView) window._p9iShowView();
+        try { if (recSession && recSession.session) await populateAccount(recSession.session); } catch(e) {}
         showRecoveryModal();
       } else {
         await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
