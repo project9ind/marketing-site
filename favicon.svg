@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="geometricPrecision">
+  <!-- P9I favicon — Session 27 · 2026-04-17 -->
+  <!-- Dark tile with signal-orange racing stripe + bold "9" -->
+  <rect width="64" height="64" rx="10" ry="10" fill="#0E0D0C"/>
+  <rect x="0" y="0" width="64" height="5" fill="#D4621A"/>
+  <text x="32" y="52"
+        font-family="'Arial Black', 'Helvetica Neue', Impact, sans-serif"
+        font-size="50"
+        font-weight="900"
+        fill="#D4621A"
+        text-anchor="middle"
+        letter-spacing="-1">9</text>
+</svg>
