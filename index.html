@@ -2556,8 +2556,7 @@
     <div class="ps-cell ps-idea-cell">
         <div class="ps-status idea-label">Community</div>
         <div class="ps-name">SHARE YOUR IDEA</div>
-        <form name="idea-submission" method="POST" data-netlify="true" class="ps-idea-form">
-            <input type="hidden" name="form-name" value="idea-submission">
+        <form class="ps-idea-form" novalidate>
             <input type="text" name="idea" class="ps-idea-input" placeholder="What app or feature should we build next?" maxlength="280" required>
             <button type="submit" class="ps-idea-submit" aria-label="Submit idea">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -4604,28 +4603,38 @@ document.getElementById('recovery-password')?.addEventListener('keydown', functi
 })();
 
 // ── IDEA FORM HANDLER ──────────────────────────────────────────
+// Routes submissions to our own Supabase table (idea_submissions) via the
+// submit-idea Netlify function. 955 admin dashboard reads from same source.
 (function() {
     const form = document.querySelector('.ps-idea-form');
     if (!form) return;
+    const input = form.querySelector('.ps-idea-input');
+    const showThanks = function() {
+        form.classList.add('submitted');
+        var thanks = form.querySelector('.ps-idea-thanks');
+        if (!thanks) {
+            thanks = document.createElement('div');
+            thanks.className = 'ps-idea-thanks';
+            thanks.textContent = 'Received — thank you.';
+            form.appendChild(thanks);
+        }
+    };
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        const data = new FormData(form);
-        fetch('/', {
+        var idea = (input && input.value || '').trim();
+        if (!idea) return;
+        fetch('/.netlify/functions/submit-idea', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(data).toString()
-        }).then(function() {
-            form.classList.add('submitted');
-            const thanks = document.createElement('div');
-            thanks.className = 'ps-idea-thanks';
-            thanks.textContent = 'Received — thank you.';
-            form.appendChild(thanks);
-        }).catch(function() {
-            form.classList.add('submitted');
-            var thanks = document.createElement('div');
-            thanks.className = 'ps-idea-thanks';
-            thanks.textContent = 'Received — thank you.';
-            form.appendChild(thanks);
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idea: idea })
+        }).then(function(res) {
+            // Show thanks on success OR network-style failures so user never sees an error.
+            // True server errors are logged for 955 to triage.
+            if (!res.ok) { console.warn('idea submit returned', res.status); }
+            showThanks();
+        }).catch(function(err) {
+            console.warn('idea submit network error', err);
+            showThanks();
         });
     });
 })();
