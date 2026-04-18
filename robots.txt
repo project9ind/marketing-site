@@ -1,0 +1,8 @@
+# Project 9 Industries — Marketing Site
+# project9ind.com
+
+User-agent: *
+Allow: /
+Disallow: /p9i.html
+
+Sitemap: https://project9ind.com/sitemap.xml
