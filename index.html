@@ -3844,13 +3844,13 @@ routeObs.observe(routeGraphic);
   _on('signupBtn', 'click', async function() {
     const btn = this, email = document.getElementById('signupEmail').value.trim(), pass = document.getElementById('signupPassword').value;
     const errEl = document.getElementById('signupError'), okEl = document.getElementById('signupSuccess');
-    errEl.textContent = ''; okEl.style.display = 'none';
+    errEl.textContent = ''; okEl.style.display = 'none'; okEl.style.color = '';
     if (!email) { errEl.textContent = 'Email is required.'; return; }
     if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
-    btn.disabled = true; btn.textContent = 'Creating…';
+    btn.disabled = true; btn.textContent = 'Creating account…';
     const { data, error } = await sb.auth.signUp({ email, password: pass, options: { emailRedirectTo: 'https://project9ind.com/?view=account' } });
-    btn.disabled = false; btn.textContent = 'Create Account →';
     if (error) {
+      btn.disabled = false; btn.textContent = 'Create Account →';
       const msg = String(error.message || '').toLowerCase();
       if (msg.includes('already') || msg.includes('registered') || msg.includes('exists')) {
         // Auto-switch to sign-in, pre-fill email, focus password
@@ -3868,16 +3868,33 @@ routeObs.observe(routeGraphic);
       }
     }
     else if (data.user && !data.session) {
-      okEl.textContent = 'Check your email to confirm your account — once confirmed, sign in to access your dashboard and run your first brief.'; okEl.style.display = 'block';
+      // Dead-code safety: only reached if mailer_autoconfirm flips OFF. Keeps button locked so user reads the message.
+      btn.textContent = 'Check your inbox ✓';
+      okEl.textContent = 'Check your email to confirm your account — once confirmed, sign in to access your dashboard and run your first brief.';
+      okEl.style.display = 'block';
       // ── Conversion tracking: signup complete ──
       if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'email' });
       if (typeof fbq === 'function') fbq('track', 'CompleteRegistration');
     }
     else if (data.session) {
-      // ── Conversion tracking: instant session (e.g. OAuth) ──
+      // Instant-session path (mailer_autoconfirm:true — the standard P9I signup flow).
+      // Show perceivable success state, then explicitly toggle views to /account (mirrors signin branch).
+      btn.textContent = 'Account Created ✓';
+      okEl.textContent = 'Welcome to Project 9 Industries. Loading your dashboard…';
+      okEl.style.color = '#3C8A5F'; // P9I granted green
+      okEl.style.display = 'block';
+      // ── Conversion tracking: instant session ──
       if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'email' });
       if (typeof fbq === 'function') fbq('track', 'CompleteRegistration');
-      history.replaceState(null, '', '?view=account'); checkRoute();
+      setTimeout(function() {
+        history.replaceState(null, '', '?view=account');
+        signupView.classList.remove('active');
+        accountView.classList.add('active');
+        populateAccount(data.session);
+        // Reset button for any future re-render of signup view
+        btn.disabled = false; btn.textContent = 'Create Account →';
+        okEl.style.display = 'none'; okEl.style.color = '';
+      }, 650);
     }
   });
 
