@@ -2351,7 +2351,11 @@
             .nav-logo { font-size: 18px; }
             .nav-right { gap: 10px; }
             .nav-cta { padding: 10px 18px; font-size: 12px; }
-            .nav-auth-btn { padding: 8px 14px; font-size: 11px; }
+            /* Mobile: signed-out users see only Get Access. Signed-in users
+               still see their profile (nav-profile-wrap). Sign-In is inside
+               the signup view as 'Already have an account?' */
+            .nav-auth-btn:not(.signed-in) { display: none; }
+            .nav-auth-btn.signed-in { padding: 8px 14px; font-size: 11px; }
             .nav-hq { font-size: 11px; }
             .nav-profile-wrap { margin-left: 2px; }
             .nav-profile { width: 32px; height: 32px; }
