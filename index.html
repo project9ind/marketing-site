@@ -3749,6 +3749,24 @@ routeObs.observe(routeGraphic);
       if (signupView) signupView.classList.add('active');
       if (view === 'signin') { if (signupForm) signupForm.style.display = 'none'; if (signinForm) signinForm.style.display = 'block'; }
       else { if (signupForm) signupForm.style.display = 'block'; if (signinForm) signinForm.style.display = 'none'; }
+      // S39: pre-fill email from ?email= URL param so personalized signup links land friction-free.
+      // Used by TARN crew invites where Nick DMs each friend a tailored link.
+      try {
+        const __qEmail = (new URLSearchParams(location.search).get('email') || '').trim();
+        if (__qEmail) {
+          const __target = (view === 'signin')
+            ? document.getElementById('signinEmail')
+            : document.getElementById('signupEmail');
+          if (__target && !__target.value) {
+            __target.value = __qEmail;
+            // Focus the password field so the friend can type and hit Enter immediately
+            const __pass = (view === 'signin')
+              ? document.getElementById('signinPassword')
+              : document.getElementById('signupPassword');
+            if (__pass) setTimeout(() => __pass.focus(), 80);
+          }
+        }
+      } catch(e) { /* non-blocking */ }
     } else {
       if (signupView) signupView.classList.remove('active');
       if (accountView) accountView.classList.remove('active');
