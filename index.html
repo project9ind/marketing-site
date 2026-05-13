@@ -3855,7 +3855,18 @@ routeObs.observe(routeGraphic);
     if (!email) { errEl.textContent = 'Email is required.'; return; }
     if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
     btn.disabled = true; btn.textContent = 'Creating account…';
-    const { data, error } = await sb.auth.signUp({ email, password: pass, options: { emailRedirectTo: 'https://project9ind.com/?view=account' } });
+    // S39: capture signup_source from URL param (?source=tarn, ?source=hq) — defaults 'marketing'.
+    // 955 admin reads users.signup_source for per-app attribution splits.
+    const __urlSource = (new URLSearchParams(location.search).get('source') || '').toLowerCase();
+    const __signupSource = ['hq','tarn','marketing'].includes(__urlSource) ? __urlSource : 'marketing';
+    const { data, error } = await sb.auth.signUp({
+      email,
+      password: pass,
+      options: {
+        emailRedirectTo: 'https://project9ind.com/?view=account',
+        data: { signup_source: __signupSource }
+      }
+    });
     if (error) {
       btn.disabled = false; btn.textContent = 'Create Account →';
       const msg = String(error.message || '').toLowerCase();
