@@ -3876,7 +3876,7 @@ routeObs.observe(routeGraphic);
     // S39: capture signup_source from URL param (?source=tarn, ?source=hq) — defaults 'marketing'.
     // 955 admin reads users.signup_source for per-app attribution splits.
     const __urlSource = (new URLSearchParams(location.search).get('source') || '').toLowerCase();
-    const __signupSource = ['hq','tarn','marketing'].includes(__urlSource) ? __urlSource : 'marketing';
+    const __signupSource = (function(){var _s=new URLSearchParams(location.search).get('source');return _s==='tarn'?'tarn':_s==='hq'?'hq':'hub';})();
     const { data, error } = await sb.auth.signUp({
       email,
       password: pass,
