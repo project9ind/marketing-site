@@ -594,7 +594,27 @@
             opacity: 0;
             animation: heroFadeIn 0.9s 3.1s ease forwards;
         }
-        .hero-cta-btn {
+        .h-line .accent { color: var(--orange, #D4621A); }
+        .hero-sub-em { color: #F7F6F3; font-weight: 500; }
+        .hero-cta-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUpHeroBtn 0.9s 3.0s ease forwards;
+        }
+        @keyframes fadeUpHeroBtn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+        .hero-cta-secondary {
+            background: transparent !important;
+            color: #F7F6F3 !important;
+            border: 1px solid #2A2926 !important;
+        }
+        .hero-cta-secondary:hover {
+            border-color: #D4621A !important;
+            color: #D4621A !important;
+            background: transparent !important;
+        }
+                .hero-cta-btn {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
             font-size: 13px;
@@ -799,7 +819,99 @@
         }
 
         /* ── DATA TICKER ──────────────────────────────────────── */
-        .data-ticker {
+        /* ── HUB SECTION (S46 · architectural reveal between hero + apps) ── */
+        .hub-section {
+            position: relative;
+            padding: 96px 48px 80px;
+            background: #0A0908;
+            border-top: 1px solid #1A1917;
+            overflow: hidden;
+        }
+        .hub-section::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1A2B5E 20%, #1E5FA8 35%, #D4621A 50%, #1E5FA8 65%, #1A2B5E 80%);
+        }
+        .hub-inner {
+            max-width: 1240px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; align-items: center;
+        }
+        .hub-copy .hub-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+            font-size: 11px; letter-spacing: .26em; text-transform: uppercase;
+            color: #D4621A; padding-left: 16px; position: relative; margin-bottom: 18px;
+        }
+        .hub-copy .hub-eyebrow::before {
+            content: ""; position: absolute; left: 0; top: 3px; bottom: 3px;
+            width: 3px; background: #D4621A;
+        }
+        .hub-copy h2 {
+            font-family: 'Libre Baskerville', serif; font-weight: 400;
+            font-size: 38px; line-height: 1.18; letter-spacing: -.01em;
+            color: #F7F6F3; margin-bottom: 20px;
+        }
+        .hub-copy h2 .accent { color: #D4621A; }
+        .hub-copy p {
+            font-family: 'Barlow', sans-serif; font-weight: 300;
+            font-size: 16px; line-height: 1.6; color: #9B9890; max-width: 460px;
+        }
+        .hub-copy .hub-meta {
+            display: flex; gap: 28px; margin-top: 28px; padding-top: 24px;
+            border-top: 1px solid #1A1917;
+        }
+        .hub-copy .hub-meta-item {
+            font-family: 'Barlow Condensed', sans-serif;
+        }
+        .hub-copy .hub-meta-item .v {
+            font-weight: 800; font-size: 26px; color: #F7F6F3; letter-spacing: .02em; display: block; line-height: 1;
+        }
+        .hub-copy .hub-meta-item .v .num { color: #D4621A; }
+        .hub-copy .hub-meta-item .l {
+            font-weight: 600; font-size: 10px; letter-spacing: .2em;
+            color: #6B6966; text-transform: uppercase; margin-top: 6px; display: block;
+        }
+        .hub-svg-wrap {
+            display: flex; justify-content: center; align-items: center;
+        }
+        .hub-svg { width: 100%; max-width: 620px; height: auto; }
+        .hub-svg .node-circle {
+            transition: transform .3s, filter .3s;
+            cursor: pointer;
+            transform-origin: center; transform-box: fill-box;
+        }
+        .hub-svg .node-circle:hover {
+            transform: scale(1.06);
+            filter: drop-shadow(0 0 14px rgba(212,98,26,.35));
+        }
+        .hub-svg .path-line {
+            stroke-dasharray: 320;
+            stroke-dashoffset: 320;
+        }
+        .hub-section.in-view .hub-svg .path-line {
+            animation: hubDrawPath 1.5s ease-out forwards;
+        }
+        .hub-section.in-view .hub-svg .path-line-2 { animation-delay: .2s; }
+        .hub-section.in-view .hub-svg .path-line-3 { animation-delay: .4s; }
+        @keyframes hubDrawPath { to { stroke-dashoffset: 0; } }
+        .hub-svg .pulse {
+            animation: hubPulse 2.4s ease-in-out infinite;
+            transform-origin: center; transform-box: fill-box;
+        }
+        .hub-svg .pulse-2 { animation-delay: .8s; }
+        @keyframes hubPulse {
+            0%, 100% { opacity: .35; r: 30; }
+            50% { opacity: .04; r: 48; }
+        }
+        @media (max-width: 900px) {
+            .hub-section { padding: 64px 24px; }
+            .hub-inner { grid-template-columns: 1fr; gap: 40px; }
+            .hub-copy h2 { font-size: 28px; }
+            .hub-svg { max-width: 420px; }
+        }
+
+                .data-ticker {
             overflow: hidden;
             background: var(--surface);
             border-top: 1px solid var(--border);
@@ -1056,7 +1168,80 @@
         .prod-card.dim .prod-cta { color: var(--dark); cursor: default; }
 
         /* ── LIVE BRIEF DEMO SECTION ──────────────────────────── */
-        .demo-section {
+        /* ── HOW IT WORKS split (S46 · replaces ONE BRIEF) ── */
+        .how-section { padding: 96px 48px 80px; background: #0E0D0C; border-top: 1px solid #1A1917; position: relative; }
+        .how-section::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #1A2B5E 20%, #1E5FA8 35%, #D4621A 50%, #1E5FA8 65%, #1A2B5E 80%);
+        }
+        .how-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px;
+            letter-spacing: .26em; color: #D4621A; text-transform: uppercase;
+            padding-left: 16px; position: relative; max-width: 1240px; margin: 0 auto 14px;
+        }
+        .how-eyebrow::before { content: ""; position: absolute; left: 0; top: 3px; bottom: 3px; width: 3px; background: #D4621A; }
+        .how-title {
+            font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 38px;
+            line-height: 1.18; letter-spacing: -.01em; color: #F7F6F3;
+            max-width: 1240px; margin: 0 auto 48px;
+        }
+        .how-title .how-accent { color: #D4621A; }
+        .how-split {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+            max-width: 1240px; margin: 0 auto;
+        }
+        .how-pane {
+            background: #131210; border: 1px solid #1A1917; padding: 32px;
+            display: flex; flex-direction: column; gap: 18px; position: relative; overflow: hidden;
+        }
+        .how-pane::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+        }
+        .how-pane.how-tarn::before { background: linear-gradient(90deg, transparent, #D4621A, transparent); }
+        .how-pane.how-hq::before   { background: linear-gradient(90deg, transparent, #4BC97A, transparent); }
+        .how-pane-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 10px;
+            letter-spacing: .26em; color: #D4621A; text-transform: uppercase;
+        }
+        .how-pane.how-hq .how-pane-eyebrow { color: #4BC97A; }
+        .how-pane-title {
+            font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 26px;
+            line-height: 1.18; color: #F7F6F3;
+        }
+        .how-pane-visual {
+            background: #0A0908; border: 1px solid #1A1917; padding: 18px;
+            aspect-ratio: 18/11; display: flex; align-items: center; justify-content: center;
+        }
+        .how-svg { width: 100%; height: 100%; max-width: 360px; }
+        .how-steps { list-style: none; padding: 0; margin: 0; }
+        .how-steps li {
+            font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 14px;
+            color: #F7F6F3; padding: 12px 0; border-bottom: 1px solid #1A1917;
+            display: flex; align-items: baseline; gap: 14px;
+        }
+        .how-steps li:last-child { border-bottom: none; }
+        .how-step-n {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 13px;
+            color: #D4621A; letter-spacing: .08em; width: 24px;
+        }
+        .how-pane.how-hq .how-step-n { color: #4BC97A; }
+        .how-cta {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px;
+            letter-spacing: .22em; text-transform: uppercase;
+            padding: 14px 22px; background: #D4621A; color: #0D0C0B; text-decoration: none;
+            border: 1px solid #D4621A; align-self: flex-start; transition: background .2s;
+        }
+        .how-cta:hover { background: #E37726; }
+        .how-pane.how-hq .how-cta { background: transparent; color: #4BC97A; border-color: #4BC97A; }
+        .how-pane.how-hq .how-cta:hover { background: #4BC97A; color: #0D0C0B; }
+        @media (max-width: 900px) {
+            .how-section { padding: 64px 24px; }
+            .how-title { font-size: 26px; }
+            .how-split { grid-template-columns: 1fr; gap: 18px; }
+            .how-pane { padding: 24px; }
+        }
+
+                .demo-section {
             padding: 72px 72px 80px;
             background: var(--surface);
             border-top: 1px solid var(--border);
@@ -1340,7 +1525,219 @@
         .intel-section-wrap .section { position: relative; z-index: 1; }
 
         /* ── PRICING SECTION ─────────────────────────────────── */
-        .pricing-section {
+        /* ── LIVE TARN DEMO (S46 · paired with HQ terminal demo) ── */
+        .tarn-demo-section { background: #0E0D0C; }
+        .tarn-terminal { max-width: 1080px; margin: 0 auto; }
+        .tarn-demo-body {
+            display: grid; grid-template-columns: 1fr 1.6fr; gap: 0;
+            background: #0A0908; min-height: 360px;
+        }
+        .tarn-demo-feed {
+            background: #131210; padding: 22px; border-right: 1px solid #1A1917;
+            font-family: 'Barlow Condensed', sans-serif;
+        }
+        .tarn-feed-header {
+            font-weight: 700; font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+            color: #D4621A; padding-bottom: 12px; border-bottom: 1px solid #1A1917; margin-bottom: 14px;
+        }
+        .tarn-feed-section { margin-bottom: 22px; }
+        .tarn-feed-sub {
+            font-weight: 700; font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+            color: #6B6966; margin-bottom: 8px;
+        }
+        .tarn-feed-list, .tarn-vote-list { list-style: none; padding: 0; margin: 0; }
+        .tarn-feed-list li {
+            font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 12px;
+            color: #F7F6F3; padding: 4px 0; transition: opacity .4s, transform .4s;
+        }
+        .tarn-feed-list li.hidden, .tarn-vote-list li.hidden { opacity: 0; transform: translateX(-8px); }
+        .tarn-vote-list li {
+            display: grid; grid-template-columns: 50px 1fr 30px; gap: 8px; align-items: center;
+            padding: 5px 0; transition: opacity .4s, transform .4s;
+        }
+        .tarn-vote-list li.picked .v-date { color: #D4621A; font-weight: 700; }
+        .tarn-vote-list li.picked .v-fill { background: #D4621A; }
+        .v-date { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 11px; color: #F7F6F3; letter-spacing: .04em; }
+        .v-bar { background: #1A1917; height: 8px; overflow: hidden; }
+        .v-fill { display: block; height: 100%; background: #4BC97A; transition: width .8s; }
+        .v-count { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 10px; color: #9B9890; letter-spacing: .08em; text-align: right; }
+        .tarn-demo-map {
+            background: #0A0908; padding: 22px; position: relative;
+        }
+        .tarn-map-header {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px;
+            letter-spacing: .22em; text-transform: uppercase; color: #4BC97A;
+            padding-bottom: 12px; border-bottom: 1px solid #1A1917; margin-bottom: 14px;
+        }
+        .tarn-map-svg { width: 100%; height: auto; max-height: 300px; }
+        @media (max-width: 900px) {
+            .tarn-demo-body { grid-template-columns: 1fr; }
+            .tarn-demo-feed { border-right: none; border-bottom: 1px solid #1A1917; }
+        }
+
+                /* ── TRY TARN LIVE sandbox (S46 · pre-signup conversion zone) ── */
+        .try-tarn-section {
+            background: linear-gradient(180deg, #0E0D0C 0%, #131210 100%);
+            padding: 96px 48px;
+            border-top: 1px solid #1A1917;
+            border-bottom: 1px solid #1A1917;
+            position: relative;
+        }
+        .try-tarn-section::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #1A2B5E 20%, #1E5FA8 35%, #D4621A 50%, #1E5FA8 65%, #1A2B5E 80%);
+        }
+        .try-tarn-inner { max-width: 1240px; margin: 0 auto; }
+        .try-tarn-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px;
+            letter-spacing: .26em; color: #D4621A; text-transform: uppercase;
+            padding-left: 16px; position: relative; margin-bottom: 14px;
+        }
+        .try-tarn-eyebrow::before { content: ""; position: absolute; left: 0; top: 3px; bottom: 3px; width: 3px; background: #D4621A; }
+        .try-tarn-title {
+            font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 38px;
+            line-height: 1.18; letter-spacing: -.01em; color: #F7F6F3; margin-bottom: 14px;
+        }
+        .try-tarn-title .try-tarn-accent { color: #D4621A; }
+        .try-tarn-sub {
+            font-family: 'Barlow', sans-serif; font-weight: 300; font-size: 16px;
+            color: #9B9890; max-width: 720px; line-height: 1.55; margin-bottom: 40px;
+        }
+        .sandbox {
+            display: grid; grid-template-columns: 200px 1fr; gap: 0;
+            background: #0A0908; border: 1px solid #1A1917;
+        }
+        .sandbox-rail {
+            background: #131210; border-right: 1px solid #1A1917;
+            display: flex; flex-direction: column;
+        }
+        .sb-step {
+            background: transparent; color: #9B9890; border: none;
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px;
+            letter-spacing: .16em; text-transform: uppercase; text-align: left;
+            padding: 22px 22px 22px 22px; border-bottom: 1px solid #1A1917; cursor: pointer;
+            transition: all .2s; display: flex; align-items: baseline; gap: 12px;
+        }
+        .sb-step:hover { color: #F7F6F3; background: rgba(255,255,255,.02); }
+        .sb-step.active { color: #F7F6F3; background: rgba(212,98,26,.08); border-left: 3px solid #D4621A; padding-left: 19px; }
+        .sb-step .sb-n {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 11px;
+            color: #D4621A; letter-spacing: .08em;
+        }
+        .sandbox-stage { padding: 0; position: relative; min-height: 380px; }
+        .sb-panel {
+            display: none; grid-template-columns: 1fr 1.4fr; gap: 0;
+            min-height: 380px;
+        }
+        .sb-panel.active { display: grid; }
+        .sb-controls {
+            padding: 28px; background: #0E0D0C; border-right: 1px solid #1A1917;
+            display: flex; flex-direction: column; gap: 18px;
+        }
+        .sb-instructions {
+            font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 14px; color: #F7F6F3;
+            line-height: 1.5; padding-bottom: 14px; border-bottom: 1px solid #1A1917;
+        }
+        .sb-stop-btns, .sb-date-btns { display: flex; flex-direction: column; gap: 8px; }
+        .sb-stop-btn, .sb-date-btn {
+            background: #1A1917; color: #F7F6F3; border: 1px solid #2A2926;
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 12px;
+            letter-spacing: .04em; text-transform: uppercase; padding: 12px 16px;
+            text-align: left; cursor: pointer; transition: all .2s;
+        }
+        .sb-stop-btn:hover, .sb-date-btn:hover { border-color: #D4621A; background: #22211E; }
+        .sb-stop-btn.selected, .sb-date-btn.selected {
+            background: rgba(212,98,26,.12); border-color: #D4621A; color: #D4621A;
+        }
+        .sb-date-btn .dt-c { font-weight: 700; color: #9B9890; font-size: 11px; margin-left: 6px; }
+        .sb-date-btn.selected .dt-c { color: #D4621A; }
+        .sb-next {
+            margin-top: auto; align-self: flex-start;
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px;
+            letter-spacing: .22em; text-transform: uppercase;
+            background: #D4621A; color: #0D0C0B; border: none; padding: 14px 22px; cursor: pointer;
+            transition: background .2s;
+        }
+        .sb-next:hover { background: #E37726; }
+        .sb-next:disabled { background: #2A2926; color: #6B6966; cursor: not-allowed; }
+        .sb-visual {
+            background: #0A0908; padding: 24px; display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .sb-map { width: 100%; height: auto; max-width: 480px; }
+        .sb-vote-visual { flex-direction: column; align-items: stretch; }
+        .sb-vote-header {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px;
+            letter-spacing: .22em; text-transform: uppercase; color: #4BC97A;
+            padding-bottom: 12px; border-bottom: 1px solid #1A1917; margin-bottom: 14px;
+        }
+        .sb-vote-list { list-style: none; padding: 0; margin: 0; }
+        .sb-vote-list li {
+            display: grid; grid-template-columns: 60px 1fr 36px; gap: 12px; align-items: center;
+            padding: 8px 0; border-bottom: 1px solid #1A1917;
+        }
+        .sb-vote-list li:last-child { border-bottom: none; }
+        .sb-vote-list .vd { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; color: #F7F6F3; letter-spacing: .04em; }
+        .sb-vote-list .vbar { background: #1A1917; height: 10px; overflow: hidden; }
+        .sb-vote-list .vfill { display: block; height: 100%; background: #4BC97A; transition: width .8s; }
+        .sb-vote-list .vct { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; color: #9B9890; letter-spacing: .08em; text-align: right; }
+        .sb-save-block {
+            margin-top: auto; display: flex; flex-direction: column; gap: 10px;
+            padding: 16px; background: rgba(212,98,26,.06); border: 1px solid rgba(212,98,26,.32);
+        }
+        .sb-save-cta {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px;
+            letter-spacing: .22em; text-transform: uppercase;
+            background: #D4621A; color: #0D0C0B; text-decoration: none; padding: 14px 18px;
+            text-align: center; transition: background .2s;
+        }
+        .sb-save-cta:hover { background: #E37726; }
+        .sb-save-note { font-family: 'Barlow', sans-serif; font-weight: 300; font-size: 11px; color: #9B9890; line-height: 1.5; text-align: center; }
+        .sb-brief-visual { padding: 18px; }
+        .sb-brief { background: #0E0D0C; border: 1px solid #1A1917; width: 100%; }
+        .sb-brief-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px; background: #1A1917; border-bottom: 1px solid #2A2926;
+        }
+        .sb-brief-dots { display: inline-flex; gap: 5px; }
+        .sb-brief-dots span { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+        .sb-brief-label {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 10px;
+            letter-spacing: .14em; text-transform: uppercase; color: #9B9890;
+        }
+        .sb-brief-body { padding: 18px 20px; }
+        .sb-brief-line { font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 13px;
+            color: #F7F6F3; padding: 7px 0; border-bottom: 1px solid #1A1917; line-height: 1.5; display: flex; align-items: baseline; gap: 12px; }
+        .sb-brief-line:last-child { border-bottom: none; }
+        .sb-brief-h { font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 17px; color: #F7F6F3; padding-bottom: 12px; margin-bottom: 8px; border-bottom: 1px solid #2A2926; display: block; }
+        .sb-tag {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 9px;
+            letter-spacing: .18em; text-transform: uppercase; padding: 3px 7px;
+            min-width: 78px; text-align: center; flex-shrink: 0;
+        }
+        .sb-tag.g { background: rgba(75,201,122,.15); color: #4BC97A; border: 1px solid #4BC97A; }
+        .sb-tag.a { background: rgba(232,184,75,.15); color: #E8B84B; border: 1px solid #E8B84B; }
+        .sb-brief-stats {
+            display: flex; gap: 18px; flex-wrap: wrap; padding: 12px 0; border-top: 1px solid #2A2926; margin-top: 10px;
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 10px;
+            letter-spacing: .12em; text-transform: uppercase; color: #9B9890;
+        }
+        .sb-brief-stats strong { color: #D4621A; font-weight: 800; }
+        .sb-brief-footer {
+            font-family: 'Barlow', sans-serif; font-weight: 300; font-size: 11px;
+            color: #6B6966; line-height: 1.5; padding-top: 10px; border-top: 1px solid #1A1917;
+        }
+        @media (max-width: 900px) {
+            .try-tarn-section { padding: 64px 24px; }
+            .try-tarn-title { font-size: 28px; }
+            .sandbox { grid-template-columns: 1fr; }
+            .sandbox-rail { flex-direction: row; border-right: none; border-bottom: 1px solid #1A1917; overflow-x: auto; }
+            .sb-step { padding: 14px 12px; font-size: 11px; flex: 1; min-width: 110px; }
+            .sb-step.active { border-left: none; border-bottom: 3px solid #D4621A; padding-left: 12px; }
+            .sb-panel.active { grid-template-columns: 1fr; }
+        }
+
+                .pricing-section {
             padding: 100px 72px;
             background: var(--bg);
             display: flex;
@@ -1666,7 +2063,159 @@
         }
 
         /* ── PARTNERS SECTION ────────────────────────────────── */
-        .partners-section {
+        /* ── 3-ACT SCROLL STORY (S46 · replaces Partners) ── */
+        .three-act-section {
+            background: #0E0D0C; padding: 80px 48px; position: relative;
+            border-top: 1px solid #1A1917;
+        }
+        .three-act-inner { max-width: 1240px; margin: 0 auto; }
+        .three-act-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px;
+            letter-spacing: .26em; color: #D4621A; text-transform: uppercase;
+            padding-left: 16px; position: relative; margin-bottom: 14px;
+        }
+        .three-act-eyebrow::before { content: ""; position: absolute; left: 0; top: 3px; bottom: 3px; width: 3px; background: #D4621A; }
+        .three-act-title {
+            font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 42px;
+            line-height: 1.15; letter-spacing: -.01em; color: #F7F6F3; margin-bottom: 14px;
+        }
+        .three-act-title .three-act-accent { color: #D4621A; }
+        .three-act-sub {
+            font-family: 'Barlow', sans-serif; font-weight: 300; font-size: 16px;
+            color: #9B9890; max-width: 720px; line-height: 1.55; margin-bottom: 60px;
+        }
+        .three-act-stage {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 64px; position: relative;
+            align-items: flex-start;
+        }
+        .three-act-sticky {
+            position: sticky; top: 100px; height: 480px;
+            background: #131210; border: 1px solid #1A1917; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ta-frame {
+            position: absolute; inset: 0;
+            opacity: 0; transition: opacity .6s, transform .6s;
+            transform: translateY(16px);
+            display: flex; flex-direction: column; padding: 28px;
+        }
+        .ta-frame.active { opacity: 1; transform: translateY(0); }
+        .ta-frame-tag {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 10px;
+            letter-spacing: .26em; color: #D4621A; text-transform: uppercase; margin-bottom: 16px;
+        }
+        .ta-frame-mock {
+            background: #0A0908; border: 1px solid #1A1917; flex: 1;
+            display: flex; flex-direction: column;
+        }
+        .ta-mock-bar {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 10px;
+            letter-spacing: .14em; text-transform: uppercase; color: #9B9890;
+            padding: 10px 14px; background: #1A1917; border-bottom: 1px solid #2A2926;
+        }
+        .ta-mock-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 14px; }
+        .ta-mock-tripname {
+            font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 18px; color: #F7F6F3;
+        }
+        .ta-mock-crew { display: flex; align-items: center; gap: 6px; }
+        .ta-avatar {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #1A1917; border: 1px solid #D4621A;
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 11px;
+            color: #D4621A; letter-spacing: .04em;
+        }
+        .ta-crew-label {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 10px;
+            letter-spacing: .14em; text-transform: uppercase; color: #4BC97A; margin-left: 8px;
+        }
+        .ta-mock-stops { display: flex; flex-direction: column; gap: 4px; }
+        .ta-stop {
+            font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 13px;
+            color: #F7F6F3; padding: 4px 0; border-bottom: 1px solid #1A1917;
+        }
+        .ta-stop:last-child { border-bottom: none; }
+        .ta-mock-locked {
+            margin-top: auto; padding: 10px;
+            background: rgba(212,98,26,.12); border: 1px solid #D4621A;
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 11px;
+            letter-spacing: .22em; color: #D4621A; text-align: center; text-transform: uppercase;
+        }
+        .ta-mock-locked.g {
+            background: rgba(75,201,122,.12); border-color: #4BC97A; color: #4BC97A;
+        }
+        .ta-brief-progress { display: flex; flex-direction: column; gap: 8px; }
+        .ta-bp-bar { height: 6px; background: #1A1917; overflow: hidden; }
+        .ta-bp-fill {
+            height: 100%; background: linear-gradient(90deg, #4BC97A, #D4621A); width: 100%;
+            animation: bpFill 2.4s ease-in-out infinite;
+        }
+        @keyframes bpFill { 0% { width: 10%; } 50% { width: 100%; } 100% { width: 10%; } }
+        .ta-bp-sources { display: flex; flex-wrap: wrap; gap: 5px; }
+        .ta-bp-sources span {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 9px;
+            letter-spacing: .14em; padding: 3px 7px; background: #1A1917; color: #9B9890;
+            text-transform: uppercase;
+        }
+        .ta-brief-rows { display: flex; flex-direction: column; gap: 6px; }
+        .ta-brief-row {
+            font-family: 'Barlow', sans-serif; font-weight: 400; font-size: 12px;
+            color: #F7F6F3; padding: 4px 0; border-bottom: 1px solid #1A1917;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .ta-brief-row:last-child { border-bottom: none; }
+        .ta-bt {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 9px;
+            letter-spacing: .14em; padding: 2px 6px; min-width: 56px; text-align: center;
+        }
+        .ta-bt.g { background: rgba(75,201,122,.12); color: #4BC97A; border: 1px solid #4BC97A; }
+        .ta-bt.a { background: rgba(232,184,75,.12); color: #E8B84B; border: 1px solid #E8B84B; }
+        .ta-run { padding: 0; overflow: hidden; }
+        .ta-run-svg { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .ta-run-svg svg { width: 100%; height: auto; max-height: 320px; }
+        .ta-run-stamp {
+            padding: 14px 20px; background: #1A1917; border-top: 1px solid #2A2926;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .ta-run-stamp-l {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px;
+            letter-spacing: .22em; color: #D4621A; text-transform: uppercase;
+        }
+        .ta-run-stamp-c {
+            font-family: 'Barlow', sans-serif; font-weight: 300; font-size: 12px; color: #9B9890;
+        }
+        .three-act-scroll { display: flex; flex-direction: column; gap: 80px; }
+        .ta-scroll-block {
+            padding: 32px 0; opacity: .4; transition: opacity .5s;
+            border-left: 3px solid #1A1917; padding-left: 28px;
+        }
+        .ta-scroll-block.current { opacity: 1; border-left-color: #D4621A; }
+        .ta-scroll-n {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 14px;
+            letter-spacing: .08em; color: #D4621A; margin-bottom: 8px;
+        }
+        .ta-scroll-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 10px;
+            letter-spacing: .26em; color: #9B9890; text-transform: uppercase; margin-bottom: 10px;
+        }
+        .ta-scroll-h {
+            font-family: 'Libre Baskerville', serif; font-weight: 400; font-size: 24px;
+            line-height: 1.25; color: #F7F6F3; margin-bottom: 14px;
+        }
+        .ta-scroll-p {
+            font-family: 'Barlow', sans-serif; font-weight: 300; font-size: 15px;
+            color: #9B9890; line-height: 1.6;
+        }
+        @media (max-width: 900px) {
+            .three-act-section { padding: 64px 24px; }
+            .three-act-title { font-size: 28px; }
+            .three-act-stage { grid-template-columns: 1fr; gap: 40px; }
+            .three-act-sticky { position: relative; top: 0; height: 380px; order: 1; }
+            .three-act-scroll { order: 2; gap: 40px; }
+            .ta-scroll-block { padding: 20px 0 20px 20px; opacity: 1; border-left-color: #D4621A; }
+        }
+
+                .partners-section {
             padding: 80px 72px;
             background: var(--surface);
             border-top: 1px solid var(--border);
@@ -2490,16 +3039,19 @@
     <div class="hero-fog"></div>
 
     <div class="hero-content">
-        <div class="hero-eyebrow">Adventure Intelligence</div>
+        <div class="hero-eyebrow">From the Founder &middot; IX</div>
         <h1 class="hero-headline">
-            <span class="h-line">Bringing AI</span>
-            <span class="h-line">to adventure.</span>
+            <span class="h-line">The adventure tools</span>
+            <span class="h-line">we wished <span class="accent">existed</span>.</span>
         </h1>
         <div class="hero-accent">
             <div class="s1" style="flex:1;"></div><div class="s2" style="flex:1;"></div><div class="s3" style="flex:1;"></div><div class="s4" style="flex:1;"></div><div class="s5" style="flex:1;"></div>
         </div>
-        <p class="hero-sub">Introducing TARN — Project 9's second application. A real-time trip planner for you and your crew. Drop stops on the map, vote on dates, lock in the plan together. One shareable link gets your friends in — no signup, no friction.</p>
-        <a href="https://tarn.project9tech.com" class="hero-cta-btn">Enter TARN →</a>
+        <p class="hero-sub"><span class="hero-sub-em">Project 9 Technologies.</span> Two apps live and more shipping. TARN plans the trip with your crew. HQ briefs you on what&rsquo;s actually out there. Same account, same backbone, every tool we ship next.</p>
+        <div class="hero-cta-row">
+            <a href="?view=signup" class="hero-cta-btn">Become a Founding Member &rarr;</a>
+            <a href="#appsSection" class="hero-cta-btn hero-cta-secondary">See the apps</a>
+        </div>
     </div>
 
     <div class="hero-readouts">
@@ -2518,7 +3070,7 @@
     </div>
 
     <div class="hero-bar">
-        <span class="scroll-hint" onclick="document.querySelector('.platform-strip').scrollIntoView({behavior:'smooth'})">Scroll to explore <span class="scroll-arrow">↓</span></span>
+        <span class="scroll-hint" onclick="document.getElementById('hubSection').scrollIntoView({behavior:'smooth'})">Scroll to explore <span class="scroll-arrow">↓</span></span>
         <div class="act-dots">
             <div class="act-dot-item">4x4</div>
             <div class="act-dot-item">ALPINE</div>
@@ -2530,21 +3082,120 @@
     </div>
 </section>
 
-<!-- DATA TICKER -->
+<!-- ── HUB SECTION (S46 architectural reveal · added between hero and data-ticker) ── -->
+<section class="hub-section" id="hubSection">
+    <div class="hub-inner">
+        <div class="hub-copy">
+            <div class="hub-eyebrow">The Platform</div>
+            <h2>One account. <span class="accent">Every tool</span> we ship.</h2>
+            <p>Project 9 Technologies is the hub. Each app lives underneath, sharing one login and one subscription. Two are live today. More are on the way. Your account carries forward into every one.</p>
+            <div class="hub-meta">
+                <div class="hub-meta-item">
+                    <span class="v"><span class="num">02</span></span>
+                    <span class="l">Apps Live</span>
+                </div>
+                <div class="hub-meta-item">
+                    <span class="v"><span class="num">07</span> / 100</span>
+                    <span class="l">Founding Spots</span>
+                </div>
+                <div class="hub-meta-item">
+                    <span class="v">$1<span style="font-size:14px;color:#9B9890;font-weight:600">/mo</span></span>
+                    <span class="l">Founding Price</span>
+                </div>
+            </div>
+        </div>
+        <div class="hub-svg-wrap">
+            <svg class="hub-svg" viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" aria-label="Project 9 Technologies platform diagram">
+                <!-- pulse rings -->
+                <circle class="pulse" cx="310" cy="180" r="30" fill="none" stroke="#D4621A" stroke-width="1.5" opacity="0.35"></circle>
+                <circle class="pulse pulse-2" cx="310" cy="180" r="30" fill="none" stroke="#D4621A" stroke-width="1.5" opacity="0.35"></circle>
+
+                <!-- branch paths -->
+                <path class="path-line" d="M 310 180 L 130 90" stroke="#D4621A" stroke-width="1.5" fill="none" />
+                <path class="path-line path-line-2" d="M 310 180 L 130 270" stroke="#D4621A" stroke-width="1.5" fill="none" />
+                <path class="path-line path-line-3" d="M 310 180 L 510 180" stroke="#6B6966" stroke-width="1" fill="none" stroke-dasharray="4 6" />
+
+                <!-- hub node -->
+                <g>
+                    <circle class="node-circle" cx="310" cy="180" r="68" fill="#0A0908" stroke="#D4621A" stroke-width="2.5" />
+                    <text x="310" y="170" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="13" fill="#F7F6F3" text-anchor="middle" letter-spacing="2.5">PROJECT</text>
+                    <text x="310" y="190" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="26" fill="#D4621A" text-anchor="middle">9</text>
+                    <text x="310" y="208" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="11" fill="#F7F6F3" text-anchor="middle" letter-spacing="2.5">TECHNOLOGIES</text>
+                </g>
+
+                <!-- HQ node -->
+                <a href="https://hq.project9tech.com">
+                    <g>
+                        <circle class="node-circle" cx="130" cy="90" r="48" fill="#0A0908" stroke="#4BC97A" stroke-width="2" />
+                        <text x="130" y="88" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="22" fill="#F7F6F3" text-anchor="middle" letter-spacing="2">HQ</text>
+                        <text x="130" y="106" font-family="Barlow Condensed, sans-serif" font-weight="600" font-size="9" fill="#4BC97A" text-anchor="middle" letter-spacing="2">&#9679; LIVE</text>
+                        <text x="130" y="160" font-family="Barlow, sans-serif" font-weight="300" font-size="12" fill="#9B9890" text-anchor="middle">trip-brief intelligence</text>
+                    </g>
+                </a>
+
+                <!-- TARN node -->
+                <a href="https://tarn.project9tech.com">
+                    <g>
+                        <circle class="node-circle" cx="130" cy="270" r="48" fill="#0A0908" stroke="#4BC97A" stroke-width="2" />
+                        <text x="130" y="268" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="22" fill="#F7F6F3" text-anchor="middle" letter-spacing="2">TARN</text>
+                        <text x="130" y="286" font-family="Barlow Condensed, sans-serif" font-weight="600" font-size="9" fill="#4BC97A" text-anchor="middle" letter-spacing="2">&#9679; LIVE</text>
+                        <text x="130" y="230" font-family="Barlow, sans-serif" font-weight="300" font-size="12" fill="#9B9890" text-anchor="middle">trip planning for crews</text>
+                    </g>
+                </a>
+
+                <!-- Future placeholder -->
+                <g>
+                    <circle class="node-circle" cx="510" cy="180" r="42" fill="#0A0908" stroke="#6B6966" stroke-width="1.5" stroke-dasharray="4 4" />
+                    <text x="510" y="178" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="11" fill="#9B9890" text-anchor="middle" letter-spacing="2">SOON</text>
+                    <text x="510" y="192" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="11" fill="#9B9890" text-anchor="middle" letter-spacing="2">&middot;</text>
+                    <text x="510" y="240" font-family="Barlow, sans-serif" font-weight="300" font-size="12" fill="#6B6966" text-anchor="middle">more apps shipping</text>
+                </g>
+            </svg>
+        </div>
+    </div>
+</section>
+<script>
+    // Trigger hub diagram path-draw on scroll into view
+    (function(){
+        var hubEl = document.getElementById('hubSection');
+        if (!hubEl || !('IntersectionObserver' in window)) {
+            if (hubEl) hubEl.classList.add('in-view');
+            return;
+        }
+        var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+                if (e.isIntersecting) { hubEl.classList.add('in-view'); io.disconnect(); }
+            });
+        }, { threshold: 0.25 });
+        io.observe(hubEl);
+    })();
+</script>
+
+<!-- DATA TICKER (S46 · platform telemetry — both apps + platform metrics) -->
 <div class="data-ticker" aria-hidden="true">
     <div class="ticker-track" id="tickerTrack1">
-        <div class="ticker-item">◆ 40+ Live Data Points Per Brief</div>
-        <div class="ticker-item">◆ NPS · NOAA · USGS · NIFC · RIDB · NREL · Emergency SVC</div>
-        <div class="ticker-item">◆ Weather · Fire · Roads · Permits · Vehicle · EV · Emergency · Terrain</div>
-        <div class="ticker-item">◆ Real-Time Intel Briefings</div>
-        <div class="ticker-item">◆ Founding Members: $1/mo Locked Forever</div>
-        <div class="ticker-item">◆ Built for Off-Road · Overlanding · Backcountry</div>
-        <div class="ticker-item">◆ 40+ Live Data Points Per Brief</div>
-        <div class="ticker-item">◆ NPS · NOAA · USGS · NIFC · RIDB · NREL · Emergency SVC</div>
-        <div class="ticker-item">◆ Weather · Fire · Roads · Permits · Vehicle · EV · Emergency · Terrain</div>
-        <div class="ticker-item">◆ Real-Time Intel Briefings</div>
-        <div class="ticker-item">◆ Founding Members: $1/mo Locked Forever</div>
-        <div class="ticker-item">◆ Built for Off-Road · Overlanding · Backcountry</div>
+        <div class="ticker-item">◆ Platform: 02 apps live · more shipping</div>
+        <div class="ticker-item">◆ TARN: trips planned this week</div>
+        <div class="ticker-item">◆ HQ: live brief synthesis · 40+ data points</div>
+        <div class="ticker-item">◆ Founding seats: 07 / 100 claimed</div>
+        <div class="ticker-item">◆ TARN map · vote · lock · brief</div>
+        <div class="ticker-item">◆ HQ sources: NPS · NOAA · USGS · NIFC · RIDB</div>
+        <div class="ticker-item">◆ $1/mo unlocks every app · present and future</div>
+        <div class="ticker-item">◆ Built for off-road · overland · backcountry · alpine</div>
+        <div class="ticker-item">◆ TARN: crew up · plan together · ship the trip</div>
+        <div class="ticker-item">◆ HQ: conditions · permits · hazards · access</div>
+        <div class="ticker-item">◆ One account · two apps · same backbone</div>
+        <div class="ticker-item">◆ Platform: 02 apps live · more shipping</div>
+        <div class="ticker-item">◆ TARN: trips planned this week</div>
+        <div class="ticker-item">◆ HQ: live brief synthesis · 40+ data points</div>
+        <div class="ticker-item">◆ Founding seats: 07 / 100 claimed</div>
+        <div class="ticker-item">◆ TARN map · vote · lock · brief</div>
+        <div class="ticker-item">◆ HQ sources: NPS · NOAA · USGS · NIFC · RIDB</div>
+        <div class="ticker-item">◆ $1/mo unlocks every app · present and future</div>
+        <div class="ticker-item">◆ Built for off-road · overland · backcountry · alpine</div>
+        <div class="ticker-item">◆ TARN: crew up · plan together · ship the trip</div>
+        <div class="ticker-item">◆ HQ: conditions · permits · hazards · access</div>
+        <div class="ticker-item">◆ One account · two apps · same backbone</div>
     </div>
 </div>
 
@@ -2572,20 +3223,112 @@
     </div>
 </div>
 
-<!-- PLATFORM SECTION -->
-<div class="section">
-    <div class="platform-hero">
-        <div class="platform-hero-left">
-            <div class="eyebrow reveal">The Platform</div>
-            <h2 class="sec-h2 reveal reveal-delay-1">6 Government Sources.<br>40+ Data Points Synthesized.</h2>
-            <p class="sec-p reveal reveal-delay-3">HQ pulls live data from NPS, NOAA, USGS, NIFC, Recreation.gov, and open terrain databases — synthesizes 40+ data points into one actionable brief. Not cached, not estimated. Fresh intel, every time.</p>
-        </div>
-        <div class="one-brief-wrap reveal reveal-delay-2">
-            <div class="one-brief-text" id="oneBriefText">
-                <span class="one-brief-line">ONE</span>
-                <span class="one-brief-line">BRIEF<span class="one-brief-dot">.</span></span>
+<!-- HOW IT WORKS (S46 · replaces ONE BRIEF · equal-peer split between TARN and HQ) -->
+<div class="section how-section">
+    <div class="how-eyebrow reveal">How It Works</div>
+    <h2 class="how-title reveal reveal-delay-1">Two apps. Same platform.<br>Built to work <span class="how-accent">together</span>.</h2>
+    <div class="how-split">
+
+        <!-- LEFT · HOW TARN WORKS -->
+        <div class="how-pane how-tarn reveal reveal-delay-2">
+            <div class="how-pane-eyebrow">How TARN Works</div>
+            <div class="how-pane-title">Plan the trip <br>with your crew.</div>
+            <div class="how-pane-visual">
+                <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" class="how-svg">
+                    <!-- topographic background lines -->
+                    <path d="M 0 60 Q 90 30 180 50 T 360 30" stroke="#1A1917" stroke-width="0.8" fill="none" />
+                    <path d="M 0 100 Q 90 80 180 100 T 360 80" stroke="#1A1917" stroke-width="0.8" fill="none" />
+                    <path d="M 0 140 Q 90 130 180 150 T 360 130" stroke="#1A1917" stroke-width="0.8" fill="none" />
+                    <path d="M 0 180 Q 90 180 180 200 T 360 180" stroke="#1A1917" stroke-width="0.8" fill="none" />
+                    <!-- route path -->
+                    <path d="M 40 180 Q 120 60 200 120 T 320 50" stroke="#D4621A" stroke-width="2" stroke-dasharray="400" stroke-dashoffset="400" fill="none">
+                        <animate attributeName="stroke-dashoffset" from="400" to="0" dur="2.4s" begin="0.6s" fill="freeze" />
+                    </path>
+                    <!-- stops -->
+                    <g>
+                        <circle cx="40" cy="180" r="0" fill="#4BC97A"><animate attributeName="r" from="0" to="7" dur="0.3s" begin="0.2s" fill="freeze" /></circle>
+                        <text x="40" y="200" font-family="Barlow Condensed" font-weight="700" font-size="9" fill="#9B9890" text-anchor="middle" letter-spacing="1" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.4s" fill="freeze" />START</text>
+                    </g>
+                    <g>
+                        <circle cx="160" cy="100" r="0" fill="#D4621A"><animate attributeName="r" from="0" to="7" dur="0.3s" begin="1.4s" fill="freeze" /></circle>
+                    </g>
+                    <g>
+                        <circle cx="240" cy="120" r="0" fill="#D4621A"><animate attributeName="r" from="0" to="7" dur="0.3s" begin="2.0s" fill="freeze" /></circle>
+                    </g>
+                    <g>
+                        <circle cx="320" cy="50" r="0" fill="#D4621A"><animate attributeName="r" from="0" to="7" dur="0.3s" begin="2.6s" fill="freeze" /></circle>
+                        <text x="320" y="38" font-family="Barlow Condensed" font-weight="700" font-size="9" fill="#9B9890" text-anchor="middle" letter-spacing="1" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="2.8s" fill="freeze" />END</text>
+                    </g>
+                    <!-- vote pills under stops -->
+                    <g opacity="0">
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="3.0s" fill="freeze" />
+                        <rect x="146" y="80" width="28" height="10" fill="#1A1917" stroke="#4BC97A" stroke-width="0.6" />
+                        <text x="160" y="88" font-family="Barlow Condensed" font-weight="700" font-size="7" fill="#4BC97A" text-anchor="middle" letter-spacing="0.5">3/4</text>
+                    </g>
+                    <!-- lock overlay -->
+                    <g opacity="0">
+                        <animate attributeName="opacity" from="0" to="1" dur="0.6s" begin="3.6s" fill="freeze" />
+                        <rect x="80" y="195" width="200" height="18" fill="#D4621A" />
+                        <text x="180" y="207" font-family="Barlow Condensed" font-weight="800" font-size="10" fill="#0D0C0B" text-anchor="middle" letter-spacing="3">◆ TARN LOCKED ◆</text>
+                    </g>
+                </svg>
             </div>
-            <div class="one-brief-glow"></div>
+            <ul class="how-steps">
+                <li><span class="how-step-n">01</span> Drop stops on the map</li>
+                <li><span class="how-step-n">02</span> Crew votes on dates &amp; stops</li>
+                <li><span class="how-step-n">03</span> Lock the trip · brief generated</li>
+            </ul>
+            <a href="https://tarn.project9tech.com" class="how-cta">Open TARN &rarr;</a>
+        </div>
+
+        <!-- RIGHT · HOW HQ WORKS -->
+        <div class="how-pane how-hq reveal reveal-delay-3">
+            <div class="how-pane-eyebrow">How HQ Works</div>
+            <div class="how-pane-title">Know what&rsquo;s <br>actually out there.</div>
+            <div class="how-pane-visual">
+                <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" class="how-svg">
+                    <!-- 6 sources fanning in -->
+                    <g font-family="Barlow Condensed" font-weight="700" font-size="9" letter-spacing="1.5" fill="#9B9890" text-anchor="middle">
+                        <text x="40" y="40" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="0.2s" fill="freeze" />NPS</text>
+                        <text x="40" y="80" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="0.4s" fill="freeze" />NOAA</text>
+                        <text x="40" y="120" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="0.6s" fill="freeze" />USGS</text>
+                        <text x="40" y="160" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="0.8s" fill="freeze" />NIFC</text>
+                        <text x="40" y="200" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.0s" fill="freeze" />RIDB</text>
+                    </g>
+                    <!-- connector lines from sources to center -->
+                    <g stroke="#D4621A" stroke-width="0.8" fill="none" opacity="0.5">
+                        <line x1="60" y1="40" x2="170" y2="110" stroke-dasharray="120" stroke-dashoffset="120"><animate attributeName="stroke-dashoffset" from="120" to="0" dur="0.6s" begin="0.4s" fill="freeze" /></line>
+                        <line x1="60" y1="80" x2="170" y2="110" stroke-dasharray="120" stroke-dashoffset="120"><animate attributeName="stroke-dashoffset" from="120" to="0" dur="0.6s" begin="0.6s" fill="freeze" /></line>
+                        <line x1="60" y1="120" x2="170" y2="110" stroke-dasharray="120" stroke-dashoffset="120"><animate attributeName="stroke-dashoffset" from="120" to="0" dur="0.6s" begin="0.8s" fill="freeze" /></line>
+                        <line x1="60" y1="160" x2="170" y2="110" stroke-dasharray="120" stroke-dashoffset="120"><animate attributeName="stroke-dashoffset" from="120" to="0" dur="0.6s" begin="1.0s" fill="freeze" /></line>
+                        <line x1="60" y1="200" x2="170" y2="110" stroke-dasharray="120" stroke-dashoffset="120"><animate attributeName="stroke-dashoffset" from="120" to="0" dur="0.6s" begin="1.2s" fill="freeze" /></line>
+                    </g>
+                    <!-- synth node -->
+                    <circle cx="170" cy="110" r="0" fill="#0E0D0C" stroke="#D4621A" stroke-width="2"><animate attributeName="r" from="0" to="24" dur="0.4s" begin="1.4s" fill="freeze" /></circle>
+                    <text x="170" y="106" font-family="Barlow Condensed" font-weight="800" font-size="9" fill="#F7F6F3" text-anchor="middle" letter-spacing="1.5" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.7s" fill="freeze" />HQ</text>
+                    <text x="170" y="118" font-family="Barlow Condensed" font-weight="600" font-size="7" fill="#4BC97A" text-anchor="middle" letter-spacing="1.2" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.9s" fill="freeze" />SYNTH</text>
+                    <!-- output arrow + brief preview -->
+                    <line x1="200" y1="110" x2="260" y2="110" stroke="#D4621A" stroke-width="1.5" stroke-dasharray="60" stroke-dashoffset="60"><animate attributeName="stroke-dashoffset" from="60" to="0" dur="0.5s" begin="2.2s" fill="freeze" /></line>
+                    <g opacity="0">
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="2.6s" fill="freeze" />
+                        <rect x="260" y="60" width="80" height="100" fill="#1A1917" stroke="#D4621A" stroke-width="1" />
+                        <line x1="270" y1="78" x2="330" y2="78" stroke="#D4621A" stroke-width="1.5" />
+                        <line x1="270" y1="92" x2="320" y2="92" stroke="#3A3936" stroke-width="0.8" />
+                        <line x1="270" y1="100" x2="325" y2="100" stroke="#3A3936" stroke-width="0.8" />
+                        <line x1="270" y1="108" x2="315" y2="108" stroke="#3A3936" stroke-width="0.8" />
+                        <line x1="270" y1="120" x2="328" y2="120" stroke="#3A3936" stroke-width="0.8" />
+                        <line x1="270" y1="128" x2="322" y2="128" stroke="#3A3936" stroke-width="0.8" />
+                        <line x1="270" y1="140" x2="320" y2="140" stroke="#3A3936" stroke-width="0.8" />
+                        <text x="300" y="155" font-family="Barlow Condensed" font-weight="700" font-size="7" fill="#4BC97A" text-anchor="middle" letter-spacing="1">◆ READY</text>
+                    </g>
+                </svg>
+            </div>
+            <ul class="how-steps">
+                <li><span class="how-step-n">01</span> Tell HQ where you&rsquo;re going</li>
+                <li><span class="how-step-n">02</span> 40+ live data points synthesize</li>
+                <li><span class="how-step-n">03</span> Your brief · conditions · permits · hazards</li>
+            </ul>
+            <a href="https://hq.project9tech.com" class="how-cta">Try HQ &rarr;</a>
         </div>
     </div>
 </div>
@@ -2741,6 +3484,370 @@
     </div>
 </div>
 
+<!-- LIVE TARN DEMO (S46 · paired with HQ demo · animated map + stops + votes + lock) -->
+<div class="demo-section tarn-demo-section" id="tarnDemoSection">
+    <div class="eyebrow reveal">See It In Action &middot; TARN</div>
+    <h2 class="sec-h2 reveal reveal-delay-1">One link. Your whole crew. Locked in together.</h2>
+
+    <div class="demo-terminal tarn-terminal reveal reveal-delay-2">
+        <div class="demo-terminal-bar">
+            <div class="demo-bar-left">
+                <div class="demo-bar-dots">
+                    <span style="background:#E05252;"></span>
+                    <span style="background:#E8B84B;"></span>
+                    <span style="background:#4BC97A;"></span>
+                </div>
+                <span class="demo-bar-label">TARN Trip Planner &mdash; tarn.project9tech.com</span>
+            </div>
+            <span class="demo-bar-status" id="tarnDemoStatus">Crew assembling&hellip;</span>
+        </div>
+        <div class="tarn-demo-body">
+            <!-- Left: crew + stops list -->
+            <div class="tarn-demo-feed">
+                <div class="tarn-feed-header">Crew &amp; Stops</div>
+                <div class="tarn-feed-section">
+                    <div class="tarn-feed-sub">CREW &middot; <span id="tarnCrewCount">0</span> in</div>
+                    <ul class="tarn-feed-list" id="tarnCrewList">
+                        <li class="hidden" data-name="Marshall">&deg; Marshall joined</li>
+                        <li class="hidden" data-name="Kyle">&deg; Kyle joined</li>
+                        <li class="hidden" data-name="Dobz">&deg; Dobz joined</li>
+                        <li class="hidden" data-name="Alex">&deg; Alex joined</li>
+                    </ul>
+                </div>
+                <div class="tarn-feed-section">
+                    <div class="tarn-feed-sub">STOPS &middot; <span id="tarnStopCount">0</span> dropped</div>
+                    <ul class="tarn-feed-list" id="tarnStopList">
+                        <li class="hidden" data-stop="Mammoth Trailhead">&middot; Mammoth Trailhead</li>
+                        <li class="hidden" data-stop="Convict Lake">&middot; Convict Lake</li>
+                        <li class="hidden" data-stop="Lake Sabrina">&middot; Lake Sabrina</li>
+                        <li class="hidden" data-stop="Bishop Camp">&middot; Bishop Camp</li>
+                    </ul>
+                </div>
+                <div class="tarn-feed-section">
+                    <div class="tarn-feed-sub">DATE VOTE</div>
+                    <ul class="tarn-vote-list" id="tarnVoteList">
+                        <li class="hidden"><span class="v-date">Aug 09</span><span class="v-bar"><span class="v-fill" style="width:20%"></span></span><span class="v-count">1/4</span></li>
+                        <li class="hidden"><span class="v-date">Aug 16</span><span class="v-bar"><span class="v-fill" style="width:50%"></span></span><span class="v-count">2/4</span></li>
+                        <li class="hidden picked"><span class="v-date">Aug 23</span><span class="v-bar"><span class="v-fill" style="width:100%"></span></span><span class="v-count">4/4</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right: live map -->
+            <div class="tarn-demo-map">
+                <div class="tarn-map-header">Live Route</div>
+                <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg" class="tarn-map-svg">
+                    <!-- topographic background -->
+                    <g stroke="#1A1917" stroke-width="0.7" fill="none">
+                        <path d="M 0 60 Q 120 30 240 50 T 480 30" />
+                        <path d="M 0 110 Q 120 90 240 100 T 480 80" />
+                        <path d="M 0 160 Q 120 150 240 170 T 480 150" />
+                        <path d="M 0 210 Q 120 220 240 240 T 480 220" />
+                        <path d="M 0 260 Q 120 250 240 270 T 480 250" />
+                    </g>
+                    <!-- route path (drawn as stops appear) -->
+                    <path id="tarnRoutePath" d="M 60 220 L 180 130 L 280 170 L 400 80" stroke="#D4621A" stroke-width="2.5" fill="none" stroke-dasharray="600" stroke-dashoffset="600" />
+                    <!-- stops -->
+                    <g id="tarnStop1" opacity="0">
+                        <circle cx="60" cy="220" r="8" fill="#4BC97A" />
+                        <circle cx="60" cy="220" r="14" fill="none" stroke="#4BC97A" stroke-width="1" opacity="0.4" />
+                        <text x="60" y="246" font-family="Barlow Condensed" font-weight="700" font-size="9" fill="#9B9890" text-anchor="middle" letter-spacing="1">MAMMOTH</text>
+                    </g>
+                    <g id="tarnStop2" opacity="0">
+                        <circle cx="180" cy="130" r="8" fill="#D4621A" />
+                        <text x="180" y="116" font-family="Barlow Condensed" font-weight="700" font-size="9" fill="#9B9890" text-anchor="middle" letter-spacing="1">CONVICT</text>
+                    </g>
+                    <g id="tarnStop3" opacity="0">
+                        <circle cx="280" cy="170" r="8" fill="#D4621A" />
+                        <text x="280" y="194" font-family="Barlow Condensed" font-weight="700" font-size="9" fill="#9B9890" text-anchor="middle" letter-spacing="1">SABRINA</text>
+                    </g>
+                    <g id="tarnStop4" opacity="0">
+                        <circle cx="400" cy="80" r="8" fill="#D4621A" />
+                        <text x="400" y="66" font-family="Barlow Condensed" font-weight="700" font-size="9" fill="#9B9890" text-anchor="middle" letter-spacing="1">BISHOP</text>
+                    </g>
+                    <!-- lock overlay -->
+                    <g id="tarnLockOverlay" opacity="0">
+                        <rect x="80" y="120" width="320" height="44" fill="#0E0D0C" stroke="#D4621A" stroke-width="1.5" />
+                        <text x="240" y="138" font-family="Barlow Condensed" font-weight="800" font-size="11" fill="#D4621A" text-anchor="middle" letter-spacing="4">&#9670; TARN LOCKED &#9670;</text>
+                        <text x="240" y="156" font-family="Barlow Condensed" font-weight="600" font-size="9" fill="#F7F6F3" text-anchor="middle" letter-spacing="2">SATURDAY &middot; AUGUST 23</text>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // TARN demo animation — sequenced reveal of crew, stops, route, lock
+    (function(){
+        var demoEl = document.getElementById('tarnDemoSection');
+        if (!demoEl) return;
+        var hasRun = false;
+        function runDemo(){
+            if (hasRun) return; hasRun = true;
+            var status = document.getElementById('tarnDemoStatus');
+            var crewList = document.getElementById('tarnCrewList').children;
+            var stopList = document.getElementById('tarnStopList').children;
+            var voteList = document.getElementById('tarnVoteList').children;
+            var crewCount = document.getElementById('tarnCrewCount');
+            var stopCount = document.getElementById('tarnStopCount');
+            var routePath = document.getElementById('tarnRoutePath');
+            var stops = [document.getElementById('tarnStop1'), document.getElementById('tarnStop2'), document.getElementById('tarnStop3'), document.getElementById('tarnStop4')];
+            var lock = document.getElementById('tarnLockOverlay');
+
+            // Crew joins one at a time
+            for (var i = 0; i < crewList.length; i++) {
+                (function(idx){
+                    setTimeout(function(){
+                        crewList[idx].classList.remove('hidden');
+                        crewCount.textContent = idx + 1;
+                        if (status) status.textContent = (idx + 1) + '/4 crew in';
+                    }, 200 + idx * 400);
+                })(i);
+            }
+            // Stops drop after crew assembled
+            for (var j = 0; j < stopList.length; j++) {
+                (function(idx){
+                    setTimeout(function(){
+                        stopList[idx].classList.remove('hidden');
+                        stops[idx].setAttribute('opacity', '1');
+                        stopCount.textContent = idx + 1;
+                        if (status) status.textContent = 'Mapping stops…';
+                    }, 2000 + idx * 500);
+                })(j);
+            }
+            // Route draws
+            setTimeout(function(){
+                if (routePath) {
+                    routePath.style.transition = 'stroke-dashoffset 2.4s ease-out';
+                    routePath.style.strokeDashoffset = '0';
+                }
+                if (status) status.textContent = 'Route active';
+            }, 4200);
+            // Votes appear
+            for (var k = 0; k < voteList.length; k++) {
+                (function(idx){
+                    setTimeout(function(){
+                        voteList[idx].classList.remove('hidden');
+                        if (status) status.textContent = 'Voting…';
+                    }, 5400 + idx * 500);
+                })(k);
+            }
+            // Lock fires
+            setTimeout(function(){
+                if (lock) lock.setAttribute('opacity', '1');
+                if (status) status.textContent = '◆ LOCKED · Aug 23';
+            }, 7800);
+        }
+        if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function(entries){
+                entries.forEach(function(e){ if (e.isIntersecting) { runDemo(); io.disconnect(); } });
+            }, { threshold: 0.3 });
+            io.observe(demoEl);
+        } else {
+            setTimeout(runDemo, 800);
+        }
+    })();
+</script>
+
+<!-- TRY TARN LIVE · pre-signup interactive sandbox (S46 · highest-conversion mechanic) -->
+<div class="try-tarn-section" id="tryTarnSection">
+    <div class="try-tarn-inner">
+        <div class="try-tarn-eyebrow">Try TARN Live &middot; No Signup</div>
+        <h2 class="try-tarn-title">Plan a trip right now.<br><span class="try-tarn-accent">Without making an account.</span></h2>
+        <p class="try-tarn-sub">Tap the buttons. Drop stops on the map. Vote on dates with a fake crew. See what your brief would look like. Then save it &mdash; your trip carries forward to your founding-member account.</p>
+
+        <div class="sandbox">
+            <!-- Step rail -->
+            <div class="sandbox-rail">
+                <button class="sb-step active" data-step="1"><span class="sb-n">01</span>Add stops</button>
+                <button class="sb-step" data-step="2"><span class="sb-n">02</span>Vote on dates</button>
+                <button class="sb-step" data-step="3"><span class="sb-n">03</span>See your brief</button>
+            </div>
+
+            <!-- Stage -->
+            <div class="sandbox-stage">
+                <!-- Step 1: stops -->
+                <div class="sb-panel active" data-panel="1">
+                    <div class="sb-controls">
+                        <div class="sb-instructions">Pick up to 4 stops for your fake trip.</div>
+                        <div class="sb-stop-btns">
+                            <button class="sb-stop-btn" data-name="Mammoth Trailhead" data-x="80" data-y="200">Mammoth Trailhead</button>
+                            <button class="sb-stop-btn" data-name="Convict Lake"      data-x="180" data-y="120">Convict Lake</button>
+                            <button class="sb-stop-btn" data-name="Lake Sabrina"      data-x="280" data-y="160">Lake Sabrina</button>
+                            <button class="sb-stop-btn" data-name="Bishop Camp"       data-x="380" data-y="80">Bishop Camp</button>
+                            <button class="sb-stop-btn" data-name="Glacier Lodge"     data-x="120" data-y="60">Glacier Lodge</button>
+                            <button class="sb-stop-btn" data-name="Onion Valley"      data-x="340" data-y="220">Onion Valley</button>
+                        </div>
+                        <button class="sb-next" id="sbNext1">Next &middot; Vote on dates &rarr;</button>
+                    </div>
+                    <div class="sb-visual">
+                        <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg" class="sb-map">
+                            <g stroke="#1A1917" stroke-width="0.7" fill="none">
+                                <path d="M 0 60 Q 120 30 240 50 T 480 30" />
+                                <path d="M 0 110 Q 120 90 240 100 T 480 80" />
+                                <path d="M 0 160 Q 120 150 240 170 T 480 150" />
+                                <path d="M 0 210 Q 120 220 240 240 T 480 220" />
+                            </g>
+                            <path id="sbRoute" d="" stroke="#D4621A" stroke-width="2" fill="none" stroke-dasharray="6 4" opacity="0.8" />
+                            <g id="sbStops"></g>
+                            <text x="240" y="270" font-family="Barlow Condensed" font-weight="700" font-size="9" fill="#6B6966" text-anchor="middle" letter-spacing="2.5" id="sbMapHint">CLICK A STOP TO ADD IT</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Step 2: dates -->
+                <div class="sb-panel" data-panel="2">
+                    <div class="sb-controls">
+                        <div class="sb-instructions">Crew of 4 is voting. Pick your date.</div>
+                        <div class="sb-date-btns">
+                            <button class="sb-date-btn" data-date="Aug 09">Aug 09 &middot; <span class="dt-c">1/4</span></button>
+                            <button class="sb-date-btn" data-date="Aug 16">Aug 16 &middot; <span class="dt-c">2/4</span></button>
+                            <button class="sb-date-btn" data-date="Aug 23">Aug 23 &middot; <span class="dt-c">3/4</span></button>
+                            <button class="sb-date-btn" data-date="Aug 30">Aug 30 &middot; <span class="dt-c">0/4</span></button>
+                        </div>
+                        <button class="sb-next" id="sbNext2" disabled>Next &middot; See your brief &rarr;</button>
+                    </div>
+                    <div class="sb-visual sb-vote-visual">
+                        <div class="sb-vote-header">Crew &middot; live vote</div>
+                        <ul class="sb-vote-list" id="sbVoteList">
+                            <li><span class="vd">Aug 09</span><div class="vbar"><div class="vfill" style="width:25%"></div></div><span class="vct">1/4</span></li>
+                            <li><span class="vd">Aug 16</span><div class="vbar"><div class="vfill" style="width:50%"></div></div><span class="vct">2/4</span></li>
+                            <li><span class="vd">Aug 23</span><div class="vbar"><div class="vfill" style="width:75%"></div></div><span class="vct">3/4</span></li>
+                            <li><span class="vd">Aug 30</span><div class="vbar"><div class="vfill" style="width:0%"></div></div><span class="vct">0/4</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 3: brief preview -->
+                <div class="sb-panel" data-panel="3">
+                    <div class="sb-controls">
+                        <div class="sb-instructions">This is your brief, generated for the trip you just planned. The real one pulls from 40+ live sources.</div>
+                        <div class="sb-save-block">
+                            <a href="?view=signup&amp;import=trip" class="sb-save-cta">Save this trip &middot; Become a Founding Member &rarr;</a>
+                            <div class="sb-save-note">Your stops, dates, and brief preview carry forward into your account.</div>
+                        </div>
+                    </div>
+                    <div class="sb-visual sb-brief-visual">
+                        <div class="sb-brief">
+                            <div class="sb-brief-bar">
+                                <span class="sb-brief-dots">
+                                    <span style="background:#E05252;"></span><span style="background:#E8B84B;"></span><span style="background:#4BC97A;"></span>
+                                </span>
+                                <span class="sb-brief-label">hq.project9tech.com &middot; brief preview</span>
+                            </div>
+                            <div class="sb-brief-body">
+                                <div class="sb-brief-line sb-brief-h"><span id="sbBriefTrip">Eastern Sierra &middot; <span id="sbBriefDates">Aug 23</span></span></div>
+                                <div class="sb-brief-line"><span class="sb-tag g">CONDITIONS</span> <span id="sbBriefCond">Clear · 52°F at trailhead · 7mph wind WSW</span></div>
+                                <div class="sb-brief-line"><span class="sb-tag g">FIRE</span> <span id="sbBriefFire">No active incidents within 50mi · AQI 42</span></div>
+                                <div class="sb-brief-line"><span class="sb-tag a">ROADS</span> <span id="sbBriefRoad">All access roads OPEN · 4WD recommended past mile 8</span></div>
+                                <div class="sb-brief-line"><span class="sb-tag g">PERMITS</span> <span id="sbBriefPermits">Wilderness permit REQUIRED · self-issue at trailhead</span></div>
+                                <div class="sb-brief-line"><span class="sb-tag g">WATER</span> <span id="sbBriefWater">Convict Creek SEASONAL · pack 2L extra</span></div>
+                                <div class="sb-brief-stats">
+                                    <span>Stops: <strong id="sbBriefStopCount">0</strong></span>
+                                    <span>Crew: <strong>4</strong></span>
+                                    <span>Sources: <strong>6 live</strong></span>
+                                    <span>Synth: <strong>40+ data pts</strong></span>
+                                </div>
+                                <div class="sb-brief-footer">&#9670; Brief generated in &lt; 8 seconds &middot; This is a preview &middot; Real brief includes route weather, terrain, EV charging, emergency services, hazards.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ── TRY TARN LIVE sandbox interactions ────────────────────────
+    (function(){
+        var sb = document.getElementById('tryTarnSection');
+        if (!sb) return;
+        var pickedStops = [];
+        var pickedDate = null;
+        var steps = sb.querySelectorAll('.sb-step');
+        var panels = sb.querySelectorAll('.sb-panel');
+        function show(stepNum){
+            steps.forEach(function(s){ s.classList.toggle('active', s.dataset.step === String(stepNum)); });
+            panels.forEach(function(p){ p.classList.toggle('active', p.dataset.panel === String(stepNum)); });
+        }
+        // Step nav direct click
+        steps.forEach(function(s){
+            s.addEventListener('click', function(){ show(parseInt(s.dataset.step, 10)); });
+        });
+        // STOP buttons add markers + redraw route
+        var stopsEl = document.getElementById('sbStops');
+        var routeEl = document.getElementById('sbRoute');
+        var mapHint = document.getElementById('sbMapHint');
+        function redrawRoute(){
+            // Build SVG markers
+            stopsEl.innerHTML = '';
+            pickedStops.forEach(function(s, i){
+                var ns = 'http://www.w3.org/2000/svg';
+                var g = document.createElementNS(ns, 'g');
+                var c = document.createElementNS(ns, 'circle');
+                c.setAttribute('cx', s.x); c.setAttribute('cy', s.y); c.setAttribute('r', 8);
+                c.setAttribute('fill', i === 0 ? '#4BC97A' : '#D4621A');
+                var t = document.createElementNS(ns, 'text');
+                t.setAttribute('x', s.x); t.setAttribute('y', parseInt(s.y) - 14);
+                t.setAttribute('font-family', 'Barlow Condensed');
+                t.setAttribute('font-weight', '700');
+                t.setAttribute('font-size', '9');
+                t.setAttribute('fill', '#F7F6F3');
+                t.setAttribute('text-anchor', 'middle');
+                t.setAttribute('letter-spacing', '1');
+                t.textContent = s.name.toUpperCase().split(' ')[0];
+                g.appendChild(c); g.appendChild(t);
+                stopsEl.appendChild(g);
+            });
+            // Draw connecting line
+            if (pickedStops.length >= 2) {
+                var d = 'M ' + pickedStops.map(function(s){ return s.x + ' ' + s.y; }).join(' L ');
+                routeEl.setAttribute('d', d);
+            } else {
+                routeEl.setAttribute('d', '');
+            }
+            // Hide hint
+            if (mapHint) mapHint.style.opacity = pickedStops.length > 0 ? '0' : '1';
+        }
+        sb.querySelectorAll('.sb-stop-btn').forEach(function(btn){
+            btn.addEventListener('click', function(){
+                if (btn.classList.contains('selected')) {
+                    btn.classList.remove('selected');
+                    pickedStops = pickedStops.filter(function(s){ return s.name !== btn.dataset.name; });
+                } else if (pickedStops.length < 4) {
+                    btn.classList.add('selected');
+                    pickedStops.push({ name: btn.dataset.name, x: btn.dataset.x, y: btn.dataset.y });
+                }
+                redrawRoute();
+                // Persist
+                try { localStorage.setItem('p9t_sandbox_trip', JSON.stringify({ stops: pickedStops, date: pickedDate })); } catch(e) {}
+            });
+        });
+        document.getElementById('sbNext1').addEventListener('click', function(){ show(2); });
+        // DATE buttons
+        sb.querySelectorAll('.sb-date-btn').forEach(function(btn){
+            btn.addEventListener('click', function(){
+                sb.querySelectorAll('.sb-date-btn').forEach(function(b){ b.classList.remove('selected'); });
+                btn.classList.add('selected');
+                pickedDate = btn.dataset.date;
+                document.getElementById('sbNext2').removeAttribute('disabled');
+                // Persist
+                try { localStorage.setItem('p9t_sandbox_trip', JSON.stringify({ stops: pickedStops, date: pickedDate })); } catch(e) {}
+                // Sync brief preview values
+                document.getElementById('sbBriefDates').textContent = pickedDate;
+                document.getElementById('sbBriefStopCount').textContent = pickedStops.length || 0;
+            });
+        });
+        document.getElementById('sbNext2').addEventListener('click', function(){
+            document.getElementById('sbBriefStopCount').textContent = pickedStops.length || 0;
+            document.getElementById('sbBriefDates').textContent = pickedDate || 'Aug 23';
+            show(3);
+        });
+    })();
+</script>
+
 <!-- STRIPE DIVIDER -->
 <div class="stripe thin"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
 
@@ -2832,103 +3939,151 @@
     </div>
 </div>
 
-<!-- STRIPE DIVIDER -->
-<div class="stripe thin"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
 
-<!-- INTELLIGENCE SECTION — VISUAL DATA CARDS -->
-<div class="intel-section-wrap">
-<canvas class="terrain-canvas" id="terrainCanvas"></canvas>
-<div class="section">
-    <div class="eyebrow reveal">Intelligence Pipeline</div>
-    <h2 class="sec-h2 reveal reveal-delay-1">Live data. Government sources.<br>Every brief.</h2>
-    <p class="sec-p reveal reveal-delay-2">Not cached. Not estimated. Every brief pulls fresh intelligence from six verified government and public data sources in real time.</p>
+<!-- 3-ACT SCROLL STORY (S46 · replaces Partners) · Plan in TARN -> Brief in HQ -> Run the trip -->
+<div class="three-act-section" id="threeActSection">
+    <div class="three-act-inner">
+        <div class="three-act-eyebrow">How It Comes Together</div>
+        <h2 class="three-act-title">Plan in TARN.<br>Brief in HQ.<br><span class="three-act-accent">Run the trip.</span></h2>
+        <p class="three-act-sub">One platform, two tools, one outcome. Here&rsquo;s the actual flow &mdash; from crew assembling to the trip kicking off.</p>
 
-    <div class="intel-grid">
-        <div class="intel-card reveal reveal-delay-1">
-            <div class="intel-icon">
-                <div class="intel-dot"></div>
-                <span class="intel-src">Live Feed</span>
+        <div class="three-act-stage">
+            <!-- Sticky panel right side -->
+            <div class="three-act-sticky">
+                <div class="ta-frame active" data-frame="1">
+                    <div class="ta-frame-tag">Step 01 &middot; TARN</div>
+                    <div class="ta-frame-mock">
+                        <div class="ta-mock-bar">tarn.project9tech.com</div>
+                        <div class="ta-mock-body">
+                            <div class="ta-mock-tripname">Eastern Sierra · 4-day</div>
+                            <div class="ta-mock-crew">
+                                <span class="ta-avatar">M</span>
+                                <span class="ta-avatar">K</span>
+                                <span class="ta-avatar">D</span>
+                                <span class="ta-avatar">A</span>
+                                <span class="ta-crew-label">4/4 crew · all in</span>
+                            </div>
+                            <div class="ta-mock-stops">
+                                <div class="ta-stop">&middot; Mammoth Trailhead</div>
+                                <div class="ta-stop">&middot; Convict Lake</div>
+                                <div class="ta-stop">&middot; Lake Sabrina</div>
+                                <div class="ta-stop">&middot; Bishop Camp</div>
+                            </div>
+                            <div class="ta-mock-locked">&#9670; TARN LOCKED &middot; Sat Aug 23</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ta-frame" data-frame="2">
+                    <div class="ta-frame-tag">Step 02 &middot; HQ</div>
+                    <div class="ta-frame-mock">
+                        <div class="ta-mock-bar">hq.project9tech.com</div>
+                        <div class="ta-mock-body">
+                            <div class="ta-mock-tripname">Brief generating&hellip;</div>
+                            <div class="ta-brief-progress">
+                                <div class="ta-bp-bar"><div class="ta-bp-fill"></div></div>
+                                <div class="ta-bp-sources">
+                                    <span>NPS</span><span>NOAA</span><span>USGS</span><span>NIFC</span><span>RIDB</span><span>OWM</span>
+                                </div>
+                            </div>
+                            <div class="ta-brief-rows">
+                                <div class="ta-brief-row"><span class="ta-bt g">CLEAR</span>52°F · wind 7mph WSW</div>
+                                <div class="ta-brief-row"><span class="ta-bt g">FIRE</span>None within 50mi · AQI 42</div>
+                                <div class="ta-brief-row"><span class="ta-bt a">ROADS</span>OPEN · 4WD past mile 8</div>
+                                <div class="ta-brief-row"><span class="ta-bt g">PERMIT</span>Self-issue at trailhead</div>
+                                <div class="ta-brief-row"><span class="ta-bt g">WATER</span>Convict Creek seasonal</div>
+                            </div>
+                            <div class="ta-mock-locked g">&#9670; BRIEF READY &middot; 8 sec synth</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ta-frame" data-frame="3">
+                    <div class="ta-frame-tag">Step 03 &middot; Send it</div>
+                    <div class="ta-frame-mock ta-run">
+                        <div class="ta-run-svg">
+                            <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <radialGradient id="sunGlow" cx="50%" cy="30%" r="60%">
+                                        <stop offset="0%" stop-color="#D4621A" stop-opacity="0.4"/>
+                                        <stop offset="100%" stop-color="#D4621A" stop-opacity="0"/>
+                                    </radialGradient>
+                                </defs>
+                                <rect x="0" y="0" width="360" height="260" fill="#0A0908" />
+                                <ellipse cx="180" cy="100" rx="160" ry="100" fill="url(#sunGlow)" />
+                                <!-- terrain -->
+                                <path d="M 0 200 L 100 130 L 180 180 L 260 110 L 360 170 L 360 260 L 0 260 Z" fill="#1A1917" />
+                                <path d="M 0 220 L 80 180 L 160 210 L 240 170 L 360 200 L 360 260 L 0 260 Z" fill="#22211E" />
+                                <!-- sun -->
+                                <circle cx="180" cy="80" r="22" fill="#D4621A" />
+                                <!-- truck silhouette -->
+                                <g transform="translate(140,200)">
+                                    <rect x="0" y="0" width="80" height="22" fill="#0A0908" stroke="#D4621A" stroke-width="1.5"/>
+                                    <rect x="50" y="-12" width="30" height="14" fill="#0A0908" stroke="#D4621A" stroke-width="1.5"/>
+                                    <circle cx="14" cy="24" r="6" fill="#0A0908" stroke="#D4621A" stroke-width="1.5" />
+                                    <circle cx="66" cy="24" r="6" fill="#0A0908" stroke="#D4621A" stroke-width="1.5" />
+                                </g>
+                                <!-- dust -->
+                                <g opacity="0.5">
+                                    <circle cx="120" cy="225" r="4" fill="#6B6966"/>
+                                    <circle cx="108" cy="220" r="3" fill="#6B6966"/>
+                                    <circle cx="96" cy="228" r="5" fill="#6B6966"/>
+                                </g>
+                                <text x="180" y="252" font-family="Barlow Condensed" font-weight="800" font-size="13" fill="#D4621A" text-anchor="middle" letter-spacing="4">SEND IT</text>
+                            </svg>
+                        </div>
+                        <div class="ta-run-stamp">
+                            <div class="ta-run-stamp-l">Aug 23 &middot; 06:14 PT</div>
+                            <div class="ta-run-stamp-c">Trip in progress &middot; Crew of 4 &middot; 4 stops</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="intel-cat">Parks &amp; Lands</div>
-            <div class="intel-title">Access &amp; Conditions</div>
-            <div class="intel-desc">Trail closures, operating hours, and road status from NPS and federal land agencies.</div>
-        </div>
-        <div class="intel-card reveal reveal-delay-2">
-            <div class="intel-icon">
-                <div class="intel-dot" style="animation-delay:0.5s;"></div>
-                <span class="intel-src">Live Feed</span>
-            </div>
-            <div class="intel-cat">Atmosphere</div>
-            <div class="intel-title">Weather &amp; Air Quality</div>
-            <div class="intel-desc">Severe alerts, AQI, UV index, wind, and precipitation from NOAA and OpenWeather.</div>
-        </div>
-        <div class="intel-card reveal reveal-delay-3">
-            <div class="intel-icon">
-                <div class="intel-dot" style="animation-delay:1s;"></div>
-                <span class="intel-src">Live Feed</span>
-            </div>
-            <div class="intel-cat">Waterways</div>
-            <div class="intel-title">Rivers &amp; Stream Levels</div>
-            <div class="intel-desc">Flood stage, flow rates, and water levels from USGS monitoring stations.</div>
-        </div>
-        <div class="intel-card reveal reveal-delay-4">
-            <div class="intel-icon">
-                <div class="intel-dot" style="animation-delay:1.5s;"></div>
-                <span class="intel-src">Live Feed</span>
-            </div>
-            <div class="intel-cat">Fire Intel</div>
-            <div class="intel-title">Active Incidents</div>
-            <div class="intel-desc">Fire perimeter, containment, and smoke impact from NIFC and AirNow.</div>
-        </div>
-        <div class="intel-card reveal reveal-delay-5">
-            <div class="intel-icon">
-                <div class="intel-dot" style="animation-delay:2s;"></div>
-                <span class="intel-src">Live Feed</span>
-            </div>
-            <div class="intel-cat">Recreation</div>
-            <div class="intel-title">Permits &amp; Campsites</div>
-            <div class="intel-desc">Reservation status, permit requirements, and fees from Recreation.gov.</div>
-        </div>
-        <div class="intel-card reveal reveal-delay-6">
-            <div class="intel-icon">
-                <div class="intel-dot" style="animation-delay:2.5s;"></div>
-                <span class="intel-src">Live Feed</span>
-            </div>
-            <div class="intel-cat">Terrain</div>
-            <div class="intel-title">Location &amp; Elevation</div>
-            <div class="intel-desc">Coordinates, elevation, terrain type, and geocoding from Nominatim.</div>
-        </div>
-    </div>
 
-    <!-- So Much More -->
-    <div class="intel-more reveal" style="text-align:center;margin-top:48px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;letter-spacing:0.18em;text-transform:uppercase;color:var(--orange);">& So Much More</div>
-        <div style="font-family:'Barlow',sans-serif;font-weight:300;font-size:14px;color:var(--mid);margin-top:8px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.65;">Vehicle clearance requirements, EV charging networks, emergency services, cell coverage maps, cost breakdowns, sunrise/sunset, moon phase — and we're adding more every week.</div>
+            <!-- Scroll triggers (left side) -->
+            <div class="three-act-scroll">
+                <div class="ta-scroll-block" data-trigger="1">
+                    <div class="ta-scroll-n">01</div>
+                    <div class="ta-scroll-eyebrow">Plan in TARN</div>
+                    <h3 class="ta-scroll-h">Crew up. Drop stops. Vote it in.</h3>
+                    <p class="ta-scroll-p">One shareable link gets your friends in &mdash; no signup, no friction. Stops drop on the map. Votes settle the date. Lock it when everyone&rsquo;s ready. The plan is the plan.</p>
+                </div>
+                <div class="ta-scroll-block" data-trigger="2">
+                    <div class="ta-scroll-n">02</div>
+                    <div class="ta-scroll-eyebrow">Brief in HQ</div>
+                    <h3 class="ta-scroll-h">40+ live data points. One synthesized brief.</h3>
+                    <p class="ta-scroll-p">The moment TARN locks, HQ pulls live data from NPS, NOAA, USGS, NIFC, Recreation.gov, OpenWeather. Conditions, fire, roads, permits, water, hazards &mdash; synthesized into one brief your crew can trust.</p>
+                </div>
+                <div class="ta-scroll-block" data-trigger="3">
+                    <div class="ta-scroll-n">03</div>
+                    <div class="ta-scroll-eyebrow">Run the trip</div>
+                    <h3 class="ta-scroll-h">Show up knowing what&rsquo;s actually out there.</h3>
+                    <p class="ta-scroll-p">No more &ldquo;I&rsquo;ll text you the trail name&rdquo; group chats. No more group plans that fall apart Friday night. One plan. One brief. One crew. Send it.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</div><!-- /intel-section-wrap -->
 
-<!-- PARTNERS -->
-<div class="partners-section" id="partnersSection">
-    <canvas class="partners-canvas" id="partnersCanvas"></canvas>
-    <div class="partners-inner">
-        <div class="partners-left reveal">
-            <div class="partners-eyebrow">Partners</div>
-            <h2 class="partners-h2">Custom Adventure Intelligence for Your Team</h2>
-            <p class="partners-desc">Race teams, guide services, corporate expeditions, event organizers — if your operation moves through terrain, we build the brief. White-label trip intelligence tailored to your crew, your routes, your risk profile. Your Adventure, Our Intelligence.</p>
-        </div>
-        <div class="partners-right reveal reveal-delay-1">
-            <form name="partner-inquiry" method="POST" data-netlify="true" class="partners-form" id="partnersForm">
-                <input type="hidden" name="form-name" value="partner-inquiry">
-                <input type="text" name="name" class="partners-field" placeholder="Your name" required>
-                <input type="email" name="email" class="partners-field" placeholder="Email" required>
-                <input type="text" name="organization" class="partners-field" placeholder="Organization or team">
-                <textarea name="message" class="partners-field" placeholder="Tell us what you're planning — routes, team size, timeline, anything."></textarea>
-                <button type="submit" class="partners-submit">Start the Conversation <span style="margin-left:6px;">&#8594;</span></button>
-            </form>
-        </div>
-    </div>
-</div>
+<script>
+    // 3-act sticky scroll synchronization
+    (function(){
+        var section = document.getElementById('threeActSection');
+        if (!section || !('IntersectionObserver' in window)) return;
+        var frames = section.querySelectorAll('.ta-frame');
+        var blocks = section.querySelectorAll('.ta-scroll-block');
+        function activate(n){
+            frames.forEach(function(f){ f.classList.toggle('active', f.dataset.frame === String(n)); });
+            blocks.forEach(function(b){ b.classList.toggle('current', b.dataset.trigger === String(n)); });
+        }
+        var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+                if (e.isIntersecting) {
+                    activate(e.target.dataset.trigger);
+                }
+            });
+        }, { threshold: 0.6 });
+        blocks.forEach(function(b){ io.observe(b); });
+    })();
+</script>
 
 <!-- STATEMENT + ROUTE GRAPHIC -->
 <div class="statement-section">
@@ -3342,6 +4497,13 @@ const CODE_FRAGS = [
     'soil: DRY/PACKED', 'hazard: ROCKFALL_LOW',
     'terrain: TECHNICAL', 'creek_xing: PASSABLE',
     'snow_line: 7,200ft', 'sunset: 19:47 LOCAL', 'moon: 68% WAXING',
+    // S46: platform telemetry — TARN + HQ vocab for hub story
+    'tarn://trip/active', 'hq://brief/live', 'app://platform/v1',
+    'crew: 4', 'stops: 6', 'polls: 2', 'brief: GENERATED',
+    'route: LOCKED', 'invite: SENT', 'rsvp: 4/4 IN',
+    'platform: P9T', 'apps_online: 02', 'tools: HQ + TARN',
+    'plan: founding · $1/mo', 'fm_seats: 07/100',
+    'auth: OK', 'realtime: SUBSCRIBED', 'sync: LIVE',
 ];
 
 class CodeGlitch {
