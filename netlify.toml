@@ -1,3 +1,34 @@
+
+# ─── REBRAND P9I → P9T (staged 2026-05-16) ────────────────────
+# 301 old domain → new domain. Dormant until project9tech.com is added as
+# a Netlify domain alias on this site. After cutover, ALL traffic from
+# project9ind.com lands on project9tech.com equivalent path.
+# DO NOT REMOVE without coordinating Phase 4 cutover.
+[[redirects]]
+  from = "https://project9ind.com/*"
+  to = "https://project9tech.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.project9ind.com/*"
+  to = "https://project9tech.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://hq.project9ind.com/*"
+  to = "https://hq.project9tech.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://tarn.project9ind.com/*"
+  to = "https://tarn.project9tech.com/:splat"
+  status = 301
+  force = true
+# ─── END REBRAND P9I → P9T ──────────────────────────────────
+
 # ─────────────────────────────────────────────────────────────
 # P9I Marketing Site — netlify.toml
 # Security hardened: Session 20 · 2026-04-13

@@ -1,4 +1,4 @@
-// P9I Marketing — Share Your Idea form handler
+// P9T Marketing — Share Your Idea form handler
 // Writes to public.idea_submissions via Supabase anon key + RLS insert policy.
 // Read side is service-role only via the 955 admin dashboard.
 

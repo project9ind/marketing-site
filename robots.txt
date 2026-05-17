@@ -1,8 +1,8 @@
-# Project 9 Industries — Marketing Site
-# project9ind.com
+# Project 9 Technologies — Marketing Site
+# project9tech.com
 
 User-agent: *
 Allow: /
-Disallow: /p9i.html
+Disallow: /p9t.html
 
-Sitemap: https://project9ind.com/sitemap.xml
+Sitemap: https://project9tech.com/sitemap.xml
