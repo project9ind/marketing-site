@@ -5572,13 +5572,21 @@ routeObs.observe(routeGraphic);
     if (href === '?view=signup' || href === '?view=signin' || href === '?view=account') { checkRoute(); }
   });
 
-  // ── FOUNDING MEMBER COUNTER (live from Supabase) ───────────────
+  // ── FOUNDING MEMBER COUNTER (S47: single source of truth) ───────────────
+  // Both this counter (foundingClaimed in pricing panel) AND the hero "X of 100
+  // spots signed" counter pull from the same /founder-count endpoint to guarantee
+  // they never disagree. The endpoint calls get_founder_count() RPC which counts
+  // account_type='founder' — the canonical signal.
+  // Cached on window for the Wall-of-Founders renderer below to consume.
   try {
-    const { data: proUsers, count } = await sb.from('users').select('id', { count: 'exact', head: true }).eq('plan', 'pro');
-    const claimed = count || 0;
+    const fcResp = await fetch('/.netlify/functions/founder-count');
+    const fc = await fcResp.json();
+    window._p9tFounderCount = fc; // shared with renderFounderWall
+    const claimed = fc.count || 0;
     document.getElementById('foundingClaimed').textContent = claimed;
     document.getElementById('foundingBarFill').style.width = Math.min(100, (claimed / 100) * 100) + '%';
   } catch(e) {
+    window._p9tFounderCount = { count: 0, max: 100, stale: true };
     document.getElementById('foundingClaimed').textContent = '0';
   }
 
@@ -5602,7 +5610,14 @@ routeObs.observe(routeGraphic);
       .then(function(res) {
         var founders = (res && res.data) ? res.data : [];
         var validFounders = founders.filter(function(f) { return f.full_name && f.full_name.trim(); });
-        var total = validFounders.length + 1; // +1 for IX (in HTML)
+        // S47: count comes from canonical /founder-count endpoint (single source
+        // of truth — same number the pricing panel shows). IX appears on the
+        // wall as the company founder but does NOT take one of the 100 spots
+        // (he's a ghost account, not a founder type).
+        var canon = window._p9tFounderCount && typeof window._p9tFounderCount.count === 'number'
+          ? window._p9tFounderCount.count
+          : validFounders.length; // fallback if endpoint failed
+        var total = canon;
         if (countEl) countEl.textContent = total;
 
         if (validFounders.length === 0) {
