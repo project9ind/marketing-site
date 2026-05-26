@@ -5091,7 +5091,25 @@ routeObs.observe(routeGraphic);
       if (typeof fbq === 'function') fbq('track', 'CompleteRegistration');
       setTimeout(function() {
         // S49: invite-flow — if user signed up via an invite link, return them to that link with their new session.
-        if (__urlRedirect) { try { window.location.href = decodeURIComponent(__urlRedirect); return; } catch(_e) {} }
+        // Tokens go in URL hash (TARN's detectSessionInUrl picks them up). Existing TARN hash route stashed in ?p9t_route.
+        if (__urlRedirect) {
+          try {
+            const __sess = (data && data.session) || null;
+            let __r = decodeURIComponent(__urlRedirect);
+            if (__sess && __sess.access_token) {
+              const __u = new URL(__r);
+              const __eh = __u.hash;
+              __u.hash = '';
+              if (__eh) __u.searchParams.set('p9t_route', __eh);
+              __u.hash = 'access_token=' + __sess.access_token
+                + '&refresh_token=' + (__sess.refresh_token || '')
+                + '&expires_in=' + (__sess.expires_in || 3600)
+                + '&token_type=bearer&type=signup';
+              window.location.href = __u.toString();
+            } else { window.location.href = __r; }
+            return;
+          } catch(_e) {}
+        }
         history.replaceState(null, '', '?view=account');
         signupView.classList.remove('active');
         accountView.classList.add('active');
