@@ -5041,12 +5041,15 @@ routeObs.observe(routeGraphic);
     // 955 admin reads users.signup_source for per-app attribution splits.
     const __urlSource = (new URLSearchParams(location.search).get('source') || '').toLowerCase();
     const __signupSource = (function(){var _s=new URLSearchParams(location.search).get('source');return _s==='tarn'?'tarn':_s==='hq'?'hq':'hub';})();
+    // S49: invite-flow params — propagated through signup so post-signup redirect lands user back where they came from.
+    const __urlInvite = new URLSearchParams(location.search).get('invite') || null;
+    const __urlRedirect = new URLSearchParams(location.search).get('redirect') || null;
     const { data, error } = await sb.auth.signUp({
       email,
       password: pass,
       options: {
         emailRedirectTo: 'https://project9tech.com/?view=account',
-        data: { signup_source: __signupSource }
+        data: { signup_source: __signupSource, invite_code: __urlInvite }
       }
     });
     if (error) {
@@ -5087,6 +5090,8 @@ routeObs.observe(routeGraphic);
       if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'email' });
       if (typeof fbq === 'function') fbq('track', 'CompleteRegistration');
       setTimeout(function() {
+        // S49: invite-flow — if user signed up via an invite link, return them to that link with their new session.
+        if (__urlRedirect) { try { window.location.href = decodeURIComponent(__urlRedirect); return; } catch(_e) {} }
         history.replaceState(null, '', '?view=account');
         signupView.classList.remove('active');
         accountView.classList.add('active');
