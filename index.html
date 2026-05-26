@@ -4155,6 +4155,8 @@
         <div id="signupForm">
             <div class="signup-heading">Join the mission.</div>
             <div class="signup-subhead">Create your account. Founding members get every app we build, forever, for $1/mo.</div>
+            <label class="signup-label">Display Name <span style="color:var(--mid);font-weight:400;text-transform:none;letter-spacing:0;font-size:11px">(optional — how your crew sees you)</span></label>
+            <input type="text" class="signup-field" id="signupFullName" placeholder="First name or nickname" maxlength="40" autocomplete="name">
             <label class="signup-label">Email</label>
             <input type="email" class="signup-field" id="signupEmail" placeholder="you@adventure.com" autocomplete="email">
             <label class="signup-label">Password</label>
@@ -4200,6 +4202,10 @@
         <!-- Profile Card -->
         <div class="acct-card">
             <div class="acct-section-label">Profile</div>
+            <div class="acct-row">
+                <span class="acct-row-label">Display Name</span>
+                <span class="acct-row-value" id="acctFullName" style="display:flex;align-items:center;gap:10px">—<button onclick="acctEditFullName()" style="background:transparent;border:1px solid var(--border);color:var(--orange);padding:3px 8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer">Edit</button></span>
+            </div>
             <div class="acct-row">
                 <span class="acct-row-label">Email</span>
                 <span class="acct-row-value" id="acctEmail">—</span>
@@ -5044,12 +5050,15 @@ routeObs.observe(routeGraphic);
     // S49: invite-flow params — propagated through signup so post-signup redirect lands user back where they came from.
     const __urlInvite = new URLSearchParams(location.search).get('invite') || null;
     const __urlRedirect = new URLSearchParams(location.search).get('redirect') || null;
+    // S49: optional display name — captured at signup, written to user metadata → public.users.full_name via handle_new_user trigger.
+    const __fullNameEl = document.getElementById('signupFullName');
+    const __fullName = __fullNameEl ? (__fullNameEl.value || '').trim().slice(0, 40) : '';
     const { data, error } = await sb.auth.signUp({
       email,
       password: pass,
       options: {
         emailRedirectTo: 'https://project9tech.com/?view=account',
-        data: { signup_source: __signupSource, invite_code: __urlInvite }
+        data: { signup_source: __signupSource, invite_code: __urlInvite, full_name: __fullName || null }
       }
     });
     if (error) {
@@ -5154,7 +5163,13 @@ routeObs.observe(routeGraphic);
     // S28: also hide Change Email for Google users (they manage email via Google)
     const changeEmailBtn = document.getElementById('acctChangeEmailBtn');
     if (changeEmailBtn) changeEmailBtn.style.display = provider === 'google' ? 'none' : 'block';
-    const { data: userData } = await sb.from('users').select('plan, is_founding_member').eq('id', user.id).single();
+    const { data: userData } = await sb.from('users').select('plan, is_founding_member, full_name').eq('id', user.id).single();
+    // S49: display name surfaced + editable
+    const __fnEl = document.getElementById('acctFullName');
+    if (__fnEl) {
+      const __fn = (userData && userData.full_name) || (user.email || '').split('@')[0] || '—';
+      __fnEl.firstChild.nodeValue = __fn;
+    }
     const plan = userData?.plan || 'free';
     const isFounding = userData?.is_founding_member || false;
     const badge = document.getElementById('acctPlanBadge');
@@ -5182,6 +5197,19 @@ routeObs.observe(routeGraphic);
     }
     if (plan === 'pro') { loadGarage(user.id); loadGear(user.id); } else { document.getElementById('garageLock').style.display = 'flex'; document.getElementById('gearLock').style.display = 'flex'; }
   }
+
+  window.acctEditFullName = async function() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    const __cur = (document.getElementById('acctFullName').firstChild.nodeValue || '').trim();
+    const __nv = window.prompt('Display name (how your crew sees you):', __cur === '—' ? '' : __cur);
+    if (__nv === null) return;
+    const __val = (__nv || '').trim().slice(0, 40);
+    if (!__val) { alert('Display name cannot be empty.'); return; }
+    const { error } = await sb.from('users').update({ full_name: __val, updated_at: new Date().toISOString() }).eq('id', session.user.id);
+    if (error) { alert('Could not save: ' + error.message); return; }
+    document.getElementById('acctFullName').firstChild.nodeValue = __val;
+  };
 
   window.acctDoUpgrade = async function() {
     const { data: { session } } = await sb.auth.getSession();
