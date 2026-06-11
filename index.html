@@ -3179,7 +3179,7 @@
         <div class="ticker-item">◆ Platform: 02 apps live · more shipping</div>
         <div class="ticker-item">◆ TARN: trips planned this week</div>
         <div class="ticker-item">◆ HQ: live brief synthesis · 40+ data points</div>
-        <div class="ticker-item">◆ Founding seats: 07 / 100 claimed</div>
+        <div class="ticker-item">◆ Founding seats: <span class="fmTickerCount">—</span> / 100 claimed</div>
         <div class="ticker-item">◆ TARN map · vote · lock · brief</div>
         <div class="ticker-item">◆ HQ sources: NPS · NOAA · USGS · NIFC · RIDB</div>
         <div class="ticker-item">◆ $1/mo unlocks every app · present and future</div>
@@ -3190,7 +3190,7 @@
         <div class="ticker-item">◆ Platform: 02 apps live · more shipping</div>
         <div class="ticker-item">◆ TARN: trips planned this week</div>
         <div class="ticker-item">◆ HQ: live brief synthesis · 40+ data points</div>
-        <div class="ticker-item">◆ Founding seats: 07 / 100 claimed</div>
+        <div class="ticker-item">◆ Founding seats: <span class="fmTickerCount">—</span> / 100 claimed</div>
         <div class="ticker-item">◆ TARN map · vote · lock · brief</div>
         <div class="ticker-item">◆ HQ sources: NPS · NOAA · USGS · NIFC · RIDB</div>
         <div class="ticker-item">◆ $1/mo unlocks every app · present and future</div>
@@ -3863,7 +3863,7 @@
 
     <!-- Animated spots remaining ticker -->
     <div class="spots-ticker reveal reveal-delay-2" id="spotsTicker">
-        <div class="spots-number" id="spotsRemaining">100</div>
+        <div class="spots-number" id="spotsRemaining">—</div>
         <div class="spots-label">Founding Spots Remaining</div>
         <div class="spots-pulse"></div>
     </div>
@@ -4124,7 +4124,7 @@
         <span class="founder-name">IX</span>
         <!-- Additional founders populated by JS from Supabase -->
     </div>
-    <div class="founders-count"><strong id="foundersSignedCount">1</strong> of 100 spots signed</div>
+    <div class="founders-count"><strong id="foundersSignedCount">—</strong> of 100 spots signed</div>
     <a href="?view=signup" class="founders-cta">Claim your spot →</a>
 </div>
 
@@ -4510,7 +4510,7 @@ const CODE_FRAGS = [
     'crew: 4', 'stops: 6', 'polls: 2', 'brief: GENERATED',
     'route: LOCKED', 'invite: SENT', 'rsvp: 4/4 IN',
     'platform: P9T', 'apps_online: 02', 'tools: HQ + TARN',
-    'plan: founding · $1/mo', 'fm_seats: 07/100',
+    'plan: founding · $1/mo', 'fm_seats: —/100',
     'auth: OK', 'realtime: SUBSCRIBED', 'sync: LIVE',
 ];
 
@@ -5636,9 +5636,14 @@ routeObs.observe(routeGraphic);
     const claimed = fc.count || 0;
     document.getElementById('foundingClaimed').textContent = claimed;
     document.getElementById('foundingBarFill').style.width = Math.min(100, (claimed / 100) * 100) + '%';
+    // S63 SSOT fix: every static counter surface now inherits the canonical count.
+    var fmPad = String(claimed).length < 2 ? '0' + claimed : String(claimed);
+    var fsc = document.getElementById('foundersSignedCount'); if (fsc) fsc.textContent = claimed;
+    document.querySelectorAll('.fmTickerCount').forEach(function(n){ n.textContent = fmPad; });
+    try { var fi = CODE_FRAGS.indexOf('fm_seats: —/100'); if (fi > -1) CODE_FRAGS[fi] = 'fm_seats: ' + fmPad + '/100'; } catch(_) {}
   } catch(e) {
     window._p9tFounderCount = { count: 0, max: 100, stale: true };
-    document.getElementById('foundingClaimed').textContent = '0';
+    document.getElementById('foundingClaimed').textContent = '—';
   }
 
   // ── WALL OF FOUNDERS (live names from Supabase) ───────────────
