@@ -638,6 +638,42 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(212,98,26,0.25);
         }
+        /* BT-58: hero Founding-seat scarcity — live count, brand-locked */
+        .hero-scarcity {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: heroFadeIn 0.9s 2.9s ease forwards;
+        }
+        .hero-scarcity-count {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 15px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--light);
+        }
+        .hero-scarcity-count strong {
+            color: var(--orange);
+            font-weight: 800;
+            font-size: 18px;
+        }
+        .hero-scarcity-note {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 400;
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            color: var(--mid);
+            max-width: 440px;
+            line-height: 1.5;
+        }
+        .hero-cta-btn.hero-cta-founding {
+            white-space: normal;
+            line-height: 1.3;
+            max-width: 380px;
+        }
 
         /* Readout glitch-in — staggered */
         .readout {
@@ -3050,8 +3086,12 @@
             <div class="s1" style="flex:1;"></div><div class="s2" style="flex:1;"></div><div class="s3" style="flex:1;"></div><div class="s4" style="flex:1;"></div><div class="s5" style="flex:1;"></div>
         </div>
         <p class="hero-sub"><span class="hero-sub-em">Project 9 Technologies.</span> Two apps live and more shipping. TARN plans the trip with your crew. HQ briefs you on what&rsquo;s actually out there. Same account, same backbone, every tool we ship next.</p>
+        <div class="hero-scarcity" id="heroScarcity">
+            <span class="hero-scarcity-count"><strong class="fmSeatsLeft">&mdash;</strong> of 100 Founding seats left</span>
+            <span class="hero-scarcity-note">Only 100 Founding seats, ever &mdash; the $1/mo founding price locks for life and closes for good once they&rsquo;re claimed.</span>
+        </div>
         <div class="hero-cta-row">
-            <a href="?view=signup" class="hero-cta-btn">Become a Founding Member &rarr;</a>
+            <a href="?view=signup" class="hero-cta-btn hero-cta-founding">Claim 1 of the last <span class="fmSeatsLeft">&mdash;</span> Founding seats &middot; $1/mo &rarr;</a>
             <a href="#appsSection" class="hero-cta-btn hero-cta-secondary">See the apps</a>
         </div>
     </div>
@@ -5640,10 +5680,15 @@ routeObs.observe(routeGraphic);
     var fmPad = String(claimed).length < 2 ? '0' + claimed : String(claimed);
     var fsc = document.getElementById('foundersSignedCount'); if (fsc) fsc.textContent = claimed;
     document.querySelectorAll('.fmTickerCount').forEach(function(n){ n.textContent = fmPad; });
+    // BT-58: hero + CTA "seats left" inherit the SAME canonical count (SSOT — never hardcoded).
+    var remainingSeats = (typeof fc.remaining === 'number') ? fc.remaining : Math.max(0, (fc.max || 100) - claimed);
+    document.querySelectorAll('.fmSeatsLeft').forEach(function(n){ n.textContent = remainingSeats; });
     try { var fi = CODE_FRAGS.indexOf('fm_seats: —/100'); if (fi > -1) CODE_FRAGS[fi] = 'fm_seats: ' + fmPad + '/100'; } catch(_) {}
   } catch(e) {
     window._p9tFounderCount = { count: 0, max: 100, stale: true };
     document.getElementById('foundingClaimed').textContent = '—';
+    // BT-58: honest UI — show a dash, never a fabricated seats-left number, if the count fails.
+    document.querySelectorAll('.fmSeatsLeft').forEach(function(n){ n.textContent = '—'; });
   }
 
   // ── WALL OF FOUNDERS (live names from Supabase) ───────────────
