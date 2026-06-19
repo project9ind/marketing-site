@@ -5086,7 +5086,7 @@ routeObs.observe(routeGraphic);
     // S39: capture signup_source from URL param (?source=tarn, ?source=hq) — defaults 'marketing'.
     // 955 admin reads users.signup_source for per-app attribution splits.
     const __urlSource = (new URLSearchParams(location.search).get('source') || '').toLowerCase();
-    const __signupSource = (function(){var _s=new URLSearchParams(location.search).get('source');return _s==='tarn'?'tarn':_s==='hq'?'hq':'hub';})();
+    const __signupSource = (function(){var _s=(new URLSearchParams(location.search).get('source')||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,32);return ['tarn','hq','yt'].indexOf(_s)!==-1?_s:'hub';})();
     // S49: invite-flow params — propagated through signup so post-signup redirect lands user back where they came from.
     const __urlInvite = new URLSearchParams(location.search).get('invite') || null;
     const __urlRedirect = new URLSearchParams(location.search).get('redirect') || null;
