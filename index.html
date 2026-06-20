@@ -5083,10 +5083,12 @@ routeObs.observe(routeGraphic);
     if (!email) { errEl.textContent = 'Email is required.'; return; }
     if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
     btn.disabled = true; btn.textContent = 'Creating account…';
-    // S39: capture signup_source from URL param (?source=tarn, ?source=hq) — defaults 'marketing'.
-    // 955 admin reads users.signup_source for per-app attribution splits.
+    // S39: capture signup_source from URL param. BT-60 (S70): preserve the REAL channel
+    // (yt / tt / ig / tarn / hq / any future value), sanitized; default to 'hub' only when
+    // the param is absent. Previously an allowlist collapsed tt/ig (and any unknown) to 'hub',
+    // flattening every video channel to organic. 955 reads users.signup_source for attribution.
     const __urlSource = (new URLSearchParams(location.search).get('source') || '').toLowerCase();
-    const __signupSource = (function(){var _s=(new URLSearchParams(location.search).get('source')||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,32);return ['tarn','hq','yt'].indexOf(_s)!==-1?_s:'hub';})();
+    const __signupSource = (function(){var _s=(new URLSearchParams(location.search).get('source')||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,32);return _s||'hub';})();
     // S49: invite-flow params — propagated through signup so post-signup redirect lands user back where they came from.
     const __urlInvite = new URLSearchParams(location.search).get('invite') || null;
     const __urlRedirect = new URLSearchParams(location.search).get('redirect') || null;
