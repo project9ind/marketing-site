@@ -1883,6 +1883,114 @@
             font-weight: 800;
         }
 
+        /* ── BT-88 · 4-rung pricing ladder (Free / Explorer / Pro / Founding) ── */
+        .tier-ladder {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            max-width: 960px;
+            width: 100%;
+            margin-bottom: 44px;
+            position: relative;
+            text-align: left;
+        }
+        .tier-card {
+            background: var(--bg);
+            padding: 30px 22px;
+            display: flex;
+            flex-direction: column;
+        }
+        .tier-card.tier-founding {
+            background: var(--card);
+            box-shadow: inset 0 3px 0 var(--orange);
+        }
+        .tier-best {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--orange);
+            min-height: 12px;
+            margin-bottom: 10px;
+        }
+        .tier-name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--cream);
+        }
+        .tier-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            margin-top: 10px;
+            min-height: 42px;
+        }
+        .tier-price {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 42px;
+            line-height: 1;
+            color: var(--cream);
+            letter-spacing: -0.01em;
+        }
+        .tier-founding .tier-price { color: var(--orange); }
+        .tier-per {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--mid);
+        }
+        .tier-reg {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 400;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+            min-height: 16px;
+        }
+        .tier-reg s { color: var(--mid); }
+        .tier-founding .tier-reg strong { color: var(--orange); font-weight: 700; }
+        .tier-blurb {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            color: var(--light);
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+        .tier-feats {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 0;
+        }
+        .tier-feats li {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 300;
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: var(--mid);
+            padding: 5px 0 5px 16px;
+            position: relative;
+        }
+        .tier-feats li::before {
+            content: '·';
+            position: absolute;
+            left: 2px;
+            color: var(--orange);
+            font-weight: 800;
+        }
+        .tier-feats li.muted { color: var(--muted); }
+        .tier-feats li.muted::before { content: '–'; color: var(--muted); font-size: 11px; }
+
         /* Spots ticker */
         .spots-ticker {
             display: flex;
@@ -2926,6 +3034,7 @@
             .pricing-inner { grid-template-columns: 1fr; }
             .pricing-left { padding: 40px 32px; }
             .pricing-right { padding: 40px 32px; }
+            .tier-ladder { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 640px) {
@@ -2975,6 +3084,7 @@
             .intel-card { padding: 24px; }
             .pricing-section { padding: 64px 20px; }
             .pricing-inner { grid-template-columns: 1fr; max-width: none; }
+            .tier-ladder { grid-template-columns: 1fr; max-width: none; }
             .pricing-left { padding: 36px 24px; }
             .pricing-right { padding: 36px 24px; }
             .pricing-dollar { font-size: 64px; }
@@ -3899,6 +4009,61 @@
         <div class="eyebrow reveal">Founding Member Offer</div>
         <h2 class="sec-h2 reveal reveal-delay-1" style="text-align:center;">100 spots. $1/mo. Locked forever.</h2>
         <p class="sec-p reveal reveal-delay-2" style="text-align:center;margin-left:auto;margin-right:auto;">The first 100 members get every Project 9 Technologies application — current and future — at one founding price. This price never goes up.</p>
+    </div>
+
+    <!-- BT-88 · 4-rung pricing ladder · display/copy only — no Stripe link or checkout target -->
+    <div class="tier-ladder reveal reveal-delay-2">
+        <div class="tier-card">
+            <div class="tier-best">&nbsp;</div>
+            <div class="tier-name">Free</div>
+            <div class="tier-price-row"><span class="tier-price">$0</span></div>
+            <div class="tier-reg">&nbsp;</div>
+            <div class="tier-blurb">Kick the tires.</div>
+            <ul class="tier-feats">
+                <li>2 HQ briefs / month</li>
+                <li>1 TARN trip</li>
+                <li class="muted">No PDF, sharing, or refresh</li>
+            </ul>
+        </div>
+        <div class="tier-card">
+            <div class="tier-best">&nbsp;</div>
+            <div class="tier-name">Explorer</div>
+            <div class="tier-price-row"><span class="tier-price">$4.99</span><span class="tier-per">/ mo</span></div>
+            <div class="tier-reg">&nbsp;</div>
+            <div class="tier-blurb">For the weekend planner.</div>
+            <ul class="tier-feats">
+                <li>10 HQ briefs / month</li>
+                <li>2 active TARN trips</li>
+                <li>Up to 5 friends per trip</li>
+                <li class="muted">Advanced features are Pro</li>
+            </ul>
+        </div>
+        <div class="tier-card">
+            <div class="tier-best">&nbsp;</div>
+            <div class="tier-name">Pro</div>
+            <div class="tier-price-row"><span class="tier-price">$9</span><span class="tier-per">/ mo</span></div>
+            <div class="tier-reg">Regular price</div>
+            <div class="tier-blurb">Everything, unlimited.</div>
+            <ul class="tier-feats">
+                <li>Unlimited HQ briefs</li>
+                <li>Unlimited TARN trips</li>
+                <li>PDF export &amp; shareable links</li>
+                <li>Refresh intel · print / email briefs</li>
+            </ul>
+        </div>
+        <div class="tier-card tier-founding">
+            <div class="tier-best">Best deal · 100 only · for life</div>
+            <div class="tier-name">Founding</div>
+            <div class="tier-price-row"><span class="tier-price">$1</span><span class="tier-per">/ mo</span></div>
+            <div class="tier-reg">vs <s>$9/mo</s> regular — <strong>9× off</strong>, locked for life</div>
+            <div class="tier-blurb">All of Pro. One-ninth the price. Forever.</div>
+            <ul class="tier-feats">
+                <li>Everything in Pro</li>
+                <li>Every future P9T app</li>
+                <li>Wall of Founders + badge</li>
+                <li>Vote on the roadmap</li>
+            </ul>
+        </div>
     </div>
 
     <!-- Animated spots remaining ticker -->
