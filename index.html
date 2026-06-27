@@ -5172,8 +5172,79 @@ routeObs.observe(routeGraphic);
 (async function() {
   const SUPABASE_URL = 'https://volrckfyznnhamdunact.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8';
+  /* ── BT-127: P9T cross-subdomain SSO — shared session cookie ──────────
+     One cookie on .project9tech.com holds the Supabase session so a sign-in
+     on any P9T subdomain is valid on all of them with no re-prompt. Client-side
+     storage ONLY (no Auth-provider/RLS/config change). autoRefreshToken stays
+     OFF (S37 deadlock guard) — this adapter persists/reads, never refreshes.
+     Value is chunked because encodeURIComponent can ~3x the JSON and a session
+     JWT can near the ~4KB per-cookie cap.
+     Off project9tech.com (Netlify previews/localhost) the cookie is host-only;
+     the #access_token hash-handoff remains the cross-origin fallback. */
+  (function () {
+    if (window.__p9tAuth) return;
+    var KEY = 'sb-volrckfyznnhamdunact-auth-token';   // supabase-js v2 default storageKey
+    var MAX = 1200;   // raw bytes/chunk; encodeURIComponent can ~3x JSON, keep encoded value < ~4KB cookie cap
+    function onP9T(){ return /(^|\.)project9tech\.com$/i.test(location.hostname); }
+    function attrs(){
+      var a = '; Path=/; SameSite=Lax';
+      if (location.protocol === 'https:') a += '; Secure';
+      if (onP9T()) a += '; Domain=.project9tech.com';
+      return a;
+    }
+    function rd(n){
+      var p = n + '=', c = document.cookie ? document.cookie.split('; ') : [];
+      for (var i=0;i<c.length;i++) if (c[i].indexOf(p)===0) return decodeURIComponent(c[i].slice(p.length));
+      return null;
+    }
+    function wr(n,v){ document.cookie = n+'='+encodeURIComponent(v)+attrs()+'; Max-Age=31536000'; }
+    function rm(n){ document.cookie = n+'='+attrs()+'; Max-Age=0'; }
+    function get(n){
+      n = n || KEY; var h = rd(n); if (h==null) return null;
+      var m = /^p9tc:(\d+)$/.exec(h); if (!m) return h;
+      var k = +m[1], out=''; for (var i=0;i<k;i++){ var part = rd(n+'.'+i); if (part==null) return null; out+=part; }
+      return out;
+    }
+    function set(n,v){
+      n = n || KEY; var prev = rd(n), pm = prev && /^p9tc:(\d+)$/.exec(prev);
+      if (pm){ for (var j=+pm[1];j--;) rm(n+'.'+j); }
+      if (v.length<=MAX){ wr(n,v); return; }
+      var k = Math.ceil(v.length/MAX); wr(n,'p9tc:'+k);
+      for (var i=0;i<k;i++) wr(n+'.'+i, v.slice(i*MAX,(i+1)*MAX));
+    }
+    function del(n){
+      n = n || KEY; var h = rd(n), m = h && /^p9tc:(\d+)$/.exec(h);
+      if (m){ for (var i=+m[1];i--;) rm(n+'.'+i); } rm(n);
+    }
+    var storage = {
+      getItem: function(k){
+        var v = get(k);
+        if (v!=null){ try{ if(localStorage.getItem(k)!==v) localStorage.setItem(k,v); }catch(e){} return v; }
+        try{ v = localStorage.getItem(k); }catch(e){ v=null; }   // legacy localStorage fallback
+        if (v!=null) set(k,v);                                    // migrate legacy -> cookie
+        return v;
+      },
+      setItem: function(k,v){ set(k,v); try{ localStorage.setItem(k,v); }catch(e){} },
+      removeItem: function(k){ del(k); try{ localStorage.removeItem(k); }catch(e){} }
+    };
+    function hydrate(legacy){
+      try{
+        var fc = get(KEY);
+        if (fc!=null){ try{ localStorage.setItem(KEY,fc); }catch(e){} return; }   // cookie -> localStorage
+        var keys = [KEY].concat(legacy||[]);
+        for (var i=0;i<keys.length;i++){                                          // legacy localStorage -> cookie
+          var raw=null; try{ raw = localStorage.getItem(keys[i]); }catch(e){}
+          if (raw){ set(KEY,raw); try{ localStorage.setItem(KEY,raw); }catch(e){} return; }
+        }
+      }catch(e){}
+    }
+    window.__p9tAuth = { KEY:KEY, storage:storage, hydrate:hydrate, getCookie:get, setCookie:set, delCookie:del,
+      opts: { auth: { storage:storage, storageKey:KEY, persistSession:true, autoRefreshToken:false, detectSessionInUrl:false } } };
+  })();
+  window.__p9tAuth.hydrate();
+
   let sb;
-  try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.error('[P9T] Supabase SDK failed:', e.message); return; }
+  try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, window.__p9tAuth.opts); } catch(e) { console.error('[P9T] Supabase SDK failed:', e.message); return; }
 
   // Handle OAuth / email-confirmation / recovery redirect
   const hash = window.location.hash;
@@ -5482,7 +5553,7 @@ routeObs.observe(routeGraphic);
   const CLEARANCE_LABELS = { stock:'Stock', high:'High Clearance', extreme:'Extreme' };
 
   function _sbClient() {
-    return window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co','sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8');
+    return window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co','sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8', window.__p9tAuth.opts);
   }
 
   async function loadGarage(userId) {
@@ -5960,7 +6031,7 @@ document.getElementById('recovery-password')?.addEventListener('keydown', functi
 // ── Update nav auth state ────────────────────────────────────────
 (async function() {
     try {
-        const sb2 = window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co', 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8');
+        const sb2 = window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co', 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8', window.__p9tAuth.opts);
         const { data: { session } } = await sb2.auth.getSession();
         if (session) {
             const user = session.user;
