@@ -4449,6 +4449,36 @@
             </div>
         </div>
 
+        <!-- HQ stats (BT-128: HQ account consolidated into the hub — read-only) -->
+        <div class="acct-card" id="acctHqStatsCard">
+            <div class="acct-section-label">HQ — Trip Briefs</div>
+            <div class="acct-row">
+                <span class="acct-row-label">Total Briefs Generated</span>
+                <span class="acct-row-value" id="acctHqBriefsTotal">—</span>
+            </div>
+            <div class="acct-row">
+                <span class="acct-row-label">This Month</span>
+                <span class="acct-row-value" id="acctHqBriefsMonth">—</span>
+            </div>
+        </div>
+
+        <!-- TARN stats (BT-128: TARN account consolidated into the hub — read-only) -->
+        <div class="acct-card" id="acctTarnStatsCard">
+            <div class="acct-section-label">TARN — Trips</div>
+            <div class="acct-row">
+                <span class="acct-row-label">Trips</span>
+                <span class="acct-row-value" id="acctTarnTrips">—</span>
+            </div>
+            <div class="acct-row">
+                <span class="acct-row-label">Organizing</span>
+                <span class="acct-row-value" id="acctTarnOrganizing">—</span>
+            </div>
+            <div class="acct-row">
+                <span class="acct-row-label">Role</span>
+                <span class="acct-row-value" id="acctTarnRole">—</span>
+            </div>
+        </div>
+
         <!-- Invite Card -->
         <div class="acct-card acct-invite-card">
             <div class="acct-section-label">Invite a Friend</div>
@@ -5472,7 +5502,7 @@ routeObs.observe(routeGraphic);
     // S28: also hide Change Email for Google users (they manage email via Google)
     const changeEmailBtn = document.getElementById('acctChangeEmailBtn');
     if (changeEmailBtn) changeEmailBtn.style.display = provider === 'google' ? 'none' : 'block';
-    const { data: userData } = await sb.from('users').select('plan, is_founding_member, full_name').eq('id', user.id).single();
+    const { data: userData } = await sb.from('users').select('plan, is_founding_member, full_name, brief_count').eq('id', user.id).single();
     // S49: display name surfaced + editable
     const __fnEl = document.getElementById('acctFullName');
     if (__fnEl) {
@@ -5505,6 +5535,29 @@ routeObs.observe(routeGraphic);
       hqLink.href = 'https://hq.project9tech.com#access_token=' + session.access_token + '&refresh_token=' + (session.refresh_token || '') + '&expires_in=' + (session.expires_in || 3600) + '&token_type=bearer';
     }
     if (plan === 'pro') { loadGarage(user.id); loadGear(user.id); } else { document.getElementById('garageLock').style.display = 'flex'; document.getElementById('gearLock').style.display = 'flex'; }
+
+    // BT-128: consolidated per-app stats (read-only · own-rows RLS · existing session).
+    // HQ — trip briefs: total all-time (users.brief_count, what HQ's account showed) + this month (usage_logs, reuse `count`).
+    try {
+      const __hqTotalEl = document.getElementById('acctHqBriefsTotal');
+      const __hqMonthEl = document.getElementById('acctHqBriefsMonth');
+      if (__hqTotalEl) __hqTotalEl.textContent = (userData && typeof userData.brief_count === 'number') ? String(userData.brief_count) : String(count);
+      if (__hqMonthEl) __hqMonthEl.textContent = String(count);
+    } catch(e) {}
+    // TARN — trips: RLS returns only trips the user can access; owner_id tells which they organize → role.
+    try {
+      const { data: __trips } = await sb.from('trips').select('id, owner_id');
+      const __tripsArr = __trips || [];
+      const __organizing = __tripsArr.filter(function(t){ return t.owner_id === user.id; }).length;
+      const __tEl = document.getElementById('acctTarnTrips');
+      const __oEl = document.getElementById('acctTarnOrganizing');
+      const __rEl = document.getElementById('acctTarnRole');
+      if (__tEl) __tEl.textContent = String(__tripsArr.length);
+      if (__oEl) __oEl.textContent = String(__organizing);
+      if (__rEl) __rEl.textContent = __organizing > 0 ? 'Organizer' : (__tripsArr.length > 0 ? 'Member' : '—');
+    } catch(e) {
+      const __rEl = document.getElementById('acctTarnRole'); if (__rEl) __rEl.textContent = '—';
+    }
   }
 
   window.acctEditFullName = async function() {
