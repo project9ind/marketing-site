@@ -3155,11 +3155,23 @@
 <!-- NAV -->
 <nav id="mainNav">
     <a href="/" class="nav-logo"><span class="p9i-mark on-dark"><span class="p9i-mark-proj">PROJ</span><span class="p9i-mark-nine">9</span></span></a>
+    <!-- ── UTM convention (BT-125) ─────────────────────────────
+         Outbound links from this marketing site to the app
+         subdomains (hq / tarn) carry consistent GA4 UTM params so
+         destination-app traffic attributes to project9tech.com
+         instead of (direct). One scheme, applied uniformly:
+           utm_source=project9tech.com  ·  utm_medium=referral
+           utm_campaign=marketing_site
+         The app-side ?source= normalizer reads a different param,
+         so these do not collide with it. The signed-in account
+         "Go to HQ" link (#acctHqLink) is intentionally NOT tagged:
+         it is rewritten in JS with an auth-token fragment.
+    ──────────────────────────────────────────────────────────── -->
     <div class="nav-right">
-        <a href="https://hq.project9tech.com" class="nav-hq">
+        <a href="https://hq.project9tech.com/?utm_source=project9tech.com&amp;utm_medium=referral&amp;utm_campaign=marketing_site" class="nav-hq">
             <span class="live-dot"></span>HQ
         </a>
-        <a href="https://tarn.project9tech.com" class="nav-hq">
+        <a href="https://tarn.project9tech.com/?utm_source=project9tech.com&amp;utm_medium=referral&amp;utm_campaign=marketing_site" class="nav-hq">
             <span class="live-dot"></span>TARN
         </a>
         <a href="?view=signup" class="nav-cta" id="navCta">Get Access →</a>
@@ -3276,7 +3288,7 @@
                 </g>
 
                 <!-- HQ node -->
-                <a href="https://hq.project9tech.com">
+                <a href="https://hq.project9tech.com/?utm_source=project9tech.com&amp;utm_medium=referral&amp;utm_campaign=marketing_site">
                     <g>
                         <circle class="node-circle" cx="130" cy="90" r="48" fill="#0A0908" stroke="#4BC97A" stroke-width="2" />
                         <text x="130" y="88" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="22" fill="#F7F6F3" text-anchor="middle" letter-spacing="2">HQ</text>
@@ -3286,7 +3298,7 @@
                 </a>
 
                 <!-- TARN node -->
-                <a href="https://tarn.project9tech.com">
+                <a href="https://tarn.project9tech.com/?utm_source=project9tech.com&amp;utm_medium=referral&amp;utm_campaign=marketing_site">
                     <g>
                         <circle class="node-circle" cx="130" cy="270" r="48" fill="#0A0908" stroke="#4BC97A" stroke-width="2" />
                         <text x="130" y="268" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="22" fill="#F7F6F3" text-anchor="middle" letter-spacing="2">TARN</text>
@@ -3360,7 +3372,7 @@
     </div>
     <div class="ps-cell">
         <div class="ps-status live">Live Now</div>
-        <div class="ps-name"><a href="https://tarn.project9tech.com" style="color:inherit;text-decoration:none">TARN</a></div>
+        <div class="ps-name"><a href="https://tarn.project9tech.com/?utm_source=project9tech.com&amp;utm_medium=referral&amp;utm_campaign=marketing_site" style="color:inherit;text-decoration:none">TARN</a></div>
         <div class="ps-desc">Plan the way up together — group trip planning for adventure crews.</div>
     </div>
     <div class="ps-cell ps-idea-cell">
@@ -3430,7 +3442,7 @@
                 <li><span class="how-step-n">02</span> Crew votes on dates &amp; stops</li>
                 <li><span class="how-step-n">03</span> Lock the trip · brief generated</li>
             </ul>
-            <a href="https://tarn.project9tech.com" class="how-cta">Open TARN &rarr;</a>
+            <a href="https://tarn.project9tech.com/?utm_source=project9tech.com&amp;utm_medium=referral&amp;utm_campaign=marketing_site" class="how-cta">Open TARN &rarr;</a>
         </div>
 
         <!-- RIGHT · HOW HQ WORKS -->
@@ -3480,7 +3492,7 @@
                 <li><span class="how-step-n">02</span> 40+ live data points synthesize</li>
                 <li><span class="how-step-n">03</span> Your brief · conditions · permits · hazards</li>
             </ul>
-            <a href="https://hq.project9tech.com" class="how-cta">Try HQ &rarr;</a>
+            <a href="https://hq.project9tech.com/?utm_source=project9tech.com&amp;utm_medium=referral&amp;utm_campaign=marketing_site" class="how-cta">Try HQ &rarr;</a>
         </div>
     </div>
 </div>
