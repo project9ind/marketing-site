@@ -5146,6 +5146,11 @@ routeObs.observe(routeGraphic);
       if (signupView) signupView.classList.remove('active');
       if (accountView) accountView.classList.remove('active');
     }
+    // BT-127: re-sync header/auth UI on every client-side view transition so
+    // nav (e.g. account → "Back to Project 9") reflects auth reality instantly,
+    // no reload. No-op on first paint (renderer defined later); its own initial
+    // call handles that.
+    try { if (window.__p9tSyncAuthUI) window.__p9tSyncAuthUI(); } catch(e) {}
   }
 
   showView();
@@ -5304,11 +5309,22 @@ routeObs.observe(routeGraphic);
   }
   checkRoute();
 
+  // BT-127: reflect auth changes in the header instantly (no reload). Bound to
+  // the MAIN client so same-tab sign-in / sign-out events fire. Idempotent — the
+  // flag prevents duplicate listeners on repeated script eval. The callback only
+  // reads storage + DOM (never sb.*), so it can't re-enter the S37 auth lock.
+  if (!window.__p9tAuthUIBound) {
+    window.__p9tAuthUIBound = true;
+    try { sb.auth.onAuthStateChange(function() { try { if (window.__p9tSyncAuthUI) window.__p9tSyncAuthUI(); } catch(e) {} }); } catch(e) {}
+  }
+
   // Helper: safe event listener — prevents one missing element from killing the whole IIFE
   function _on(id, evt, fn) { var el = document.getElementById(id); if (el) el.addEventListener(evt, fn); else console.warn('[P9T] Missing element:', id); }
 
-  _on('signupBack', 'click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); signupView.classList.remove('active'); });
-  _on('accountBack', 'click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); accountView.classList.remove('active'); });
+  // BT-127: route "Back to Project 9" through showView so the header re-syncs
+  // (showView calls __p9tSyncAuthUI) — fixes stale signed-in/out header on return.
+  _on('signupBack', 'click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); if (window._p9iShowView) window._p9iShowView(); else signupView.classList.remove('active'); });
+  _on('accountBack', 'click', function(e) { e.preventDefault(); history.pushState(null, '', '/'); if (window._p9iShowView) window._p9iShowView(); else accountView.classList.remove('active'); });
   _on('showSignin', 'click', function() { history.replaceState(null, '', '?view=signin'); signupForm.style.display = 'none'; signinForm.style.display = 'block'; });
   _on('showSignup', 'click', function() { history.replaceState(null, '', '?view=signup'); signupForm.style.display = 'block'; signinForm.style.display = 'none'; });
 
@@ -6028,53 +6044,73 @@ async function submitRecoveryPassword() {
 document.getElementById('recovery-confirm')?.addEventListener('keydown', function(e) { if (e.key === 'Enter') submitRecoveryPassword(); });
 document.getElementById('recovery-password')?.addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('recovery-confirm').focus(); });
 
-// ── Update nav auth state ────────────────────────────────────────
-(async function() {
-    try {
-        const sb2 = window.supabase.createClient('https://volrckfyznnhamdunact.supabase.co', 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8', window.__p9tAuth.opts);
-        const { data: { session } } = await sb2.auth.getSession();
+// ── BT-127: auth-dependent header UI — single idempotent renderer ────────
+// Stale-auth-UI fix: the old one-shot version only rendered the SIGNED-IN
+// branch and never re-ran, so after sign-out (or sign-in) + client-side nav the
+// header showed stale state until a manual refresh. This reads the CURRENT
+// session straight from shared storage (always fresh — no per-client in-memory
+// staleness, and no supabase-js call so it can't re-enter the S37 auth lock),
+// renders BOTH signed-in and signed-out states, and is safe to call repeatedly.
+// Driven by onAuthStateChange (bound to the main client) + every view transition.
+(function() {
+    var SUPABASE_URL = 'https://volrckfyznnhamdunact.supabase.co';
+    var SUPABASE_KEY = 'sb_publishable_ewZcZfnqnCKHXKdWt9i63A_HwVtZBZ8';
+    function currentSession() {
+        try {
+            var raw = window.__p9tAuth.storage.getItem(window.__p9tAuth.KEY);
+            if (!raw) return null;
+            var p = JSON.parse(raw);
+            var s = (p && (p.currentSession || p)) || null;
+            if (!s || !s.access_token || !s.user) return null;
+            if (s.expires_at && Date.now() / 1000 > s.expires_at) return null;   // expired = show signed-out
+            return s;
+        } catch(e) { return null; }
+    }
+    function setHQLinks(hash) {
+        document.querySelectorAll('a[href*="hq.project9tech.com"]').forEach(function(a) {
+            a.href = a.href.split('#')[0] + (hash || '');                        // idempotent: never accumulates
+        });
+    }
+    async function sync() {
+        var session = currentSession();
+        var navCta  = document.getElementById('navCta');
+        var authBtn = document.getElementById('navAuthBtn');
+        var navWrap = document.getElementById('navProfileWrap');
+        var badge   = document.getElementById('navTierBadge');
         if (session) {
-            const user = session.user;
-            // Hide "Get Access" CTA and Sign In — replaced by profile icon
-            const navCta = document.getElementById('navCta');
-            if (navCta) navCta.style.display = 'none';
-            const authBtn = document.getElementById('navAuthBtn');
+            if (navCta)  navCta.style.display = 'none';
             if (authBtn) authBtn.style.display = 'none';
-
-            // Show profile wrap with tier badge
-            const navWrap = document.getElementById('navProfileWrap');
-            if (navWrap) navWrap.style.display = 'flex';
-
-            // Fetch plan + founding status for tier glow
+            if (navWrap) { navWrap.style.display = 'flex'; navWrap.classList.remove('tier-founder','tier-pro','tier-free'); }
             try {
-                const { data: uData } = await sb2.from('users').select('plan, is_founding_member, account_type').eq('id', session.user.id).single();
-                const plan = uData?.plan || 'free';
-                const isFounding = uData?.is_founding_member || false;
-                const acctType = uData?.account_type || 'user';
-                const badge = document.getElementById('navTierBadge');
-                if (acctType === 'pioneer' || isFounding) {
-                    navWrap.classList.add('tier-founder');
-                    badge.textContent = isFounding ? 'FOUNDER' : 'PIONEER';
-                } else if (plan === 'pro') {
-                    navWrap.classList.add('tier-pro');
-                    badge.textContent = 'PRO';
-                } else {
-                    navWrap.classList.add('tier-free');
-                    badge.textContent = 'FREE';
-                }
-            } catch(e2) {}
-
-            // Cross-site auth handoff: append session tokens to ALL HQ links
-            var hqHash = '#access_token=' + session.access_token
+                // Raw PostgREST read with the live JWT (avoids stale supabase-js client state).
+                var res = await fetch(SUPABASE_URL + '/rest/v1/users?select=plan,is_founding_member,account_type&id=eq.' + encodeURIComponent(session.user.id), {
+                    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + session.access_token }, cache: 'no-store'
+                });
+                var rows = res.ok ? await res.json() : [];
+                var u = (rows && rows[0]) || {};
+                var plan = u.plan || 'free', isFounding = !!u.is_founding_member, acctType = u.account_type || 'user';
+                if (acctType === 'pioneer' || isFounding) { if (navWrap) navWrap.classList.add('tier-founder'); if (badge) badge.textContent = isFounding ? 'FOUNDER' : 'PIONEER'; }
+                else if (plan === 'pro') { if (navWrap) navWrap.classList.add('tier-pro'); if (badge) badge.textContent = 'PRO'; }
+                else { if (navWrap) navWrap.classList.add('tier-free'); if (badge) badge.textContent = 'FREE'; }
+            } catch(e2) { if (navWrap) navWrap.classList.add('tier-free'); if (badge) badge.textContent = 'FREE'; }
+            // Cross-site auth handoff: carry session tokens on ALL HQ links.
+            setHQLinks('#access_token=' + session.access_token
                 + '&refresh_token=' + (session.refresh_token || '')
                 + '&expires_in=' + (session.expires_in || 3600)
-                + '&token_type=bearer';
-            document.querySelectorAll('a[href*="hq.project9tech.com"]').forEach(function(a) {
-                var base = a.href.split('#')[0];
-                a.href = base + hqHash;
-            });
+                + '&token_type=bearer');
+        } else {
+            if (navWrap) { navWrap.style.display = 'none'; navWrap.classList.remove('tier-founder','tier-pro','tier-free'); }
+            if (navCta)  { navCta.style.display = ''; navCta.href = '?view=signup'; navCta.textContent = 'Get Access →'; }
+            if (authBtn) {
+                authBtn.style.display = ''; authBtn.href = '?view=signin'; authBtn.title = 'Sign In'; authBtn.classList.remove('signed-in');
+                var icon = document.getElementById('navAuthIcon'); if (icon) icon.textContent = '◎';
+                var label = document.getElementById('navAuthLabel'); if (label) label.textContent = 'Sign In';
+            }
+            setHQLinks('');                                                       // strip any stale token hash
         }
-    } catch(e) {}
+    }
+    window.__p9tSyncAuthUI = sync;
+    sync();   // initial render
 })();
 
 // ── PARTNERS REACTIVE GRID ─────────────────────────────────────
