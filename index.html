@@ -5203,7 +5203,15 @@ routeObs.observe(routeGraphic);
       return null;
     }
     function wr(n,v){ document.cookie = n+'='+encodeURIComponent(v)+attrs()+'; Max-Age=31536000'; }
-    function rm(n){ document.cookie = n+'='+attrs()+'; Max-Age=0'; }
+    function rm(n){
+      // BT-130: robust delete — past-date Expires + Max-Age=0, written at the SAME
+      // scope as the write (Domain=.project9tech.com; Path=/) AND a host-only
+      // fallback, so chunked sign-out cookies can't survive and re-hydrate.
+      var dead = '=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0; Path=/; SameSite=Lax';
+      var sec = location.protocol === 'https:' ? '; Secure' : '';
+      if (onP9T()) document.cookie = n + dead + '; Domain=.project9tech.com' + sec;
+      document.cookie = n + dead + sec;
+    }
     function get(n){
       n = n || KEY; var h = rd(n); if (h==null) return null;
       var m = /^p9tc:(\d+)$/.exec(h); if (!m) return h;
@@ -5218,8 +5226,15 @@ routeObs.observe(routeGraphic);
       for (var i=0;i<k;i++) wr(n+'.'+i, v.slice(i*MAX,(i+1)*MAX));
     }
     function del(n){
-      n = n || KEY; var h = rd(n), m = h && /^p9tc:(\d+)$/.exec(h);
-      if (m){ for (var i=+m[1];i--;) rm(n+'.'+i); } rm(n);
+      // BT-130: do NOT trust the chunk-count marker (it may already be gone
+      // mid-sign-out). Expire the key itself, then probe key.0, key.1, … and
+      // expire every chunk that exists until none remain (gap-tolerant), so no
+      // orphan chunk is left to re-hydrate the session on the next load.
+      n = n || KEY;
+      rm(n);
+      for (var i=0, miss=0; miss<8 && i<256; i++){
+        if (rd(n+'.'+i) != null) { rm(n+'.'+i); miss=0; } else miss++;
+      }
     }
     var storage = {
       getItem: function(k){
