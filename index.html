@@ -5308,6 +5308,42 @@ routeObs.observe(routeGraphic);
   let sb;
   try { sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, window.__p9tAuth.opts); } catch(e) { console.error('[P9T] Supabase SDK failed:', e.message); return; }
 
+  // ── BT-123: unified hub auth — return-to-app + open-redirect guard + GA4 funnel ──
+  function __ga(event, params){ try { if (typeof gtag === 'function') gtag('event', event, params || {}); } catch(e) {} }
+  // Open-redirect guard: only honor an ABSOLUTE http(s) return URL whose host is
+  // project9tech.com or *.project9tech.com. Anything else → null (use the default).
+  function __p9tSafeReturn(raw){
+    if (!raw) return null;
+    var val = raw; try { val = decodeURIComponent(raw); } catch(e) {}
+    var u; try { u = new URL(val); } catch(e) { return null; }            // must parse as absolute
+    if (u.protocol !== 'https:' && u.protocol !== 'http:') return null;   // no javascript:/data: etc.
+    var h = (u.hostname || '').toLowerCase();
+    if (h === 'project9tech.com' || h.endsWith('.project9tech.com')) return u;
+    return null;                                                          // foreign host → ignore
+  }
+  function __p9tGetReturn(){
+    var p = new URLSearchParams(location.search);
+    return __p9tSafeReturn(p.get('return') || p.get('redirect'));         // 'return' (BT-123); 'redirect' kept for back-compat
+  }
+  // Send the user back to the originating app signed in. BT-127's shared
+  // .project9tech.com cookie already carries the session; the URL-hash handoff is
+  // the belt-and-suspenders every app understands. Returns true if it navigated.
+  function __p9tReturnToApp(session){
+    var u = __p9tGetReturn();
+    if (!u || !session || !session.access_token) return false;
+    try {
+      var eh = u.hash; u.hash = '';
+      if (eh) u.searchParams.set('p9t_route', eh.replace(/^#/, ''));
+      u.hash = 'access_token=' + session.access_token
+        + '&refresh_token=' + (session.refresh_token || '')
+        + '&expires_in=' + (session.expires_in || 3600)
+        + '&token_type=bearer&type=signin';                              // type!='recovery' → apps treat as normal login
+      window.location.href = u.toString();
+      return true;
+    } catch(e) { return false; }
+  }
+  function __p9tReturnSuffix(){ var r = __p9tGetReturn(); return r ? '&return=' + encodeURIComponent(r.toString()) : ''; }
+
   // Handle OAuth / email-confirmation / recovery redirect
   const hash = window.location.hash;
   if (hash && hash.includes('access_token=')) {
@@ -5330,7 +5366,10 @@ routeObs.observe(routeGraphic);
         try { if (recSession && recSession.session) await populateAccount(recSession.session); } catch(e) {}
         showRecoveryModal();
       } else {
-        await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        const { data: __ss } = await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        // BT-123: if we landed here from hub-auth with a valid ?return= (e.g. Google
+        // OAuth started on HQ/TARN), send the user back to that app signed in.
+        if (__ss && __ss.session && __p9tReturnToApp(__ss.session)) return;
         history.replaceState(null, '', '?view=account');
       }
     }
@@ -5350,6 +5389,8 @@ routeObs.observe(routeGraphic);
       try {
         const { data } = await sb.auth.getSession();
         if (data?.session) {
+          // BT-123: already signed in + a safe ?return= → bounce straight back to the app.
+          if (__p9tReturnToApp(data.session)) return;
           history.replaceState(null, '', '?view=account');
           if (window._p9iShowView) window._p9iShowView();
           populateAccount(data.session);
@@ -5391,6 +5432,7 @@ routeObs.observe(routeGraphic);
     errEl.textContent = ''; okEl.style.display = 'none'; okEl.style.color = '';
     if (!email) { errEl.textContent = 'Email is required.'; return; }
     if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+    __ga('sign_up_submit', { method: 'email' });   // BT-123/BT-98: funnel step — submit attempt
     btn.disabled = true; btn.textContent = 'Creating account…';
     // S39: capture signup_source from URL param. BT-60 (S70): preserve the REAL channel
     // (yt / tt / ig / tarn / hq / any future value), sanitized; default to 'hub' only when
@@ -5408,13 +5450,14 @@ routeObs.observe(routeGraphic);
       email,
       password: pass,
       options: {
-        emailRedirectTo: 'https://project9tech.com/?view=account',
+        emailRedirectTo: 'https://project9tech.com/?view=account' + __p9tReturnSuffix(),
         data: { signup_source: __signupSource, invite_code: __urlInvite, full_name: __fullName || null }
       }
     });
     if (error) {
       btn.disabled = false; btn.textContent = 'Create Account →';
       const msg = String(error.message || '').toLowerCase();
+      __ga('sign_up_error', { reason: (msg.includes('already') || msg.includes('registered') || msg.includes('exists')) ? 'already_registered' : msg.slice(0, 60) });
       if (msg.includes('already') || msg.includes('registered') || msg.includes('exists')) {
         // Auto-switch to sign-in, pre-fill email, focus password
         if (signupForm) signupForm.style.display = 'none';
@@ -5450,26 +5493,10 @@ routeObs.observe(routeGraphic);
       if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'email' });
       if (typeof fbq === 'function') fbq('track', 'CompleteRegistration');
       setTimeout(function() {
-        // S49: invite-flow — if user signed up via an invite link, return them to that link with their new session.
-        // Tokens go in URL hash (TARN's detectSessionInUrl picks them up). Existing TARN hash route stashed in ?p9t_route.
-        if (__urlRedirect) {
-          try {
-            const __sess = (data && data.session) || null;
-            let __r = decodeURIComponent(__urlRedirect);
-            if (__sess && __sess.access_token) {
-              const __u = new URL(__r);
-              const __eh = __u.hash;
-              __u.hash = '';
-              if (__eh) __u.searchParams.set('p9t_route', __eh);
-              __u.hash = 'access_token=' + __sess.access_token
-                + '&refresh_token=' + (__sess.refresh_token || '')
-                + '&expires_in=' + (__sess.expires_in || 3600)
-                + '&token_type=bearer&type=signup';
-              window.location.href = __u.toString();
-            } else { window.location.href = __r; }
-            return;
-          } catch(_e) {}
-        }
+        // BT-123: unified guarded return-to-app (replaces the S49 redirect-only path).
+        // Honors ?return= / ?redirect= when the host is project9tech.com or a
+        // *.project9tech.com subdomain; otherwise falls through to the hub account.
+        if (__p9tReturnToApp(data.session)) return;
         history.replaceState(null, '', '?view=account');
         signupView.classList.remove('active');
         accountView.classList.add('active');
@@ -5489,13 +5516,22 @@ routeObs.observe(routeGraphic);
     btn.disabled = true; btn.textContent = 'Signing in…';
     const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
     btn.disabled = false; btn.textContent = 'Sign In →';
-    if (error) { errEl.textContent = error.message; }
-    else { history.replaceState(null, '', '?view=account'); signupView.classList.remove('active'); accountView.classList.add('active'); populateAccount(data.session); }
+    if (error) { errEl.textContent = error.message; __ga('login_error', { method:'email', reason: String(error.message||'').slice(0,60) }); }
+    else {
+      __ga('login', { method: 'email' });
+      // BT-123: return to the originating app signed in (guarded), else hub account.
+      if (__p9tReturnToApp(data.session)) return;
+      history.replaceState(null, '', '?view=account'); signupView.classList.remove('active'); accountView.classList.add('active'); populateAccount(data.session);
+    }
   });
 
   async function googleAuth() {
-    const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://project9tech.com/?view=account' } });
-    if (error) { document.getElementById('signupError').textContent = error.message; document.getElementById('signinError').textContent = error.message; }
+    // BT-123: preserve ?return= across the OAuth round-trip so we land back on the
+    // hub with the session AND the return, then bounce to the originating app.
+    var __redirectTo = 'https://project9tech.com/?view=account' + __p9tReturnSuffix();
+    __ga('sign_up_submit', { method: 'google' });
+    const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: __redirectTo } });
+    if (error) { __ga('sign_up_error', { method:'google', reason: String(error.message||'').slice(0,60) }); document.getElementById('signupError').textContent = error.message; document.getElementById('signinError').textContent = error.message; }
   }
   _on('googleSignupBtn', 'click', googleAuth);
   _on('googleSigninBtn', 'click', googleAuth);
@@ -5987,6 +6023,18 @@ routeObs.observe(routeGraphic);
 
   _on('signupPassword', 'keydown', function(e) { if (e.key === 'Enter') { var b = document.getElementById('signupBtn'); if (b) b.click(); } });
   _on('signinPassword', 'keydown', function(e) { if (e.key === 'Enter') { var b = document.getElementById('signinBtn'); if (b) b.click(); } });
+
+  // BT-123/BT-98: funnel step — first real engagement with the signup form (fires once).
+  // Funnel: begin_sign_up (form view) → sign_up_start (engaged) → sign_up_submit (attempt)
+  // → sign_up (success) / sign_up_error (failed) — so the abandon point is visible in GA4.
+  (function(){
+    var fired = false;
+    function start(){ if (fired) return; fired = true; __ga('sign_up_start', { method: 'email' }); }
+    ['signupEmail','signupPassword','signupFullName'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) { el.addEventListener('focus', start); el.addEventListener('input', start); }
+    });
+  })();
 
   // Click interception for ?view= links is handled by the independent routing script above.
   // This listener adds session-aware behavior (redirect logged-in users to account).
