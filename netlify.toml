@@ -36,6 +36,34 @@
 
 # ── Routing ───────────────────────────────────────────────────
 
+# BT-112: source-attribution vanity redirects. These 301 a clean, memorable path
+# to the tracked ?source= link (BT-125 captures `source` → signup_source + GA4) so
+# the on-screen/typed URL stays clean AND type-in traffic attributes. MUST sit
+# BEFORE the SPA catch-all below — Netlify evaluates top-to-bottom, first match
+# wins, so the /* → /index.html (200) rewrite would otherwise swallow these
+# (the precedence gotcha from the TARN cutover). Exact-path matches: /yt does not
+# catch /yt-v2a; specific variants listed first for clarity.
+[[redirects]]
+  from = "/yt-v2a"
+  to = "/?source=yt-v2a"
+  status = 301
+[[redirects]]
+  from = "/yt-v2b"
+  to = "/?source=yt-v2b"
+  status = 301
+[[redirects]]
+  from = "/yt"
+  to = "/?source=yt"
+  status = 301
+[[redirects]]
+  from = "/tt"
+  to = "/?source=tiktok"
+  status = 301
+[[redirects]]
+  from = "/ig"
+  to = "/?source=ig"
+  status = 301
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
