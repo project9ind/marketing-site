@@ -2825,6 +2825,24 @@
         .signup-toggle { font-family:'Barlow',sans-serif; font-weight:300; font-size:13px; color:var(--mid); margin-top:24px; text-align:center; }
         .signup-toggle a { color:var(--orange); text-decoration:none; cursor:pointer; }
         .signup-toggle a:hover { text-decoration: underline; }
+        /* BT-148: create-account block below the divider (secondary to the orange SIGN IN primary) */
+        .signup-create {
+            width: 100%;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            background: transparent;
+            color: var(--orange);
+            border: 1px solid var(--orange);
+            padding: 15px;
+            cursor: pointer;
+            margin-top: 4px;
+            transition: background 0.2s;
+        }
+        .signup-create:hover { background: rgba(212,98,26,0.08); }
+        .signup-create-tagline { font-family:'Barlow',sans-serif; font-weight:300; font-size:12px; color:var(--muted); text-align:center; margin-top:10px; line-height:1.5; }
         .signup-error { font-family:'Barlow',sans-serif; font-size:12px; color:#e85040; margin-top:10px; min-height:18px; }
         .signup-success { font-family:'Barlow',sans-serif; font-size:13px; color:var(--green); margin-top:14px; line-height:1.5; }
         .signup-back {
@@ -4408,17 +4426,19 @@
         </div>
         <div id="signinForm" style="display:none;">
             <div class="signup-heading">Welcome back.</div>
-            <div class="signup-subhead">Sign in to access your intelligence briefings.</div>
+            <div class="signup-subhead">Sign in to access your trip intelligence.</div>
             <label class="signup-label">Email</label>
             <input type="email" class="signup-field" id="signinEmail" placeholder="you@adventure.com" autocomplete="email">
             <label class="signup-label">Password</label>
             <input type="password" class="signup-field" id="signinPassword" placeholder="Your password" autocomplete="current-password">
-            <a class="acct-forgot-link" id="forgotPasswordLink">Forgot password?</a>
             <button class="signup-submit" id="signinBtn">Sign In →</button>
-            <div class="signup-divider"><span>or</span></div>
             <button class="signup-google" id="googleSigninBtn">Continue with Google</button>
             <div class="signup-error" id="signinError"></div>
-            <div class="signup-toggle">Don't have an account? <a id="showSignup">Create one</a></div>
+            <a class="acct-forgot-link" id="forgotPasswordLink">Forgot password?</a>
+            <div class="signup-divider"><span>or</span></div>
+            <div class="signup-toggle" style="margin-top:0;">Don't have an account?</div>
+            <button class="signup-create" id="showSignup">Create account</button>
+            <div class="signup-create-tagline">to try all Project 9 apps for free.</div>
         </div>
     </div>
 </div>
