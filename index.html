@@ -5303,9 +5303,11 @@ routeObs.observe(routeGraphic);
       getItem: function(k){
         var v = get(k);
         if (v!=null){ try{ if(localStorage.getItem(k)!==v) localStorage.setItem(k,v); }catch(e){} return v; }
-        try{ v = localStorage.getItem(k); }catch(e){ v=null; }   // legacy localStorage fallback
-        if (v!=null) set(k,v);                                    // migrate legacy -> cookie
-        return v;
+        // BT-143: shared cookie is the SOLE session truth. Cookie absent -> do NOT
+        // resurrect it from the per-origin localStorage survivor; purge the survivor
+        // so it can't re-hydrate a signed-out session, and return null.
+        try{ localStorage.removeItem(k); }catch(e){}
+        return null;
       },
       setItem: function(k,v){ set(k,v); try{ localStorage.setItem(k,v); }catch(e){} },
       removeItem: function(k){ del(k); try{ localStorage.removeItem(k); }catch(e){} }
@@ -5313,15 +5315,16 @@ routeObs.observe(routeGraphic);
     function hydrate(legacy){
       try{
         var fc = get(KEY);
-        if (fc!=null){ try{ localStorage.setItem(KEY,fc); }catch(e){} return; }   // cookie -> localStorage
+        if (fc!=null){ try{ localStorage.setItem(KEY,fc); }catch(e){} return; }   // cookie -> localStorage (cookie is truth)
+        // BT-143: shared cookie is the SOLE session truth. Cookie absent -> do NOT
+        // promote a per-origin localStorage survivor into the cookie (that path
+        // re-hydrated the session after a cross-subdomain sign-out). Purge the
+        // survivor(s) so getCachedJWT()/directDb()/getItem() all see signed-out.
         var keys = [KEY].concat(legacy||[]);
-        for (var i=0;i<keys.length;i++){                                          // legacy localStorage -> cookie
-          var raw=null; try{ raw = localStorage.getItem(keys[i]); }catch(e){}
-          if (raw){ set(KEY,raw); try{ localStorage.setItem(KEY,raw); }catch(e){} return; }
-        }
+        for (var i=0;i<keys.length;i++){ try{ localStorage.removeItem(keys[i]); }catch(e){} }
       }catch(e){}
     }
-    window.__p9tAuth = { KEY:KEY, storage:storage, hydrate:hydrate, getCookie:get, setCookie:set, delCookie:del,
+    window.__p9tAuth = { KEY:KEY, storage:storage, hydrate:hydrate, getCookie:get, setCookie:function(v){ return set(KEY, v); }, delCookie:del,
       opts: { auth: { storage:storage, storageKey:KEY, persistSession:true, autoRefreshToken:false, detectSessionInUrl:false } } };
   })();
   window.__p9tAuth.hydrate();
