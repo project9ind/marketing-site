@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 9 Technologies — For Business · The AI Employee</title>
+
+    <!-- Soft launch: not indexed until IX flips this. -->
+    <meta name="robots" content="noindex">
+    <meta name="description" content="An autonomous AI operations system, installed in your business. It answers your leads, builds your content, and runs your back office — on guardrails you control.">
+    <meta name="author" content="Project 9 Technologies">
+    <link rel="canonical" href="https://project9tech.com/business">
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <!-- ── GOOGLE ANALYTICS 4 (matches index.html bootstrap) ── -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LSPF46G515"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LSPF46G515');
+    </script>
+
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            --bg:      #0E0D0C;
+            --surface: #1A1917;
+            --card:    #1A1917;
+            --border:  #2A2926;
+            --orange:  #D4621A;
+            --navy:    #1A2B5E;
+            --cobalt:  #1E5FA8;
+            --cream:   #F7F6F3;
+            --light:   #D8D6D1;
+            --mid:     #9B9890;
+            --muted:   #6B6966;
+            --green:   #4BC97A;
+            --amber:   #E8B84B;
+        }
+
+        html { scroll-behavior: smooth; }
+        html, body {
+            background: var(--bg);
+            color: var(--cream);
+            font-family: 'Barlow', sans-serif;
+            font-weight: 300;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.55;
+        }
+        body { overflow-x: hidden; }
+
+        /* ── RACING STRIPE ─────────────────────────────────────── */
+        .stripe { width:100%; display:flex; height:6px; flex-shrink:0; }
+        .stripe.thin { height:4px; }
+        .s1{flex:1;background:var(--navy);}
+        .s2{flex:1;background:var(--cobalt);}
+        .s3{flex:1;background:var(--orange);}
+        .s4{flex:1;background:var(--cobalt);}
+        .s5{flex:1;background:var(--navy);}
+
+        /* ── SHELL ─────────────────────────────────────────────── */
+        .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+        section { padding: 76px 0; border-bottom: 1px solid var(--border); }
+        section:last-of-type { border-bottom: none; }
+
+        .eyebrow {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--orange);
+        }
+        .label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--mid);
+            margin-bottom: 28px;
+        }
+        h1 {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(44px, 8vw, 76px);
+            line-height: 1.02;
+            letter-spacing: -0.01em;
+            color: var(--cream);
+            margin: 18px 0 20px;
+        }
+        h2 {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(26px, 4.4vw, 38px);
+            line-height: 1.14;
+            color: var(--cream);
+            margin-bottom: 14px;
+        }
+        p.lede { font-size: clamp(18px, 2.4vw, 22px); color: var(--light); font-weight: 300; max-width: 720px; }
+        p.body { font-size: 17px; color: var(--light); font-weight: 300; max-width: 680px; }
+        strong { color: var(--cream); font-weight: 500; }
+        em { color: var(--orange); font-style: italic; }
+
+        /* ── NAV / HOME LINK ───────────────────────────────────── */
+        header.top {
+            display:flex; align-items:center; justify-content:space-between;
+            padding: 22px 0;
+        }
+        .mark {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900; font-size: 20px; letter-spacing: 0.04em;
+            color: var(--cream); text-decoration: none;
+        }
+        .mark .nine { color: var(--orange); }
+        .top-back {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600; font-size: 12px; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--muted); text-decoration: none;
+            transition: color 0.2s;
+        }
+        .top-back:hover { color: var(--orange); }
+
+        /* ── HERO ──────────────────────────────────────────────── */
+        .hero { padding: 64px 0 80px; }
+        .hero .sub {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600; font-size: clamp(18px, 3vw, 24px);
+            letter-spacing: 0.02em; color: var(--cream); margin-bottom: 26px;
+        }
+        .hero .sub span { color: var(--orange); }
+
+        /* ── BUTTONS ───────────────────────────────────────────── */
+        .btn {
+            display:inline-block;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700; font-size: 14px; letter-spacing: 0.16em;
+            text-transform: uppercase; text-decoration: none;
+            padding: 15px 30px; border-radius: 3px; cursor: pointer;
+            border: none; transition: transform 0.15s, background 0.2s;
+        }
+        .btn-primary { background: var(--orange); color: #fff; }
+        .btn-primary:hover { transform: translateY(-2px); background: #e06d24; }
+        .btn-ghost { background: transparent; color: var(--cream); border: 1px solid var(--border); }
+        .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+        /* ── PROBLEM BLOCKS ────────────────────────────────────── */
+        .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .problem-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 5px; padding: 30px 26px; position: relative; overflow: hidden;
+        }
+        .problem-card::before {
+            content:''; position:absolute; top:0; left:0; width:100%; height:3px;
+            background: linear-gradient(90deg, var(--navy), var(--cobalt), var(--orange));
+        }
+        .problem-card h3 {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            font-weight: 700; font-size: 19px; color: var(--cream);
+            margin-bottom: 12px; font-style: italic;
+        }
+        .problem-card p { font-size: 15px; color: var(--light); font-weight: 300; }
+        .problem-card cite {
+            display:block; margin-top: 14px;
+            font-family: 'Barlow Condensed', sans-serif; font-style: normal;
+            font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+        }
+
+        /* ── PROOF ─────────────────────────────────────────────── */
+        .proof { background: var(--surface); }
+        .proof .rule {
+            margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--border);
+            font-family: 'Libre Baskerville', Georgia, serif; font-style: italic;
+            font-size: 18px; color: var(--cream);
+        }
+
+        /* ── TIER CARDS ────────────────────────────────────────── */
+        .tier-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+        .tier {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 6px; padding: 32px 26px; display: flex; flex-direction: column;
+        }
+        .tier.feature { border-color: var(--orange); box-shadow: 0 0 0 1px var(--orange); }
+        .tier .tier-tag {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+            font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cobalt);
+            margin-bottom: 8px;
+        }
+        .tier.feature .tier-tag { color: var(--orange); }
+        .tier .tier-name {
+            font-family: 'Libre Baskerville', Georgia, serif; font-weight: 700;
+            font-size: 24px; color: var(--cream); margin-bottom: 10px;
+        }
+        .tier .tier-price {
+            font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+            font-size: 17px; color: var(--cream); margin-bottom: 18px;
+        }
+        .tier .tier-price small { color: var(--mid); font-weight: 400; font-size: 14px; }
+        .tier .tier-desc { font-size: 15px; color: var(--light); font-weight: 300; flex-grow: 1; }
+        .tier .tier-note {
+            margin-top: 16px; font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+        }
+        .tier .tier-note.soon { color: var(--amber); }
+
+        /* ── FOUNDING / FORM ───────────────────────────────────── */
+        .founding { background: var(--surface); }
+        .founding .fc-head { max-width: 720px; margin-bottom: 34px; }
+        .lead-form { max-width: 560px; }
+        .lead-form .row { margin-bottom: 16px; }
+        .lead-form label {
+            display:block; font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600; font-size: 12px; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--mid); margin-bottom: 7px;
+        }
+        .lead-form input, .lead-form textarea {
+            width: 100%; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 4px; padding: 13px 14px; color: var(--cream);
+            font-family: 'Barlow', sans-serif; font-size: 16px; font-weight: 300;
+            transition: border-color 0.2s;
+        }
+        .lead-form input:focus, .lead-form textarea:focus {
+            outline: none; border-color: var(--orange);
+        }
+        .lead-form textarea { resize: vertical; min-height: 108px; }
+        .lead-form .hp { position: absolute; left: -9999px; opacity: 0; }
+        .lead-form button { margin-top: 6px; }
+        .form-fallback {
+            margin-top: 18px; font-size: 14px; color: var(--muted);
+        }
+        .form-fallback a { color: var(--orange); text-decoration: none; }
+        .form-fallback a:hover { text-decoration: underline; }
+        .form-success {
+            display: none; background: var(--bg); border: 1px solid var(--green);
+            border-radius: 6px; padding: 30px 28px; max-width: 560px;
+        }
+        .form-success.on { display: block; }
+        .form-success h3 {
+            font-family: 'Libre Baskerville', Georgia, serif; font-weight: 700;
+            font-size: 22px; color: var(--cream); margin-bottom: 10px;
+        }
+        .form-success p { font-size: 16px; color: var(--light); font-weight: 300; }
+
+        /* ── PAGE FOOTER ───────────────────────────────────────── */
+        footer.pg {
+            padding: 46px 0; text-align: center;
+        }
+        footer.pg .trail {
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+            font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+            color: var(--orange); margin-bottom: 10px;
+        }
+        footer.pg .trail-sub { font-size: 15px; color: var(--light); font-weight: 300; max-width: 560px; margin: 0 auto 26px; font-style: italic; }
+        footer.pg .foot-meta {
+            display:flex; align-items:center; justify-content:center; gap: 18px;
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+            font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+        }
+        footer.pg .foot-meta a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+        footer.pg .foot-meta a:hover { color: var(--orange); }
+
+        /* ── MOBILE ────────────────────────────────────────────── */
+        @media (max-width: 860px) {
+            .problem-grid, .tier-grid { grid-template-columns: 1fr; }
+            section { padding: 56px 0; }
+            .hero { padding: 40px 0 56px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="stripe"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
+
+<div class="wrap">
+    <header class="top">
+        <a class="mark" href="/">PROJ<span class="nine">9</span></a>
+        <a class="top-back" href="/">← Consumer app</a>
+    </header>
+</div>
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<div class="wrap">
+    <section class="hero" style="border-bottom:none;">
+        <div class="eyebrow">Project 9 Technologies · For Business</div>
+        <h1>The AI Employee.</h1>
+        <div class="sub">Custom-built for your business. <span>Trained on how you work.</span></div>
+        <p class="lede">An autonomous AI operations system, installed in your business. It answers your leads, builds your content, and runs your back office — on guardrails you control.</p>
+        <div style="margin-top:32px;">
+            <a class="btn btn-primary" href="#founding">Become a founding client</a>
+            <a class="btn btn-ghost" href="#tiers" style="margin-left:10px;">See the three tiers</a>
+        </div>
+    </section>
+</div>
+
+<div class="stripe thin"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
+
+<!-- ── THE PROBLEM ──────────────────────────────────────────── -->
+<div class="wrap">
+    <section>
+        <div class="label">The Problem</div>
+        <div class="problem-grid">
+            <div class="problem-card">
+                <h3>Leads go cold while you work.</h3>
+                <p>Respond to a lead after one hour and you are 7× less likely to ever have a real conversation with them.</p>
+                <cite>Harvard Business Review</cite>
+            </div>
+            <div class="problem-card">
+                <h3>Admin eats your evenings.</h3>
+                <p>The average small business runs on 1–10 people. There is no back office. You are the back office.</p>
+            </div>
+            <div class="problem-card">
+                <h3>Content never ships.</h3>
+                <p>Everyone says post more, everywhere. Nobody gives you the extra 15 hours a week it takes.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ── PROOF, NOT THEORY ────────────────────────────────────── -->
+<div class="proof">
+    <div class="wrap">
+        <section style="border-bottom:none;">
+            <div class="label">Proof, Not Theory</div>
+            <h2>We run our own company this way.</h2>
+            <p class="body">Our AI employee wakes up twice a day on a schedule, pulls work orders from a ticket board, writes and ships code, drafts content, files its own shift reports — and shuts itself down if it overspends. Every system we install is the system we run ourselves.</p>
+            <div class="rule">Born in the adventure industry. Built for every small business.</div>
+        </section>
+    </div>
+</div>
+
+<div class="stripe thin"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
+
+<!-- ── THREE WAYS IN ────────────────────────────────────────── -->
+<div class="wrap">
+    <section id="tiers">
+        <div class="label">Three Ways In</div>
+        <div class="tier-grid">
+            <div class="tier">
+                <div class="tier-tag">Tier 1 · The Kit</div>
+                <div class="tier-name">The Kit</div>
+                <div class="tier-price">$47 <small>one-time</small></div>
+                <div class="tier-desc">Do it yourself with our playbook. The complete P9T operating system, generalized for any small business. Kit price credits toward any Install.</div>
+                <div class="tier-note soon">Coming soon</div>
+            </div>
+            <div class="tier feature">
+                <div class="tier-tag">Tier 2 · The Install</div>
+                <div class="tier-name">The Install</div>
+                <div class="tier-price">$2,500 <small>+ $500/mo</small></div>
+                <div class="tier-desc">We build it for you, in four weeks. Inbox agent, content engine, ops board, guardrails — trained on your business. One intake call. The $500/mo covers monitoring, tuning, and a monthly report. Cancel anytime; the system stays yours.</div>
+            </div>
+            <div class="tier">
+                <div class="tier-tag">Tier 3 · Ops Partner</div>
+                <div class="tier-name">Ops Partner</div>
+                <div class="tier-price">$1,500<small>/mo</small></div>
+                <div class="tier-desc">We run it with you. Everything in the Install plus a monitored board, monthly content batch, and quarterly review. Five seats only.</div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ── FOUNDING CLIENTS + FORM ──────────────────────────────── -->
+<div class="founding" id="founding">
+    <div class="wrap">
+        <section style="border-bottom:none;">
+            <div class="label">Founding Clients</div>
+            <div class="fc-head">
+                <h2><em>Be the case study.</em></h2>
+                <p class="body">The first Install clients get founding pricing — $1,000 setup — in exchange for a documented case study: your numbers, before and after. One intake call. Four weeks. An employee that never sleeps.</p>
+            </div>
+
+            <form class="lead-form" name="business-leads" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="lead-form">
+                <input type="hidden" name="form-name" value="business-leads">
+                <p class="hp"><label>Do not fill this out: <input name="bot-field"></label></p>
+                <div class="row">
+                    <label for="lf-name">Your name</label>
+                    <input id="lf-name" type="text" name="name" required>
+                </div>
+                <div class="row">
+                    <label for="lf-biz">Business name</label>
+                    <input id="lf-biz" type="text" name="business" required>
+                </div>
+                <div class="row">
+                    <label for="lf-email">Email</label>
+                    <input id="lf-email" type="email" name="email" required>
+                </div>
+                <div class="row">
+                    <label for="lf-msg">What would you hand off first?</label>
+                    <textarea id="lf-msg" name="message"></textarea>
+                </div>
+                <button class="btn btn-primary" type="submit">Request an intake call</button>
+                <div class="form-fallback">Or email <a href="mailto:go@project9tech.com">go@project9tech.com</a></div>
+            </form>
+
+            <div class="form-success" id="lead-success">
+                <h3>Got it — we will be in touch.</h3>
+                <p>Thanks for raising your hand. IX reviews founding-client requests personally; expect a reply to set up your intake call. Prefer email? <a href="mailto:go@project9tech.com" style="color:var(--orange);text-decoration:none;">go@project9tech.com</a>.</p>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="stripe thin"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
+
+<!-- ── PAGE FOOTER ──────────────────────────────────────────── -->
+<footer class="pg">
+    <div class="wrap">
+        <div class="trail">The P9T Trail Fund — 1% of every invoice goes back to the trail</div>
+        <div class="trail-sub">Our employee works in a server rack so we can all keep working outside.</div>
+        <div class="foot-meta">
+            <span>© 2026 Project 9 Technologies</span>
+            <a href="/">project9tech.com</a>
+            <a href="/terms.html">Terms</a>
+            <a href="/privacy.html">Privacy</a>
+        </div>
+    </div>
+</footer>
+
+<div class="stripe"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
+
+<script>
+    (function () {
+        var form = document.getElementById('lead-form');
+        var success = document.getElementById('lead-success');
+        if (!form) return;
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var data = new FormData(form);
+            var body = new URLSearchParams(data).toString();
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body
+            }).then(function () {
+                form.style.display = 'none';
+                success.classList.add('on');
+                success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (typeof gtag === 'function') gtag('event', 'lead_submit', { form: 'business-leads' });
+            }).catch(function () {
+                // Network failure — surface the email fallback rather than a dead button.
+                var fb = form.querySelector('.form-fallback');
+                if (fb) { fb.style.color = 'var(--orange)'; fb.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            });
+        });
+    })();
+</script>
+
+</body>
+</html>
