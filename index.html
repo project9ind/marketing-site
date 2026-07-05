@@ -2529,6 +2529,8 @@
             line-height: 1.75;
             text-align: center;
         }
+        .statement-trail { margin-top: 28px; }
+        .statement-trail .st-accent { color: var(--orange); font-weight: 400; }
         .statement-cta {
             font-family: 'Barlow Condensed', sans-serif;
             font-weight: 700;
@@ -2693,9 +2695,24 @@
             border-top: 1px solid var(--surface);
             background: var(--bg);
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
         }
+        .foot-trail {
+            flex-basis: 100%;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            line-height: 1.5;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--surface);
+        }
+        .foot-trail .ft-label { color: var(--orange); }
+        .foot-trail .ft-desc { color: var(--muted); font-weight: 400; }
         .foot-l { display:flex; align-items:center; gap:20px; }
         .foot-logo {
             font-size: 14px;
@@ -4347,6 +4364,7 @@
 <div class="statement-section">
     <p class="statement-quote reveal">Built for people who move with purpose. Every word earns its place. Every data point is verified.</p>
     <p class="statement-body reveal reveal-delay-1">Project 9 Technologies carries the DNA of off-road racing heritage. We don't guess. We don't estimate. We pull live intelligence from the source and put it in your hands before you leave the pavement.</p>
+    <p class="statement-body statement-trail reveal reveal-delay-1">Our employee works in a server rack so we can all keep working outside &mdash; <span class="st-accent">1% of every P9T invoice</span> goes back to trail stewardship and access organizations.</p>
     <a class="statement-cta reveal reveal-delay-2" href="?view=signup">Run Your First Brief Free <span>→</span></a>
 
     <div class="route-graphic" id="routeGraphic">
@@ -4386,6 +4404,7 @@
 
 <!-- FOOTER -->
 <footer>
+    <div class="foot-trail"><span class="ft-label">The P9T Trail Fund</span> &mdash; <span class="ft-desc">1% of every invoice goes back to the trail.</span></div>
     <div class="foot-l">
         <div class="foot-logo"><span class="p9i-mark on-dark"><span class="p9i-mark-proj">PROJ</span><span class="p9i-mark-nine">9</span></span></div>
         <div class="foot-copy">© 2026 Project 9 Technologies</div>
