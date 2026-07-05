@@ -64,6 +64,14 @@
   to = "/?source=ig"
   status = 301
 
+# BT-154: /business serves the standalone For-Business page. MUST sit BEFORE the
+# SPA catch-all below, or the /* → /index.html rewrite swallows it (same precedence
+# gotcha as the vanity redirects above).
+[[redirects]]
+  from = "/business"
+  to = "/business.html"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
