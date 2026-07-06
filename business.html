@@ -206,6 +206,14 @@
             font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
         }
         .tier .tier-note.soon { color: var(--amber); }
+        .tier .tier-note.incl { color: var(--orange); font-weight: 800; font-size: 13px; }
+        .tier .tier-price .was { color: var(--muted); text-decoration: line-through; font-weight: 400; }
+        .tier .tier-price .now { color: var(--orange); }
+        .tier .install-label {
+            margin-top: -13px; margin-bottom: 16px; font-family: 'Barlow Condensed', sans-serif;
+            font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+        }
+        .tier .install-sub { margin-top: -12px; margin-bottom: 16px; font-size: 12px; color: var(--muted); font-weight: 300; }
 
         /* ── FOUNDING / FORM ───────────────────────────────────── */
         .founding { background: var(--surface); }
@@ -350,13 +358,17 @@
                 <div class="tier-tag">Tier 2 · The System Install</div>
                 <div class="tier-name">The System Install</div>
                 <div class="tier-price">$2,500 <small>+ $500/mo</small></div>
+                <div class="install-label">Installation Fee</div>
                 <div class="tier-desc">We build it for you, in four weeks. Inbox agent, ops board, guardrails — trained on your business. Delivered on a dedicated machine — installed at your location, or hosted by us with remote access. One intake call. The $500/mo covers monitoring, tuning, and a monthly report. Cancel anytime; the system stays yours.</div>
             </div>
             <div class="tier">
                 <div class="tier-tag">Tier 3 · Managed Operations</div>
                 <div class="tier-name">Managed Operations</div>
-                <div class="tier-price">$2,500 + $1,500<small>/mo</small></div>
+                <div class="tier-price"><s class="was">$2,500</s> <span class="now">$1,900</span> <small>+ $1,500/mo</small></div>
+                <div class="install-label">Installation Fee</div>
+                <div class="install-sub">Install fee reduced — we tune your system as we go.</div>
                 <div class="tier-desc">We run it with you. Everything in the System Install, plus the full content engine (included), custom monthly reporting, and one custom-built module per quarter, scoped at a quarterly review. Five seats only.</div>
+                <div class="tier-note incl">Includes automated content engine + quarterly custom builds</div>
             </div>
         </div>
     </section>
