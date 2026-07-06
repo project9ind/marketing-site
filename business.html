@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project 9 Technologies — For Business · The AI Employee</title>
+    <title>Project 9 Technologies — For Business · AI Operations Systems</title>
 
     <!-- Soft launch: not indexed until IX flips this. -->
     <meta name="robots" content="noindex">
@@ -206,6 +206,14 @@
             font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
         }
         .tier .tier-note.soon { color: var(--amber); }
+        .tier .tier-note.incl { color: var(--orange); font-weight: 800; font-size: 13px; }
+        .tier .tier-price .was { color: var(--muted); text-decoration: line-through; font-weight: 400; }
+        .tier .tier-price .now { color: var(--orange); }
+        .tier .install-label {
+            margin-top: -13px; margin-bottom: 16px; font-family: 'Barlow Condensed', sans-serif;
+            font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+        }
+        .tier .install-sub { margin-top: -12px; margin-bottom: 16px; font-size: 12px; color: var(--muted); font-weight: 300; }
 
         /* ── FOUNDING / FORM ───────────────────────────────────── */
         .founding { background: var(--surface); }
@@ -286,8 +294,8 @@
 <div class="wrap">
     <section class="hero" style="border-bottom:none;">
         <div class="eyebrow">Project 9 Technologies · For Business</div>
-        <h1>The AI Employee.</h1>
-        <div class="sub">Custom-built for your business. <span>Trained on how you work.</span></div>
+        <h1>Your back office, automated.</h1>
+        <div class="sub">We design, install, and manage <span>AI operations systems for small businesses.</span></div>
         <p class="lede">An autonomous AI operations system, installed in your business. It answers your leads, builds your content, and runs your back office — on guardrails you control.</p>
         <div style="margin-top:32px;">
             <a class="btn btn-primary" href="#founding">Become a founding client</a>
@@ -326,7 +334,7 @@
         <section style="border-bottom:none;">
             <div class="label">Proof, Not Theory</div>
             <h2>We run our own company this way.</h2>
-            <p class="body">Our AI employee wakes up twice a day on a schedule, pulls work orders from a ticket board, writes and ships code, drafts content, files its own shift reports — and shuts itself down if it overspends. Every system we install is the system we run ourselves.</p>
+            <p class="body">Our system wakes up twice a day on a schedule, pulls work orders from a ticket board, writes and ships code, drafts content, files its own shift reports — and shuts itself down if it overspends. Every system we install is the system we run ourselves.</p>
             <div class="rule">Born in the adventure industry. Built for every small business.</div>
         </section>
     </div>
@@ -340,23 +348,27 @@
         <div class="label">Three Ways In</div>
         <div class="tier-grid">
             <div class="tier">
-                <div class="tier-tag">Tier 1 · The Kit</div>
-                <div class="tier-name">The Kit</div>
-                <div class="tier-price">$47 <small>one-time</small></div>
-                <div class="tier-desc">Do it yourself with our playbook. The complete P9T operating system, generalized for any small business. Kit price credits toward any Install.</div>
+                <div class="tier-tag">Tier 1 · The System Kit</div>
+                <div class="tier-name">The System Kit</div>
+                <div class="tier-price">$47 / $97 <small>one-time</small></div>
+                <div class="tier-desc">Do it yourself with our playbook. Our complete operating system, generalized for any small business. Kit price credits toward any Install.</div>
                 <div class="tier-note soon">Coming soon</div>
             </div>
             <div class="tier feature">
-                <div class="tier-tag">Tier 2 · The Install</div>
-                <div class="tier-name">The Install</div>
+                <div class="tier-tag">Tier 2 · The System Install</div>
+                <div class="tier-name">The System Install</div>
                 <div class="tier-price">$2,500 <small>+ $500/mo</small></div>
-                <div class="tier-desc">We build it for you, in four weeks. Inbox agent, content engine, ops board, guardrails — trained on your business. One intake call. The $500/mo covers monitoring, tuning, and a monthly report. Cancel anytime; the system stays yours.</div>
+                <div class="install-label">Installation Fee</div>
+                <div class="tier-desc">We build it for you, in four weeks. Inbox agent, ops board, guardrails — trained on your business. Delivered on a dedicated machine — installed at your location, or hosted by us with remote access. One intake call. The $500/mo covers monitoring, tuning, and a monthly report. Cancel anytime; the system stays yours.</div>
             </div>
             <div class="tier">
-                <div class="tier-tag">Tier 3 · Ops Partner</div>
-                <div class="tier-name">Ops Partner</div>
-                <div class="tier-price">$1,500<small>/mo</small></div>
-                <div class="tier-desc">We run it with you. Everything in the Install plus a monitored board, monthly content batch, and quarterly review. Five seats only.</div>
+                <div class="tier-tag">Tier 3 · Managed Operations</div>
+                <div class="tier-name">Managed Operations</div>
+                <div class="tier-price"><s class="was">$2,500</s> <span class="now">$1,900</span> <small>+ $1,500/mo</small></div>
+                <div class="install-label">Installation Fee</div>
+                <div class="install-sub">Install fee reduced — we tune your system as we go.</div>
+                <div class="tier-desc">We run it with you. Everything in the System Install, plus the full content engine (included), custom monthly reporting, and one custom-built module per quarter, scoped at a quarterly review. Five seats only.</div>
+                <div class="tier-note incl">Includes automated content engine + quarterly custom builds</div>
             </div>
         </div>
     </section>
@@ -369,7 +381,7 @@
             <div class="label">Founding Clients</div>
             <div class="fc-head">
                 <h2><em>Be the case study.</em></h2>
-                <p class="body">The first Install clients get founding pricing — $1,000 setup — in exchange for a documented case study: your numbers, before and after. One intake call. Four weeks. An employee that never sleeps.</p>
+                <p class="body">The first Install clients get founding pricing — $1,000 setup — in exchange for a documented case study: your numbers, before and after. One intake call. Four weeks. A back office that never sleeps.</p>
             </div>
 
             <form class="lead-form" name="business-leads" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="lead-form">
