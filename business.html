@@ -213,6 +213,23 @@
             color: var(--orange); font-weight: 800; font-size: 18px; line-height: 1.3;
             letter-spacing: 0.06em;
         }
+        /* ── COMPANIES WE'VE HELPED ────────────────────────────── */
+        .count-row { display: flex; align-items: center; gap: 22px; margin: 26px 0 34px; flex-wrap: wrap; }
+        .count-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; }
+        .count-digits { display: flex; gap: 6px; }
+        .count-digits span {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 44px; height: 58px; background: #131211; border: 1px solid #2A2926;
+            font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 34px; color: var(--orange);
+        }
+        .folio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+        .folio-card { border: 1px solid #2A2926; background: #131211; }
+        .folio-card img { width: 100%; display: block; aspect-ratio: 16/10; object-fit: cover; object-position: top; }
+        .folio-card .fc-cap { padding: 12px 14px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+        .folio-card .fc-cap small { display: block; font-weight: 400; color: var(--muted); letter-spacing: 0.08em; margin-top: 2px; }
+        .folio-card.slot { display: flex; align-items: center; justify-content: center; aspect-ratio: auto; min-height: 200px; border-style: dashed; }
+        .folio-card.slot .fc-cap { text-align: center; color: var(--muted); }
+        @media(max-width:860px){ .folio-grid { grid-template-columns: 1fr; } }
         .tier .tier-price .was { color: var(--muted); text-decoration: line-through; font-weight: 400; }
         .tier .tier-price .now { color: var(--orange); }
         .tier .install-label {
@@ -304,7 +321,7 @@
         <div class="sub">We design, install, and manage <span>AI operations systems for small businesses.</span></div>
         <p class="lede">An autonomous AI operations system, installed in your business. It answers your leads, builds your content, and runs your back office — on guardrails you control.</p>
         <div style="margin-top:32px;">
-            <a class="btn btn-primary" href="#founding">Become an early adopter</a>
+            <a class="btn btn-primary" href="#founding">Start your build</a>
             <a class="btn btn-ghost" href="#tiers" style="margin-left:10px;">See the three tiers</a>
         </div>
     </section>
@@ -385,10 +402,10 @@
 <div class="founding" id="founding">
     <div class="wrap">
         <section style="border-bottom:none;">
-            <div class="label">Early Adopters</div>
+            <div class="label">Get In Touch</div>
             <div class="fc-head">
-                <h2><em>Be the case study.</em></h2>
-                <p class="body">The first five businesses — either System tier — get the install for $1,000, in exchange for a documented case study: your numbers, before and after. One intake call. Four weeks. A back office that never sleeps.</p>
+                <h2><em>Get in touch today.</em></h2>
+                <p class="body">Tell us what you need — a website that makes the phone ring, a back office that runs itself, or both. We reply within one business day, and we come to you. One sit-down, quoted on the spot.</p>
             </div>
 
             <form class='lead-form' id='lead-form' method='POST' name='business-leads'>
@@ -410,16 +427,42 @@
                     <label for="lf-msg">What would you hand off first?</label>
                     <textarea id="lf-msg" name="message"></textarea>
                 </div>
-                <button class="btn btn-primary" type="submit">Request an intake call</button>
+                <button class="btn btn-primary" type="submit">Get in touch</button>
                 <div class="form-fallback">Or email <a href="mailto:go@project9tech.com">go@project9tech.com</a></div>
             </form>
 
             <div class="form-success" id="lead-success">
                 <h3>Got it — we will be in touch.</h3>
-                <p>Thanks for raising your hand. We review every early-adopter request personally; expect a reply to set up your intake call. Prefer email? <a href="mailto:go@project9tech.com" style="color:var(--orange);text-decoration:none;">go@project9tech.com</a>.</p>
+                <p>Thanks for raising your hand. We review every request personally; expect a reply within one business day. Prefer email? <a href="mailto:go@project9tech.com" style="color:var(--orange);text-decoration:none;">go@project9tech.com</a>.</p>
             </div>
         </section>
     </div>
+</div>
+
+<div class="stripe thin"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
+
+<!-- ── COMPANIES WE'VE HELPED ───────────────────────────────── -->
+<div class="wrap">
+    <section id="work">
+        <div class="label">The Work</div>
+        <div class="count-row">
+            <div class="count-label">Companies we've helped</div>
+            <div class="count-digits"><span>0</span><span>0</span><span>0</span><span>2</span></div>
+        </div>
+        <div class="folio-grid">
+            <div class="folio-card">
+                <img src="assets/portfolio/ace.jpg" alt="A.C. Earthwerks — excavation and grading, Southern California" loading="lazy">
+                <div class="fc-cap">A.C. Earthwerks<small>Excavation &amp; Grading · Website + Managed Hosting</small></div>
+            </div>
+            <div class="folio-card">
+                <img src="assets/portfolio/p9t.jpg" alt="Project 9 Technologies — adventure intelligence platform" loading="lazy">
+                <div class="fc-cap">Project 9 Technologies<small>Our own platform · Built &amp; run on The System</small></div>
+            </div>
+            <div class="folio-card slot">
+                <div class="fc-cap">Your company next<small>project9tech.com/business</small></div>
+            </div>
+        </div>
+    </section>
 </div>
 
 <div class="stripe thin"><div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div></div>
